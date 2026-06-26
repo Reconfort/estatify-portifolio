@@ -1,0 +1,3 @@
+@import "tailwindcss";
+@import "@estatify/design-system/styles/tokens.css";
+@source "../../../packages/**/src/**/*.{ts,tsx}";

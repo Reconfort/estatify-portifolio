@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Estatify
 
-## Getting Started
+Multi-tenant real estate SaaS platform. Nx + npm-workspaces monorepo.
+Next.js 16 · React 19 · TypeScript · Tailwind v4 · NestJS.
 
-First, run the development server:
+Architecture: [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) ·
+Scaffold/commands: [`docs/SCAFFOLD.md`](./docs/SCAFFOLD.md) ·
+Design system: [`docs/DESIGN-SYSTEM.md`](./docs/DESIGN-SYSTEM.md)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Structure
+
+```
+apps/
+├── marketing/   estatify.com               public site
+├── workspace/   workspace.estatify.com     customer SaaS
+├── platform/    platform.estatify.com      internal admin
+├── sites/       *.tenant domains           multi-tenant website runtime
+└── api/         api.estatify.com           NestJS — single backend / only DB writer
+
+packages/
+├── design-system/  tokens + white-label theme engine (type:ui, scope:shared)
+├── ui/             shadcn/ui primitives
+├── providers/  hooks/  utils/  types/  config/   shared foundations
+├── auth/  api-client/                              data-access (shared)
+├── database/                                       Prisma — API-only
+└── feature-*/                                      one library per domain
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Module boundaries (scope + type tags) are enforced by ESLint — see ARCHITECTURE.md ADR-006.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## First-time setup (run locally — required)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This tree was authored without a network connection, so dependencies are **not
+installed** and nothing has been build-verified. Bring it to life:
 
-## Learn More
+```bash
+node -v                 # must be 20+
+npm install             # installs workspaces; regenerates package-lock.json
 
-To learn more about Next.js, take a look at the following resources:
+# align Nx + plugins to a single matching version, then let Nx wire inference:
+npx nx@latest init      # adopts the existing layout; confirm detected projects
+npx nx report           # pin nx + @nx/* to the same version in package.json
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+npm run graph           # visual dependency graph — confirm it matches the docs
+npm run lint            # boundary violations fail here
+npm run typecheck
+npm run build           # each app builds independently
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Per-app dev: `npm run dev:marketing` · `dev:workspace` · `dev:platform` ·
+`dev:sites` · `dev:api`.
 
-## Deploy on Vercel
+## Known follow-ups (see end of ARCHITECTURE.md)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `nx`/`@nx/*` are pinned to `latest` in `package.json` — replace with the exact
+  resolved version after `npm install` (`npx nx report`).
+- Tailwind v4 cross-package scanning uses an `@source` directive in each app's
+  `globals.css`; verify class detection after the first `npm run build`.
+- Feature/UI packages are documented stubs (`export {}`) — real domain code lands
+  on top of this foundation, not before `npm run lint/build` is green.

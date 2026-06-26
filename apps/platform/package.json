@@ -1,0 +1,7 @@
+{
+  "name": "@estatify/platform",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": { "dev": "next dev", "build": "next build", "start": "next start" },
+  "nx": { "name": "platform", "tags": ["scope:platform", "type:app"] }
+}

@@ -2,11 +2,21 @@
   "name": "estatify",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "graph": "nx graph",
+    "build": "nx run-many -t build",
+    "lint": "nx run-many -t lint",
+    "typecheck": "nx run-many -t typecheck",
+    "test": "nx run-many -t test",
+    "dev:marketing": "nx dev marketing",
+    "dev:workspace": "nx dev workspace",
+    "dev:platform": "nx dev platform",
+    "dev:sites": "nx dev sites",
+    "dev:api": "nx serve api"
   },
   "dependencies": {
     "next": "16.2.9",
@@ -19,8 +29,17 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.9",
+    "nx": "latest",
+    "@nx/eslint": "latest",
+    "@nx/eslint-plugin": "latest",
+    "@nx/js": "latest",
+    "@nx/next": "latest",
+    "@nx/nest": "latest",
+    "prettier": "^3",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

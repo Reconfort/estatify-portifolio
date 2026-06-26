@@ -1,0 +1,11 @@
+{
+  "name": "@estatify/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "serve": "nest start --watch",
+    "start": "node dist/main.js"
+  },
+  "nx": { "name": "api", "tags": ["scope:api", "type:app"] }
+}
