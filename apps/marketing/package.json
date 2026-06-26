@@ -2,6 +2,13 @@
   "name": "@estatify/marketing",
   "version": "0.1.0",
   "private": true,
-  "scripts": { "dev": "next dev", "build": "next build", "start": "next start" },
-  "nx": { "name": "marketing", "tags": ["scope:marketing", "type:app"] }
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "nx": {},
+  "devDependencies": {
+    "nx": "23.0.1"
+  }
 }
