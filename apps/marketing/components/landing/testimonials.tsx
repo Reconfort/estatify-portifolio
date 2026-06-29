@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@estatify/utils";
 import { AppImage } from "@estatify/ui/image";
-import { Container, SectionHeading } from "@estatify/ui";
+import { Container } from "@estatify/ui";
 import { testimonials } from "@/components/landing-data";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const AUTO_ADVANCE_MS = 6000;
 const ESTATE_IMAGE = "/assets/showcase/garden-estate.jpg";
 const SPIN_LABEL =
   "WHAT PEOPLE SAYS · WHAT PEOPLE SAYS · WHAT PEOPLE SAYS · WHAT PEOPLE SAYS · ";
@@ -80,8 +81,8 @@ function NavButton({ direction, onClick }: { direction: "prev" | "next"; onClick
       onClick={onClick}
       aria-label={direction === "prev" ? "Previous testimonial" : "Next testimonial"}
       className={cn(
-        "absolute top-1/2 z-20 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full",
-        "border border-border/70 bg-background/80 text-foreground shadow-sm backdrop-blur",
+        "absolute top-1/2 z-20 inline-flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full",
+        "border border-border/70 bg-background/80 text-foreground backdrop-blur",
         "transition-colors hover:border-accent/40 hover:bg-accent/10",
         direction === "prev" ? "left-0" : "right-0",
       )}
@@ -106,31 +107,33 @@ function NavButton({ direction, onClick }: { direction: "prev" | "next"; onClick
 export function Testimonials() {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
   const active = testimonials[index];
 
   const go = (direction: -1 | 1) =>
     setIndex((current) => (current + direction + testimonials.length) % testimonials.length);
+
+  useEffect(() => {
+    if (reduceMotion || paused || testimonials.length <= 1) return;
+
+    const timer = window.setInterval(() => {
+      setIndex((current) => (current + 1) % testimonials.length);
+    }, AUTO_ADVANCE_MS);
+
+    return () => window.clearInterval(timer);
+  }, [reduceMotion, paused, index]);
 
   if (!active) return null;
 
   return (
     <section className="relative overflow-hidden bg-background py-20 sm:py-28">
       <Container className="relative flex flex-col items-center gap-12 text-center sm:gap-16">
-        <SectionHeading
-          eyebrow="Loved by agencies"
-          title="Don't take our word for it"
-          description="Real feedback from agencies who switched to Estatify."
-        />
 
         <div className="relative flex w-full flex-col items-center">
           {/* Soft beige band that arches down behind the badge (no card). */}
           <div aria-hidden className="absolute inset-x-0 top-6 -z-0 flex justify-center overflow-hidden">
             <div
               className="h-52 w-[160%] rounded-b-[50%]"
-              style={{
-                background:
-                  "linear-gradient(to bottom, color-mix(in oklab, var(--color-accent) 9%, var(--color-secondary)) 0%, color-mix(in oklab, var(--color-secondary) 40%, transparent) 55%, transparent 100%)",
-              }}
             />
           </div>
 
@@ -138,11 +141,21 @@ export function Testimonials() {
             <SpinningEstateBadge />
 
             {/* Quote + side arrows in open space. */}
-            <div className="relative mx-auto w-full max-w-5xl px-14 sm:px-20">
+            <div
+              className="relative mx-auto w-full max-w-5xl px-14 sm:px-20"
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+              onFocusCapture={() => setPaused(true)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                  setPaused(false);
+                }
+              }}
+            >
               <NavButton direction="prev" onClick={() => go(-1)} />
               <NavButton direction="next" onClick={() => go(1)} />
 
-              <div className="min-h-[14rem] sm:min-h-[16rem]">
+              <div className="min-h-56 sm:min-h-64" aria-live="polite" aria-atomic="true">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.figure
                     key={active.name}

@@ -48,10 +48,10 @@ function PricingGrid() {
 
             <div
               className={cn(
-                "relative flex h-full flex-col gap-6 rounded-3xl border p-8 transition-[border-color,box-shadow] duration-300",
+                "relative flex h-full flex-col gap-6 rounded-3xl border p-8 duration-300",
                 isFeatured
-                  ? "border-accent/30 bg-card pt-10 shadow-md ring-1 ring-accent/15"
-                  : "border-border/70 bg-card shadow-sm hover:border-accent/20 hover:shadow-md",
+                  ? "border-accent/30 bg-card pt-10 ring-accent/15"
+                  : "border-border/70 bg-card hover:border-accent/20",
               )}
             >
               <div className="flex flex-col gap-2">

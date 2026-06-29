@@ -40,7 +40,7 @@ export function Hero() {
         }}
       />
 
-      <Container className="relative flex flex-col items-center gap-7 px-5 pt-28 text-center sm:gap-8 sm:pt-32">
+      <Container className="relative flex flex-col items-center gap-7 px-5 py-28 text-center sm:gap-8 sm:py-32">
         <motion.span
           custom={0}
           variants={fadeUp}
@@ -67,7 +67,7 @@ export function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="max-w-2xl text-body-lg text-white/85"
+          className="max-w-2xl text-body-md md:text-body-lg  text-white/85"
         >
           {hero.subtitle}
         </motion.p>
@@ -94,7 +94,7 @@ export function Hero() {
         variants={fadeUp}
         initial="hidden"
         animate="visible"
-        className="absolute inset-x-0 bottom-0 z-10 flex translate-y-1/2 justify-center px-4 sm:px-5"
+        className="absolute inset-x-0 bottom-0 z-10 hidden md:flex translate-y-1/2 justify-center px-4 sm:px-5"
       >
         <div className="w-full max-w-5xl lg:scale-90">
           <TiltCard intensity={4} className="overflow-hidden bg-card/95 p-0 shadow-xl backdrop-blur">
