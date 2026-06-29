@@ -118,7 +118,7 @@ function SitePreviewFrame() {
           <span className="h-2.5 w-2.5 rounded-full bg-success/80" />
         </div>
         <div className="flex min-w-0 max-w-xs items-center gap-2 rounded-t-lg border border-b-0 border-border bg-background px-4 py-2">
-          <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-sm bg-primary text-[10px] font-bold text-primary-foreground">
+          <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-sm bg-accent text-[10px] font-bold text-accent-foreground">
             E
           </span>
           <span className="truncate text-body-sm font-medium text-foreground">{PREVIEW_URL}</span>

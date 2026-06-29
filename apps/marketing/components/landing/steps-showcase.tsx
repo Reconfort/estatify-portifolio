@@ -31,10 +31,10 @@ const stepMeta: Record<
 > = {
   "01": {
     icon: <GlobeIcon className="h-5 w-5" />,
-    tint: "from-primary/12 to-primary/4",
+    tint: "from-accent/12 to-accent/4",
     preview: (
       <div className="flex items-center gap-2" aria-hidden>
-        {["#1a4d3e", "#c9a227", "#f4f4f5"].map((color) => (
+        {["#a4e636", "#c9a227", "#f4f4f5"].map((color) => (
           <span
             key={color}
             className="h-7 w-7 rounded-full border border-border/60"
@@ -57,7 +57,7 @@ const stepMeta: Record<
             <div
               className={cn(
                 "h-8 bg-gradient-to-br",
-                i === 0 ? "from-primary/25" : i === 1 ? "from-accent/30" : "from-secondary",
+                i === 0 ? "from-accent/25" : i === 1 ? "from-accent/30" : "from-secondary",
               )}
             />
             <div className="space-y-1 p-1.5">

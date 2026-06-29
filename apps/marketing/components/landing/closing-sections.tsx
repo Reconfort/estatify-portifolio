@@ -87,7 +87,7 @@ export function PricingGrid() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <div className="grid items-stretch gap-6 lg:grid-cols-3 lg:gap-5">
+    <div className="grid items-stretch gap-6 pt-4 lg:grid-cols-3 lg:gap-5 lg:pt-5">
       {pricing.map((tier, i) => {
         const isFeatured = tier.featured;
 
@@ -99,17 +99,26 @@ export function PricingGrid() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-6% 0px" }}
-            {...(!reduceMotion ? { whileHover: { y: isFeatured ? -10 : -4 } } : {})}
+            {...(!reduceMotion ? { whileHover: { y: isFeatured ? -6 : -4 } } : {})}
             transition={{ duration: 0.28, ease }}
             className={cn(
               "relative flex flex-col",
-              isFeatured && "lg:-mt-4 lg:mb-4 lg:scale-[1.05] lg:z-10",
+              isFeatured && "lg:-mt-4 lg:mb-4 lg:z-10",
             )}
           >
             {isFeatured ? (
+              <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent px-4 py-1.5 text-caption font-semibold text-accent-foreground shadow-sm">
+                  <SparkleIcon className="h-3.5 w-3.5 text-accent-foreground" aria-hidden />
+                  Most popular
+                </span>
+              </div>
+            ) : null}
+
+            {isFeatured ? (
               <div
                 aria-hidden
-                className="pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-br from-accent via-primary to-primary/70 p-px shadow-[0_20px_50px_-12px_color-mix(in_oklab,var(--color-primary)_45%,transparent)]"
+                className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-accent via-lime-500 to-lime-700 p-px"
               >
                 <div className="h-full w-full rounded-3xl bg-card" />
               </div>
@@ -117,28 +126,19 @@ export function PricingGrid() {
 
             <div
               className={cn(
-                "relative flex h-full flex-col gap-6 overflow-hidden rounded-3xl border p-8",
+                "relative flex h-full flex-col gap-6 rounded-3xl border p-8",
                 isFeatured
-                  ? "border-transparent bg-gradient-to-b from-primary/[0.07] via-card to-card"
-                  : "border-border/70 bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_28px_rgba(0,0,0,0.05)]",
-                "transition-[border-color,box-shadow] duration-300 hover:border-primary/25",
+                  ? "border-transparent bg-gradient-to-b from-accent/[0.07] via-card to-card pt-10"
+                  : "overflow-hidden border-border/70 bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_28px_rgba(0,0,0,0.05)]",
+                "transition-[border-color,box-shadow] duration-300 hover:border-accent/25",
                 !isFeatured &&
                   "hover:shadow-[0_2px_4px_rgba(0,0,0,0.04),0_16px_40px_rgba(0,0,0,0.08)]",
               )}
             >
               {isFeatured ? (
-                <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-1/2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary px-4 py-1.5 text-caption font-semibold text-primary-foreground shadow-md">
-                    <SparkleIcon className="h-3.5 w-3.5 text-accent" aria-hidden />
-                    Most popular
-                  </span>
-                </div>
-              ) : null}
-
-              {isFeatured ? (
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-primary/10 to-transparent"
+                  className="pointer-events-none absolute inset-x-0 top-0 h-32 rounded-t-3xl bg-gradient-to-b from-accent/10 to-transparent"
                 />
               ) : (
                 <div
@@ -163,7 +163,7 @@ export function PricingGrid() {
                 className={cn(
                   "relative",
                   isFeatured
-                    ? "rounded-2xl border border-primary/15 bg-primary/[0.06] px-4 py-4"
+                    ? "rounded-2xl border border-accent/15 bg-accent/[0.06] px-4 py-4"
                     : "border-b border-border/60 pb-6",
                 )}
               >
@@ -181,7 +181,7 @@ export function PricingGrid() {
                   ) : null}
                 </p>
                 {isFeatured ? (
-                  <p className="mt-2 text-caption font-medium text-primary">
+                  <p className="mt-2 text-caption font-medium text-lime-800">
                     14-day trial included · Cancel anytime
                   </p>
                 ) : null}
@@ -201,8 +201,8 @@ export function PricingGrid() {
                       className={cn(
                         "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
                         isFeatured
-                          ? "bg-primary text-primary-foreground shadow-sm"
-                          : "bg-primary/10 text-primary",
+                          ? "bg-accent text-accent-foreground shadow-sm"
+                          : "bg-accent/10 text-lime-800",
                       )}
                     >
                       <CheckIcon className="h-3 w-3" />
@@ -214,11 +214,7 @@ export function PricingGrid() {
 
               <Button
                 variant={isFeatured ? "accent" : "outline"}
-                className={cn(
-                  "group relative mt-auto w-full rounded-full",
-                  isFeatured &&
-                    "shadow-[0_8px_24px_-4px_color-mix(in_oklab,var(--color-accent)_55%,transparent)] transition-transform hover:scale-[1.02]",
-                )}
+                className="group relative mt-auto w-full rounded-full"
               >
                 {tier.cta}
                 {isFeatured ? (
@@ -250,9 +246,9 @@ export function CtaBandPolished() {
       className="relative overflow-hidden rounded-3xl border border-white/10 px-6 py-14 sm:px-10 sm:py-16 lg:px-12 lg:py-14"
       style={{
         background:
-          "radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in oklab, var(--color-primary) 70%, white) 0%, transparent 55%), linear-gradient(145deg, color-mix(in oklab, var(--color-primary) 94%, black) 0%, color-mix(in oklab, var(--color-primary) 78%, #071812) 48%, color-mix(in oklab, var(--color-primary) 92%, black) 100%)",
+          "radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in oklab, var(--color-lime-400) 75%, white) 0%, transparent 55%), linear-gradient(145deg, color-mix(in oklab, var(--color-lime-400) 35%, var(--color-lime-800)) 0%, color-mix(in oklab, var(--color-lime-700) 82%, #1b2c05) 48%, color-mix(in oklab, var(--color-lime-800) 90%, black) 100%)",
         boxShadow:
-          "0 24px 60px -12px color-mix(in oklab, var(--color-primary) 55%, transparent), inset 0 1px 0 rgba(255,255,255,0.08)",
+          "0 24px 60px -12px color-mix(in oklab, var(--color-lime-500) 55%, transparent), inset 0 1px 0 rgba(255,255,255,0.08)",
       }}
     >
       <div
@@ -431,7 +427,7 @@ export function CtaBandPolished() {
                 {[40, 62, 48, 78, 56, 88].map((h, i) => (
                   <span
                     key={i}
-                    className="flex-1 rounded-t bg-primary/75"
+                    className="flex-1 rounded-t bg-lime-500/80"
                     style={{ height: `${h * 0.22}rem` }}
                   />
                 ))}

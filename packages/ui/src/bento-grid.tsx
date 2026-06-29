@@ -46,13 +46,13 @@ export function BentoCard({
         className="pointer-events-none absolute inset-0 opacity-[0.35]"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 100% 0%, color-mix(in oklab, var(--color-primary) 12%, transparent), transparent)",
+            "radial-gradient(ellipse 80% 60% at 100% 0%, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent)",
         }}
       />
       <div
         aria-hidden
         className="absolute -right-16 -top-16 h-40 w-40 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: "color-mix(in oklab, var(--color-primary) 22%, transparent)" }}
+        style={{ background: "color-mix(in oklab, var(--color-accent) 22%, transparent)" }}
       />
       <div className="relative z-10 flex flex-1 flex-col">
         {icon ? (

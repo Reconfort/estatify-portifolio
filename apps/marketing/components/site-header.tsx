@@ -31,7 +31,7 @@ export function SiteHeader() {
     >
       <Container className="flex h-16 items-center justify-between">
         <a href="#" className="flex items-center gap-2" aria-label="Estatify home">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-accent-foreground">
             <span className="text-body-md font-bold">E</span>
           </span>
           <span className={cn("text-h5 font-semibold", solid ? "text-foreground" : "text-white")}>
@@ -62,10 +62,12 @@ export function SiteHeader() {
               <Button variant="ghost" size="sm">
                 Sign in
               </Button>
-              <Button size="sm">Create free account</Button>
+              <Button size="sm" variant="accent">
+                Create free account
+              </Button>
             </>
           ) : (
-            <Button size="sm" className="bg-background text-foreground hover:bg-background/90">
+            <Button size="sm" variant="accent">
               Create free account
             </Button>
           )}
@@ -103,7 +105,7 @@ export function SiteHeader() {
               <Button variant="outline" size="sm" className="flex-1">
                 Sign in
               </Button>
-              <Button size="sm" className="flex-1">
+              <Button size="sm" variant="accent" className="flex-1">
                 Create free account
               </Button>
             </div>

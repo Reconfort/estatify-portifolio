@@ -54,7 +54,7 @@ function BentoShell({
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/bento:opacity-100"
         style={{
           background:
-            "radial-gradient(ellipse 90% 70% at 100% 0%, color-mix(in oklab, var(--color-primary) 8%, transparent), transparent 55%)",
+            "radial-gradient(ellipse 90% 70% at 100% 0%, color-mix(in oklab, var(--color-accent) 8%, transparent), transparent 55%)",
         }}
       />
       {children}
@@ -293,7 +293,7 @@ function SitesSearchBentoCard() {
             <motion.span
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.95 }}
-              className="flex h-9 w-9 cursor-default items-center justify-center rounded-lg bg-primary text-primary-foreground ring-2 ring-primary/20 -mr-1"
+              className="flex h-9 w-9 cursor-default items-center justify-center rounded-lg bg-accent text-accent-foreground ring-2 ring-accent/20 -mr-1"
             >
               <SearchIcon className="h-4 w-4" aria-hidden />
             </motion.span>
@@ -405,7 +405,7 @@ function AnalyticsBentoCard() {
         className="relative flex min-h-56 flex-col justify-between gap-6 overflow-hidden p-6 sm:min-h-64 sm:flex-row sm:items-center sm:p-8"
         style={{
           background:
-            "linear-gradient(108deg, color-mix(in oklab, var(--color-accent) 90%, white) 0%, color-mix(in oklab, var(--color-primary) 72%, #1a3d2e) 52%, color-mix(in oklab, var(--color-primary) 94%, black) 100%)",
+            "linear-gradient(108deg, var(--color-lime-400) 0%, color-mix(in oklab, var(--color-lime-400) 55%, var(--color-lime-700)) 52%, color-mix(in oklab, var(--color-lime-800) 88%, black) 100%)",
         }}
       >
         <motion.div
@@ -452,7 +452,7 @@ function AnalyticsBentoCard() {
               {barHeights.map((h, i) => (
                 <motion.span
                   key={i}
-                  className="flex-1 rounded-t-sm bg-primary/80"
+                  className="flex-1 rounded-t-sm bg-lime-600/90"
                   initial={{ height: 0 }}
                   whileInView={{ height: `${h}%` }}
                   viewport={{ once: true }}
