@@ -8,6 +8,7 @@
  * Tags: scope:shared, type:ui
  */
 export * from "./button";
+export * from "./app-image";
 export * from "./primitives";
 export * from "./spotlight";
 export * from "./marquee";

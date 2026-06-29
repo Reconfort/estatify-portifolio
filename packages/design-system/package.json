@@ -8,6 +8,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./theme": "./src/theme/index.ts",
+    "./fonts": "./src/fonts.ts",
     "./styles/tokens.css": "./src/styles/tokens.css"
   },
   "nx": {

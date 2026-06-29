@@ -16,7 +16,7 @@ export const nav = {
 export const hero = {
   badge: "Built for African real estate",
   title: "Launch your agency's branded property platform",
-  highlight: "in a weekend",
+  highlight: "in hours",
   subtitle:
     "Estatify gives every agency its own website, dashboard, and lead engine — fully branded, mobile-first, and ready to convert. No developers required.",
   primaryCta: "Start free",
@@ -41,25 +41,25 @@ export const features = [
     title: "Branded websites",
     description:
       "A polished, fast property site under your own domain — your logo, your colors, day one.",
-    span: "md:col-span-2",
+    span: "md:col-span-2 md:row-span-2",
   },
   {
     key: "listings",
     title: "Listing management",
     description: "Add, organize, and publish properties with rich media in minutes.",
-    span: "",
+    span: "md:col-span-1",
   },
   {
     key: "leads",
     title: "Lead engine",
     description: "Capture, track, and convert every enquiry with a built-in pipeline.",
-    span: "",
+    span: "md:col-span-1",
   },
   {
     key: "agents",
     title: "Agent profiles",
     description: "Showcase your team with directories, stats, and contact routing.",
-    span: "",
+    span: "md:col-span-1",
   },
   {
     key: "analytics",

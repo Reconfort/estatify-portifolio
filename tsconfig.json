@@ -17,6 +17,8 @@
     { "path": "./packages/config" },
     { "path": "./packages/utils" },
     { "path": "./packages/database" },
+    { "path": "./packages/branding" },
+    { "path": "./packages/media" },
     { "path": "./packages/feature-property" },
     { "path": "./packages/feature-lead" },
     { "path": "./packages/feature-agent" },

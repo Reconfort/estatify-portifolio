@@ -19,8 +19,13 @@
     "baseUrl": ".",
     "paths": {
       "@estatify/design-system": ["packages/design-system/src/index.ts"],
+      "@estatify/design-system/fonts": ["packages/design-system/src/fonts.ts"],
       "@estatify/design-system/*": ["packages/design-system/src/*"],
       "@estatify/ui": ["packages/ui/src/index.ts"],
+      "@estatify/ui/icons": ["packages/ui/src/icons.ts"],
+      "@estatify/ui/image": ["packages/ui/src/app-image.tsx"],
+      "@estatify/branding": ["packages/branding/src/index.ts"],
+      "@estatify/media": ["packages/media/src/index.ts"],
       "@estatify/providers": ["packages/providers/src/index.ts"],
       "@estatify/hooks": ["packages/hooks/src/index.ts"],
       "@estatify/auth": ["packages/auth/src/index.ts"],
