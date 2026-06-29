@@ -487,14 +487,22 @@ function AnalyticsBentoCard() {
 
         <motion.div
           aria-hidden
-          animate={reduceMotion ? undefined : { x: [0, 12, 0], y: [0, -8, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          {...(!reduceMotion
+            ? {
+                animate: { x: [0, 12, 0], y: [0, -8, 0] },
+                transition: { duration: 7, repeat: Infinity, ease: "easeInOut" as const },
+              }
+            : {})}
           className="pointer-events-none absolute -left-20 top-4 h-64 w-64 rounded-full bg-white/12 blur-3xl"
         />
         <motion.div
           aria-hidden
-          animate={reduceMotion ? undefined : { x: [0, -10, 0], y: [0, 10, 0] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          {...(!reduceMotion
+            ? {
+                animate: { x: [0, -10, 0], y: [0, 10, 0] },
+                transition: { duration: 9, repeat: Infinity, ease: "easeInOut" as const },
+              }
+            : {})}
           className="pointer-events-none absolute -right-10 bottom-0 h-48 w-48 rounded-full bg-accent/20 blur-3xl"
         />
       </div>

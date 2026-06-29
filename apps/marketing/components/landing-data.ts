@@ -131,8 +131,32 @@ export const pricing = [
 ] as const;
 
 export const testimonials = [
-  { quote: "We replaced three tools and launched our site in two days.", name: "Amara O.", role: "Lagos Living" },
-  { quote: "Leads finally live in one place. Our follow-up rate doubled.", name: "David K.", role: "Nile Properties" },
-  { quote: "It looks like we hired an agency. We didn't.", name: "Fatima S.", role: "Sahel Homes" },
-  { quote: "Setup was genuinely a weekend. The team loves it.", name: "Joseph M.", role: "Savanna Group" },
+  {
+    title: "Up and running fast",
+    quote: "We replaced three tools and launched our site in two days.",
+    name: "Amara O.",
+    role: "Lagos Living",
+    avatar: "/assets/bento/agent-1.jpg",
+  },
+  {
+    title: "Leads in one place",
+    quote: "Leads finally live in one place. Our follow-up rate doubled.",
+    name: "David K.",
+    role: "Nile Properties",
+    avatar: "/assets/bento/agent-2.jpg",
+  },
+  {
+    title: "Looks agency-built",
+    quote: "It looks like we hired an agency. We didn't.",
+    name: "Fatima S.",
+    role: "Sahel Homes",
+    avatar: "/assets/bento/agent-3.jpg",
+  },
+  {
+    title: "Live in a weekend",
+    quote: "Setup was genuinely a weekend. The team loves it.",
+    name: "Joseph M.",
+    role: "Savanna Group",
+    avatar: "/assets/bento/agent-4.jpg",
+  },
 ] as const;
