@@ -1,3 +1,15 @@
 @import "tailwindcss";
 @import "@estatify/design-system/styles/tokens.css";
 @source "../../../packages/**/src/**/*.{ts,tsx}";
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes bento-march {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+
+  .bento-march-line {
+    animation: bento-march 1.3s linear infinite;
+  }
+}

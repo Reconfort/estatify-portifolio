@@ -40,7 +40,7 @@ export const features = [
     key: "sites",
     title: "Branded websites",
     description:
-      "A polished, fast property site under your own domain — your logo, your colors, day one.",
+      "A polished, fast property site under your own domain your logo, your colors, day one.",
     span: "md:col-span-2 md:row-span-2",
   },
   {
@@ -77,9 +77,27 @@ export const steps = [
 ] as const;
 
 export const showcase = [
-  { name: "Coastal Villas", location: "Mombasa, KE", price: "$420,000", tag: "For sale" },
-  { name: "City Heights", location: "Accra, GH", price: "$1,850 / mo", tag: "For rent" },
-  { name: "Garden Estate", location: "Kigali, RW", price: "$295,000", tag: "For sale" },
+  {
+    name: "Coastal Villas",
+    location: "Mombasa, KE",
+    price: "$420,000",
+    tag: "For sale",
+    image: "/assets/showcase/coastal-villas.jpg",
+  },
+  {
+    name: "City Heights",
+    location: "Accra, GH",
+    price: "$1,850 / mo",
+    tag: "For rent",
+    image: "/assets/showcase/city-heights.jpg",
+  },
+  {
+    name: "Garden Estate",
+    location: "Kigali, RW",
+    price: "$295,000",
+    tag: "For sale",
+    image: "/assets/showcase/garden-estate.jpg",
+  },
 ] as const;
 
 export const pricing = [

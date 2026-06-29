@@ -36,7 +36,7 @@ export function BentoCard({
     <div
       className={cn(
         "group relative flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-card p-6",
-        "shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lg",
+        "hover:-translate-y-0.5 hover:border-primary/20",
         className,
       )}
       {...props}
@@ -56,7 +56,7 @@ export function BentoCard({
       />
       <div className="relative z-10 flex flex-1 flex-col">
         {icon ? (
-          <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-primary/10 bg-primary/10 text-primary shadow-sm ring-1 ring-primary/5">
+          <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-primary/10 bg-primary/10 text-primary ring-1 ring-primary/5">
             {icon}
           </div>
         ) : null}
