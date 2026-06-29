@@ -15,13 +15,12 @@ const fadeUp = {
 };
 
 /**
- * Hero — full-bleed photographic background (tenant/agency building image) with
- * a legibility scrim, overlaid headline + CTAs, and an original Estatify
- * tenant site preview in a browser frame. White text passes contrast thanks to the dark scrim.
+ * Hero — full-bleed photo, 60vh copy block, and an absolutely positioned
+ * tenant preview that overlaps the section below.
  */
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden min-h-screen">
+    <section className="relative isolate min-h-[60dvh] overflow-visible">
       {/* Background photo */}
       <Image
         src="/assets/Concrete_Building_Daytime.jpg"
@@ -41,7 +40,7 @@ export function Hero() {
         }}
       />
 
-      <Container className="relative flex flex-col items-center gap-7 px-5 pb-0 pt-36 text-center sm:pt-40">
+      <Container className="relative flex flex-col items-center gap-7 px-5 pt-28 text-center sm:gap-8 sm:pt-32">
         <motion.span
           custom={0}
           variants={fadeUp}
@@ -87,20 +86,22 @@ export function Hero() {
             {hero.primaryCta}
           </Button>
         </motion.div>
+      </Container>
 
-        {/* Tenant site preview — browser frame with iframe */}
-        <motion.div
-          custom={4}
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          className="w-full max-w-5xl lg:scale-90"
-        >
-          <TiltCard intensity={4} className="overflow-hidden bg-card/95 p-0 backdrop-blur">
+      {/* Tenant site preview — anchored to hero bottom, overlaps next section */}
+      <motion.div
+        custom={4}
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        className="absolute inset-x-0 bottom-0 z-10 flex translate-y-1/2 justify-center px-4 sm:px-5"
+      >
+        <div className="w-full max-w-5xl lg:scale-90">
+          <TiltCard intensity={4} className="overflow-hidden bg-card/95 p-0 shadow-xl backdrop-blur">
             <SitePreviewFrame />
           </TiltCard>
-        </motion.div>
-      </Container>
+        </div>
+      </motion.div>
     </section>
   );
 }
@@ -131,7 +132,7 @@ function SitePreviewFrame() {
           alt={`${PREVIEW_URL} site preview`}
           fill
           sizes="(max-width: 1024px) 100vw, 896px"
-          className="object-contain object-center"
+          className="object-contain object-center scale-95"
           draggable={false}
         />
       </div>

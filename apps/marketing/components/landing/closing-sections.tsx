@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@estatify/utils";
 import { ArrowRightIcon, CheckIcon, SparkleIcon } from "@estatify/ui/icons";
@@ -28,12 +29,7 @@ function initials(name: string) {
 
 function QuoteIcon({ className }: { className?: string }) {
   return (
-    <svg
-      aria-hidden
-      className={className}
-      viewBox="0 0 32 32"
-      fill="currentColor"
-    >
+    <svg aria-hidden className={className} viewBox="0 0 32 32" fill="currentColor">
       <path d="M10 18c0-3.3 2.1-6.2 5.2-7.3L13 6.8C7.8 8.5 4 13.2 4 18.6V26h8v-8H10zm14 0c0-3.3 2.1-6.2 5.2-7.3L27 6.8C21.8 8.5 18 13.2 18 18.6V26h8v-8h-2z" />
     </svg>
   );
@@ -53,23 +49,24 @@ function StarRow() {
 
 export function TestimonialsMarquee() {
   return (
-    <Marquee speed={38} className="py-1">
+    <Marquee speed={42} className="py-2">
       {testimonials.map((t) => (
         <figure
           key={t.name}
           className={cn(
-            "group flex w-[22rem] shrink-0 flex-col gap-5 rounded-3xl border border-border/70 bg-card p-6",
+            "group flex w-88 shrink-0 flex-col gap-5 rounded-3xl border border-border/70 bg-card p-6",
+            "shadow-sm transition-[border-color,box-shadow] duration-300 hover:border-accent/25 hover:shadow-md",
           )}
         >
           <div className="flex items-center justify-between">
-            <QuoteIcon className="h-8 w-8 text-primary/15 transition-colors group-hover:text-primary/25" />
+            <QuoteIcon className="h-7 w-7 text-accent/25 transition-colors group-hover:text-accent/40" />
             <StarRow />
           </div>
-          <blockquote className="text-body-md leading-relaxed text-card-foreground">
+          <blockquote className="min-h-[4.5rem] text-body-md leading-relaxed text-card-foreground">
             &ldquo;{t.quote}&rdquo;
           </blockquote>
           <figcaption className="flex items-center gap-3 border-t border-border/60 pt-4">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-body-sm font-semibold text-primary ring-2 ring-primary/10">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/15 text-body-sm font-semibold text-lime-800 ring-1 ring-accent/25">
               {initials(t.name)}
             </span>
             <div className="min-w-0">
@@ -87,7 +84,7 @@ export function PricingGrid() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <div className="grid items-stretch gap-6 pt-4 lg:grid-cols-3 lg:gap-5 lg:pt-5">
+    <div className="grid items-stretch gap-6 pt-6 lg:grid-cols-3 lg:gap-5 lg:pt-8">
       {pricing.map((tier, i) => {
         const isFeatured = tier.featured;
 
@@ -99,72 +96,45 @@ export function PricingGrid() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-6% 0px" }}
-            {...(!reduceMotion ? { whileHover: { y: isFeatured ? -6 : -4 } } : {})}
+            {...(!reduceMotion ? { whileHover: { y: -4 } } : {})}
             transition={{ duration: 0.28, ease }}
-            className={cn(
-              "relative flex flex-col",
-              isFeatured && "lg:-mt-4 lg:mb-4 lg:z-10",
-            )}
+            className={cn("relative flex flex-col", isFeatured && "lg:z-10")}
           >
             {isFeatured ? (
               <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent px-4 py-1.5 text-caption font-semibold text-accent-foreground shadow-sm">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent px-4 py-1.5 text-caption font-semibold text-accent-foreground">
                   <SparkleIcon className="h-3.5 w-3.5 text-accent-foreground" aria-hidden />
                   Most popular
                 </span>
               </div>
             ) : null}
 
-            {isFeatured ? (
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-accent via-lime-500 to-lime-700 p-px"
-              >
-                <div className="h-full w-full rounded-3xl bg-card" />
-              </div>
-            ) : null}
-
             <div
               className={cn(
-                "relative flex h-full flex-col gap-6 rounded-3xl border p-8",
+                "relative flex h-full flex-col gap-6 rounded-3xl border p-8 transition-[border-color,box-shadow] duration-300",
                 isFeatured
-                  ? "border-transparent bg-gradient-to-b from-accent/[0.07] via-card to-card pt-10"
-                  : "overflow-hidden border-border/70 bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_28px_rgba(0,0,0,0.05)]",
-                "transition-[border-color,box-shadow] duration-300 hover:border-accent/25",
-                !isFeatured &&
-                  "hover:shadow-[0_2px_4px_rgba(0,0,0,0.04),0_16px_40px_rgba(0,0,0,0.08)]",
+                  ? "border-accent/30 bg-card pt-10 shadow-md ring-1 ring-accent/15"
+                  : "border-border/70 bg-card shadow-sm hover:border-accent/20 hover:shadow-md",
               )}
             >
-              {isFeatured ? (
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 top-0 h-32 rounded-t-3xl bg-gradient-to-b from-accent/10 to-transparent"
-                />
-              ) : (
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-secondary/60 blur-3xl"
-                />
-              )}
-
-              <div className="relative flex flex-col gap-2 pt-2">
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-h4 text-card-foreground">{tier.name}</h3>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1">
+                    <h3 className="text-h4 text-card-foreground">{tier.name}</h3>
+                    <p className="text-body-sm text-muted-foreground">{tier.blurb}</p>
+                  </div>
                   {isFeatured ? (
-                    <Badge variant="accent" className="shrink-0">
+                    <Badge variant="accent" className="shrink-0 text-xs">
                       Best value
                     </Badge>
                   ) : null}
                 </div>
-                <p className="text-body-sm text-muted-foreground">{tier.blurb}</p>
               </div>
 
               <div
                 className={cn(
-                  "relative",
-                  isFeatured
-                    ? "rounded-2xl border border-accent/15 bg-accent/[0.06] px-4 py-4"
-                    : "border-b border-border/60 pb-6",
+                  "rounded-2xl px-1 py-1",
+                  isFeatured ? "border border-accent/15 bg-accent/5 px-4 py-4" : "border-b border-border/60 pb-6",
                 )}
               >
                 <p className="flex items-end gap-1">
@@ -187,22 +157,20 @@ export function PricingGrid() {
                 ) : null}
               </div>
 
-              <ul className="relative flex flex-1 flex-col gap-3">
+              <ul className="flex flex-1 flex-col gap-3">
                 {tier.features.map((feature, fi) => (
                   <motion.li
                     key={feature}
                     initial={{ opacity: 0, x: -8 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: reduceMotion ? 0 : 0.15 + fi * 0.05, duration: 0.4, ease }}
+                    transition={{ delay: reduceMotion ? 0 : 0.12 + fi * 0.04, duration: 0.4, ease }}
                     className="flex items-start gap-3 text-body-sm text-card-foreground"
                   >
                     <span
                       className={cn(
                         "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
-                        isFeatured
-                          ? "bg-accent text-accent-foreground shadow-sm"
-                          : "bg-accent/10 text-lime-800",
+                        isFeatured ? "bg-accent text-accent-foreground" : "bg-accent/10 text-lime-800",
                       )}
                     >
                       <CheckIcon className="h-3 w-3" />
@@ -214,7 +182,10 @@ export function PricingGrid() {
 
               <Button
                 variant={isFeatured ? "accent" : "outline"}
-                className="group relative mt-auto w-full rounded-full"
+                className={cn(
+                  "group mt-auto w-full rounded-full",
+                  !isFeatured && "hover:border-accent/40 hover:text-foreground",
+                )}
               >
                 {tier.cta}
                 {isFeatured ? (
@@ -232,9 +203,70 @@ export function PricingGrid() {
   );
 }
 
-export function CtaBandPolished() {
-  const reduceMotion = useReducedMotion();
+const ctaLeadBars = [38, 55, 42, 68, 50, 72] as const;
 
+/** Single-panel product mock — no overlapping cards, reads as one dashboard. */
+function CtaIllustration() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2, duration: 0.6, ease }}
+      className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-sm xl:max-w-md"
+      aria-hidden
+    >
+      <div className="overflow-hidden rounded-2xl border border-white/15 bg-white shadow-[0_20px_48px_rgba(0,0,0,0.22)]">
+        <div className="flex items-center gap-2 border-b border-border/40 bg-muted/40 px-3 py-2.5">
+          <div className="flex items-center gap-1.5" aria-hidden>
+            <span className="h-2 w-2 rounded-full bg-destructive/70" />
+            <span className="h-2 w-2 rounded-full bg-warning/70" />
+            <span className="h-2 w-2 rounded-full bg-success/70" />
+          </div>
+          <span className="truncate text-[10px] text-muted-foreground">yourcompany.estatify.rw</span>
+        </div>
+
+        <div className="relative aspect-16/10">
+          <Image
+            src="/assets/bento/modern-home.jpg"
+            alt=""
+            fill
+            sizes="(max-width: 1024px) 100vw, 448px"
+            className="object-cover"
+          />
+          <div className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-black/50 to-transparent" />
+          <span className="absolute right-3 top-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-semibold text-accent-foreground">
+            Live in 48h
+          </span>
+          <div className="absolute bottom-3 left-3 right-3 space-y-1.5">
+            <span className="block h-1.5 w-2/3 rounded-full bg-white/90" />
+            <span className="block h-1.5 w-1/2 rounded-full bg-white/70" />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between gap-4 border-t border-border/40 bg-white px-4 py-3.5">
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              This week
+            </p>
+            <p className="text-h5 text-foreground">+128 leads</p>
+          </div>
+          <div className="flex h-9 w-28 items-end gap-1">
+            {ctaLeadBars.map((h, i) => (
+              <span
+                key={i}
+                className="flex-1 rounded-t-sm bg-lime-500"
+                style={{ height: `${h}%` }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+export function CtaBandPolished() {
   const trustPoints = [
     "Setup in a weekend",
     "No credit card",
@@ -243,106 +275,46 @@ export function CtaBandPolished() {
 
   return (
     <div
-      className="relative overflow-hidden rounded-3xl border border-white/10 px-6 py-14 sm:px-10 sm:py-16 lg:px-12 lg:py-14"
+      className="relative overflow-hidden rounded-3xl border border-lime-800/40 px-6 py-12 sm:px-10 sm:py-14 lg:px-12 lg:py-16"
       style={{
         background:
-          "radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in oklab, var(--color-lime-400) 75%, white) 0%, transparent 55%), linear-gradient(145deg, color-mix(in oklab, var(--color-lime-400) 35%, var(--color-lime-800)) 0%, color-mix(in oklab, var(--color-lime-700) 82%, #1b2c05) 48%, color-mix(in oklab, var(--color-lime-800) 90%, black) 100%)",
-        boxShadow:
-          "0 24px 60px -12px color-mix(in oklab, var(--color-lime-500) 55%, transparent), inset 0 1px 0 rgba(255,255,255,0.08)",
+          "linear-gradient(145deg, color-mix(in oklab, var(--color-lime-900) 92%, black) 0%, color-mix(in oklab, var(--color-lime-950) 96%, black) 52%, color-mix(in oklab, var(--color-lime-800) 78%, black) 100%)",
       }}
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.08]"
-        style={{
-          backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-          backgroundSize: "22px 22px",
-        }}
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-accent/50 to-transparent"
       />
 
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 50% 45% at 50% 40%, color-mix(in oklab, white 12%, transparent), transparent 70%)",
-        }}
+        className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-accent/10 blur-3xl"
       />
 
-      {reduceMotion ? (
-        <>
-          <div className="pointer-events-none absolute -left-20 top-0 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
-          <div className="pointer-events-none absolute -right-16 bottom-0 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
-        </>
-      ) : (
-        <>
-          <motion.div
-            aria-hidden
-            animate={{ x: [0, 24, 0], y: [0, -14, 0], scale: [1, 1.05, 1] }}
-            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-            className="pointer-events-none absolute -left-20 top-0 h-64 w-64 rounded-full bg-accent/25 blur-3xl"
-          />
-          <motion.div
-            aria-hidden
-            animate={{ x: [0, -18, 0], y: [0, 16, 0] }}
-            transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-            className="pointer-events-none absolute -right-16 bottom-0 h-56 w-56 rounded-full bg-white/12 blur-3xl"
-          />
-        </>
-      )}
-
-      <div className="relative grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+      <div className="relative grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.65, ease }}
+          transition={{ duration: 0.6, ease }}
           className="flex flex-col items-center gap-6 text-center lg:items-start lg:text-left"
         >
-          <motion.span
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1, duration: 0.45, ease }}
-            className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-caption font-medium text-primary-foreground/95 shadow-sm backdrop-blur-md"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)]" aria-hidden />
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-1.5 text-caption font-medium text-white/90 backdrop-blur-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
             14-day free trial · No card required
-          </motion.span>
+          </span>
 
-          <div className="space-y-4">
-            <motion.h2
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.18, duration: 0.55, ease }}
-              className="max-w-xl text-h1 text-primary-foreground sm:text-display-md"
-            >
+          <div className="space-y-3">
+            <h2 className="max-w-xl text-h1 text-white sm:text-display-md">
               Your agency&apos;s platform is one weekend away
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.28, duration: 0.5, ease }}
-              className="max-w-lg text-body-lg leading-relaxed text-primary-foreground/88"
-            >
+            </h2>
+            <p className="max-w-lg text-body-lg leading-relaxed text-white/75">
               Join the agencies building branded, lead-generating property sites with Estatify.
-            </motion.p>
+            </p>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.38, duration: 0.5, ease }}
-            className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4"
-          >
-            <Button
-              size="lg"
-              variant="accent"
-              className="group rounded-full px-8 shadow-[0_10px_32px_-6px_color-mix(in_oklab,var(--color-accent)_70%,transparent)] transition-transform hover:scale-[1.03]"
-            >
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
+            <Button size="lg" variant="accent" className="group rounded-full px-8">
               Start free
               <ArrowRightIcon
                 className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
@@ -352,101 +324,26 @@ export function CtaBandPolished() {
             <Button
               size="lg"
               variant="outline"
-              className="rounded-full border-white/40 bg-white/8 px-8 text-primary-foreground backdrop-blur-sm hover:border-white/55 hover:bg-white/16"
+              className="rounded-full border-white/25 bg-transparent px-8 text-white hover:border-white/40 hover:bg-white/10"
             >
               Book a demo
             </Button>
-          </motion.div>
+          </div>
 
-          <motion.ul
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.48, duration: 0.5 }}
-            className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 lg:justify-start"
-          >
+          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-white/10 pt-5 lg:justify-start">
             {trustPoints.map((point) => (
               <li
                 key={point}
-                className="flex items-center gap-2 text-caption font-medium text-primary-foreground/75"
+                className="flex items-center gap-2 text-caption font-medium text-white/70"
               >
                 <CheckIcon className="h-3.5 w-3.5 text-accent" aria-hidden />
                 {point}
               </li>
             ))}
-          </motion.ul>
+          </ul>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 24 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.25, duration: 0.7, ease }}
-          className="relative mx-auto hidden w-full max-w-md lg:mx-0 lg:block"
-          aria-hidden
-        >
-          <div className="relative min-h-[17rem]">
-            <motion.div
-              {...(!reduceMotion
-                ? { animate: { y: [0, -6, 0] }, transition: { duration: 5, repeat: Infinity, ease: "easeInOut" } }
-                : {})}
-              className="absolute right-0 top-0 w-[78%] overflow-hidden rounded-2xl border border-white/20 bg-white/95 shadow-[0_24px_50px_rgba(0,0,0,0.25)]"
-            >
-              <div className="flex items-center gap-2 border-b border-border/50 px-3 py-2">
-                <span className="h-2 w-2 rounded-full bg-destructive/70" />
-                <span className="h-2 w-2 rounded-full bg-warning/70" />
-                <span className="h-2 w-2 rounded-full bg-success/70" />
-                <span className="ml-1 truncate text-[10px] text-muted-foreground">
-                  yourcompany.estatify.rw
-                </span>
-              </div>
-              <div
-                className="h-28 bg-cover bg-center"
-                style={{ backgroundImage: "url(/assets/bento/modern-home.jpg)" }}
-              />
-              <div className="space-y-1.5 p-3">
-                <span className="block h-2 w-2/3 rounded-full bg-muted" />
-                <span className="block h-2 w-1/2 rounded-full bg-muted/70" />
-              </div>
-            </motion.div>
-
-            <motion.div
-              {...(!reduceMotion
-                ? {
-                    animate: { y: [0, 8, 0] },
-                    transition: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 },
-                  }
-                : {})}
-              className="absolute bottom-2 left-0 w-[52%] rounded-2xl border border-white/20 bg-white/95 p-4 shadow-[0_20px_44px_rgba(0,0,0,0.22)]"
-            >
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
-                This week
-              </p>
-              <p className="mt-1 text-h4 text-foreground">+128 leads</p>
-              <div className="mt-3 flex items-end gap-1">
-                {[40, 62, 48, 78, 56, 88].map((h, i) => (
-                  <span
-                    key={i}
-                    className="flex-1 rounded-t bg-lime-500/80"
-                    style={{ height: `${h * 0.22}rem` }}
-                  />
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              {...(!reduceMotion
-                ? {
-                    animate: { y: [0, -4, 0] },
-                    transition: { duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 },
-                  }
-                : {})}
-              className="absolute left-[38%] top-[18%] rounded-full border border-white/30 bg-accent px-3 py-1.5 text-caption font-semibold text-accent-foreground shadow-lg"
-            >
-              Live in 48h
-            </motion.div>
-          </div>
-        </motion.div>
+        <CtaIllustration />
       </div>
     </div>
   );

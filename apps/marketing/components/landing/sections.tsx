@@ -11,7 +11,7 @@ import { logos } from "@/components/landing-data";
 /** Logos marquee — social proof. */
 export function Logos() {
   return (
-    <section className="border-y border-border bg-secondary/30 py-12">
+    <section className="border-y border-border bg-secondary/30 pb-12 pt-[clamp(11rem,32vw,18rem)]">
       <Container className="flex flex-col gap-8">
         <p className="text-center text-body-sm text-muted-foreground">
           Trusted by growing agencies across the continent
