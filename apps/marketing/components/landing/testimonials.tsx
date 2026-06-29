@@ -74,32 +74,92 @@ function SpinningEstateBadge() {
   );
 }
 
-function NavButton({ direction, onClick }: { direction: "prev" | "next"; onClick: () => void }) {
+function NavChevron({ direction }: { direction: "prev" | "next" }) {
+  return (
+    <svg
+      aria-hidden
+      className="h-4 w-4"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {direction === "prev" ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 18l6-6-6-6" />}
+    </svg>
+  );
+}
+
+function NavButton({
+  direction,
+  onClick,
+  variant = "side",
+}: {
+  direction: "prev" | "next";
+  onClick: () => void;
+  variant?: "side" | "inline";
+}) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-label={direction === "prev" ? "Previous testimonial" : "Next testimonial"}
       className={cn(
-        "absolute top-1/2 z-20 inline-flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full",
-        "border border-border/70 bg-background/80 text-foreground backdrop-blur",
+        "inline-flex items-center justify-center rounded-full border border-border/70 bg-background/80 text-foreground backdrop-blur",
         "transition-colors hover:border-accent/40 hover:bg-accent/10",
-        direction === "prev" ? "left-0" : "right-0",
+        variant === "side" && [
+          "absolute top-1/2 z-20 hidden h-14 w-14 -translate-y-1/2 sm:inline-flex",
+          direction === "prev" ? "left-0" : "right-0",
+        ],
+        variant === "inline" && "h-11 w-11 shrink-0",
       )}
     >
-      <svg
-        aria-hidden
-        className="h-4 w-4"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        {direction === "prev" ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 18l6-6-6-6" />}
-      </svg>
+      <NavChevron direction={direction} />
     </button>
+  );
+}
+
+function MobileCarouselNav({
+  index,
+  onPrev,
+  onNext,
+  onSelect,
+}: {
+  index: number;
+  onPrev: () => void;
+  onNext: () => void;
+  onSelect: (nextIndex: number) => void;
+}) {
+  return (
+    <div className="mt-8 flex flex-col items-center gap-4 sm:hidden">
+      <div className="flex items-center justify-center gap-4">
+        <NavButton direction="prev" variant="inline" onClick={onPrev} />
+
+        <div className="flex items-center gap-2" role="tablist" aria-label="Testimonial slides">
+          {testimonials.map((t, i) => (
+            <button
+              key={t.name}
+              type="button"
+              role="tab"
+              aria-selected={i === index}
+              aria-label={`Show testimonial from ${t.name}`}
+              onClick={() => onSelect(i)}
+              className={cn(
+                "h-2 rounded-full transition-all duration-300",
+                i === index ? "w-6 bg-accent" : "w-2 bg-border hover:bg-accent/50",
+              )}
+            />
+          ))}
+        </div>
+
+        <NavButton direction="next" variant="inline" onClick={onNext} />
+      </div>
+
+      <p className="text-caption text-muted-foreground">
+        {index + 1} / {testimonials.length}
+      </p>
+    </div>
   );
 }
 
@@ -142,7 +202,7 @@ export function Testimonials() {
 
             {/* Quote + side arrows in open space. */}
             <div
-              className="relative mx-auto w-full max-w-5xl px-14 sm:px-20"
+              className="relative mx-auto w-full max-w-5xl px-4 sm:px-14 md:px-20"
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
               onFocusCapture={() => setPaused(true)}
@@ -155,7 +215,7 @@ export function Testimonials() {
               <NavButton direction="prev" onClick={() => go(-1)} />
               <NavButton direction="next" onClick={() => go(1)} />
 
-              <div className="min-h-56 sm:min-h-64" aria-live="polite" aria-atomic="true">
+              <div className="min-h-52 sm:min-h-64" aria-live="polite" aria-atomic="true">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.figure
                     key={active.name}
@@ -164,9 +224,9 @@ export function Testimonials() {
                       : { initial: { opacity: 0, y: 16 }, exit: { opacity: 0, y: -16 } })}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, ease }}
-                    className="flex flex-col items-center gap-10"
+                    className="flex flex-col items-center gap-8 sm:gap-10"
                   >
-                    <blockquote className="max-w-4xl text-balance text-h1 font-semibold leading-tight tracking-tight text-foreground sm:text-display-md lg:text-display-lg">
+                    <blockquote className="max-w-4xl text-balance text-h2 font-semibold leading-tight tracking-tight text-foreground sm:text-display-md lg:text-display-lg">
                       &ldquo;{active.quote}&rdquo;
                     </blockquote>
                     <figcaption className="flex flex-col items-center gap-1">
@@ -178,6 +238,13 @@ export function Testimonials() {
                   </motion.figure>
                 </AnimatePresence>
               </div>
+
+              <MobileCarouselNav
+                index={index}
+                onPrev={() => go(-1)}
+                onNext={() => go(1)}
+                onSelect={setIndex}
+              />
             </div>
           </div>
         </div>
