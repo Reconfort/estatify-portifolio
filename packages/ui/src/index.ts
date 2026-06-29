@@ -1,9 +1,15 @@
 /**
- * @estatify/ui
- * shadcn/ui primitives. Presentational only — no data fetching, semantic tokens only.
+ * @estatify/ui — the single home for shared, reusable UI primitives.
  *
- * Tags: scope:shared,type:ui
- * Foundation stub — public API surface. Implement domain code here following the
- * feature structure (components/ hooks/ types/ schemas/ services/ constants/ utils/).
+ * Rules: presentational only (no data fetching), semantic tokens only (no
+ * hardcoded colors), `cn` from @estatify/utils. shadcn/ui and Aceternity
+ * components are added HERE (never per-app) and adapted to design tokens.
+ *
+ * Tags: scope:shared, type:ui
  */
-export {};
+export * from "./button";
+export * from "./primitives";
+export * from "./spotlight";
+export * from "./marquee";
+export * from "./bento-grid";
+export * from "./tilt-card";
