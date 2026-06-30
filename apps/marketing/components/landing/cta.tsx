@@ -1,67 +1,73 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowRightIcon, CheckIcon } from "@estatify/ui/icons";
 import { Button, Container } from "@estatify/ui";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const ctaLeadBars = [38, 55, 42, 68, 50, 72] as const;
+const CTA_BUILDING_IMAGE = "/assets/Image.png";
 
-/** Single-panel product mock — reads as one dashboard. */
+/** Building cutout — primary CTA visual on the dark panel. */
 function CtaIllustration() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: 0.2, duration: 0.6, ease }}
-      className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-sm xl:max-w-md"
-      aria-hidden
+      transition={{ delay: 0.2, duration: 0.65, ease }}
+      className="relative mx-auto flex w-full max-w-sm items-end justify-center lg:mx-0 lg:max-w-md"
     >
-      <div className="overflow-hidden rounded-2xl border border-white/15 bg-white shadow-[0_20px_48px_rgba(0,0,0,0.22)]">
-        <div className="flex items-center gap-2 border-b border-border/40 bg-muted/40 px-3 py-2.5">
-          <div className="flex items-center gap-1.5" aria-hidden>
-            <span className="h-2 w-2 rounded-full bg-destructive/70" />
-            <span className="h-2 w-2 rounded-full bg-warning/70" />
-            <span className="h-2 w-2 rounded-full bg-success/70" />
-          </div>
-          <span className="truncate text-[10px] text-muted-foreground">yourcompany.estatify.rw</span>
-        </div>
+      <motion.div
+        {...(!reduceMotion
+          ? { animate: { y: [0, -10, 0] }, transition: { duration: 6, repeat: Infinity, ease: "easeInOut" } }
+          : {})}
+        className="relative w-full"
+      >
+        <Image
+          src={CTA_BUILDING_IMAGE}
+          alt="Modern property building representing your agency platform"
+          width={941}
+          height={993}
+          sizes="(max-width: 1024px) 80vw, 448px"
+          className="h-auto w-full object-contain object-bottom drop-shadow-[0_32px_64px_rgba(0,0,0,0.45)] scale-125"
+        />
+      </motion.div>
 
-        <div className="relative aspect-16/10">
-          <Image
-            src="/assets/bento/modern-home.jpg"
-            alt=""
-            fill
-            sizes="(max-width: 1024px) 100vw, 448px"
-            className="object-cover"
-          />
-          <div className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-black/50 to-transparent" />
-          <span className="absolute right-3 top-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-semibold text-accent-foreground">
-            Live in 48h
-          </span>
-          <div className="absolute bottom-3 left-3 right-3 space-y-1.5">
-            <span className="block h-1.5 w-2/3 rounded-full bg-white/90" />
-            <span className="block h-1.5 w-1/2 rounded-full bg-white/70" />
-          </div>
-        </div>
+      <motion.span
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        {...(!reduceMotion
+          ? {
+              animate: { y: [0, -4, 0] },
+              transition: {
+                opacity: { delay: 0.45, duration: 0.4, ease },
+                scale: { delay: 0.45, duration: 0.4, ease },
+                y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.8 },
+              },
+            }
+          : { transition: { delay: 0.45, duration: 0.4, ease } })}
+        className="absolute right-2 top-[18%] rounded-full border border-white/20 bg-accent px-3 py-1.5 text-caption font-semibold text-accent-foreground shadow-lg sm:right-6"
+      >
+        Live in 48h
+      </motion.span>
 
-        <div className="flex items-center justify-between gap-4 border-t border-border/40 bg-white px-4 py-3.5">
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              This week
-            </p>
-            <p className="text-h5 text-foreground">+128 leads</p>
-          </div>
-          <div className="flex h-9 w-28 items-end gap-1">
-            {ctaLeadBars.map((h, i) => (
-              <span key={i} className="flex-1 rounded-t-sm bg-lime-500" style={{ height: `${h}%` }} />
-            ))}
-          </div>
-        </div>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, x: -12 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.55, duration: 0.5, ease }}
+        className="absolute bottom-[12%] left-0 rounded-2xl border border-white/15 bg-white/95 px-4 py-3 shadow-[0_16px_40px_rgba(0,0,0,0.25)] backdrop-blur-sm sm:left-2"
+      >
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          This week
+        </p>
+        <p className="text-h5 text-foreground">+128 leads</p>
+      </motion.div>
     </motion.div>
   );
 }
@@ -73,13 +79,12 @@ function CtaBandPolished() {
     <div
       className="relative overflow-hidden rounded-3xl border border-lime-800/40 px-6 py-12 sm:px-10 sm:py-14 lg:px-12 lg:py-16"
       style={{
-        background:
-          "linear-gradient(145deg, color-mix(in oklab, var(--color-lime-900) 92%, black) 0%, color-mix(in oklab, var(--color-lime-950) 96%, black) 52%, color-mix(in oklab, var(--color-lime-800) 78%, black) 100%)",
+        background: "var(--color-lime-950)",
       }}
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-accent/50 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-accent/40"
       />
       <div
         aria-hidden

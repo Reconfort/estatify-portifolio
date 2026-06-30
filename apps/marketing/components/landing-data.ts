@@ -71,9 +71,57 @@ export const features = [
 ] as const;
 
 export const steps = [
-  { n: "01", title: "Brand it", body: "Pick your colors, logo, and domain. Your site themes itself." },
-  { n: "02", title: "List it", body: "Import or add properties with photos, maps, and amenities." },
-  { n: "03", title: "Grow it", body: "Share your site and watch leads land in your pipeline." },
+  {
+    n: "01",
+    title: "Brand it",
+    body: "Pick your colors, logo, and domain. Your site themes itself.",
+    link: "Your brand kit",
+  },
+  {
+    n: "02",
+    title: "List it",
+    body: "Import or add properties with photos, maps, and amenities.",
+    link: "Add listings",
+  },
+  {
+    n: "03",
+    title: "Grow it",
+    body: "Share your site and watch leads land in your pipeline.",
+    link: "Track leads",
+  },
+] as const;
+
+export const services = [
+  {
+    icon: "sites",
+    title: "Branded Websites",
+    description: "Launch a polished, fast property site on your own domain — your brand, day one.",
+  },
+  {
+    icon: "listings",
+    title: "Listing Management",
+    description: "Add, organize, and publish properties with rich media in minutes.",
+  },
+  {
+    icon: "leads",
+    title: "Lead Management",
+    description: "Capture every enquiry and move it through a built-in pipeline to close.",
+  },
+  {
+    icon: "agents",
+    title: "Agent Tools",
+    description: "Give your team profiles, smart routing, and the tools to perform.",
+  },
+  {
+    icon: "analytics",
+    title: "Analytics & Insights",
+    description: "Track views, leads, conversion, and revenue across your whole portfolio.",
+  },
+  {
+    icon: "whitelabel",
+    title: "White-label & Domains",
+    description: "Custom domains, themes, and billing — fully yours and multi-branch ready.",
+  },
 ] as const;
 
 export const showcase = [

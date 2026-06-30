@@ -52,10 +52,7 @@ function BentoShell({
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/bento:opacity-100"
-        style={{
-          background:
-            "radial-gradient(ellipse 90% 70% at 100% 0%, color-mix(in oklab, var(--color-accent) 8%, transparent), transparent 55%)",
-        }}
+        style={{ background: "color-mix(in oklab, var(--color-accent) 6%, transparent)" }}
       />
       {children}
     </motion.div>
@@ -97,7 +94,7 @@ function ListingsBentoCard() {
             className="object-cover"
           />
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-neutral-950/45" />
         <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-2 p-4">
           {tags.map((tag, i) => (
             <motion.span
@@ -333,18 +330,17 @@ function SitesSearchBentoCard() {
             />
           </motion.div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-card via-card/25 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-card to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-16 bg-card" />
       </div>
 
       <div className="relative border-t border-border/60 bg-secondary/25 px-4 py-3">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-secondary/25 to-transparent"
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-8"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-secondary/25 to-transparent"
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-8"
         />
         <Marquee speed={26}>
           {logos.slice(0, 6).map((name) => (
@@ -404,8 +400,7 @@ function AnalyticsBentoCard() {
       <div
         className="relative flex min-h-56 flex-col justify-between gap-6 overflow-hidden p-6 sm:min-h-64 sm:flex-row sm:items-center sm:p-8"
         style={{
-          background:
-            "linear-gradient(108deg, var(--color-lime-400) 0%, color-mix(in oklab, var(--color-lime-400) 55%, var(--color-lime-700)) 52%, color-mix(in oklab, var(--color-lime-800) 88%, black) 100%)",
+          background: "var(--color-lime-700)",
         }}
       >
         <motion.div

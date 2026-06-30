@@ -1,164 +1,128 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { ComponentType } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@estatify/utils";
-import { ArrowRightIcon, GlobeIcon, LeadsIcon, ListingsIcon } from "@estatify/ui/icons";
-import { Container, SectionHeading } from "@estatify/ui";
-import { steps } from "@/components/landing-data";
+import {
+  AgentsIcon,
+  AnalyticsIcon,
+  BuildingIcon,
+  GlobeIcon,
+  type IconComponent,
+  LeadsIcon,
+  ListingsIcon,
+} from "@estatify/ui/icons";
+import { Container } from "@estatify/ui";
+import { services } from "@/components/landing-data";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const reveal = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay: i * 0.12, ease },
+    transition: { duration: 0.6, delay: i * 0.08, ease },
   }),
 };
 
-const stepMeta: Record<
-  (typeof steps)[number]["n"],
-  { icon: ReactNode; preview: ReactNode; tint: string }
-> = {
-  "01": {
-    icon: <GlobeIcon className="h-5 w-5" />,
-    tint: "from-accent/12 to-accent/4",
-    preview: (
-      <div className="flex items-center gap-2" aria-hidden>
-        {["#a4e636", "#c9a227", "#f4f4f5"].map((color) => (
-          <span
-            key={color}
-            className="h-7 w-7 rounded-full border border-border/60"
-            style={{ backgroundColor: color }}
-          />
-        ))}
-        <span className="ml-1 rounded-md border border-border/60 bg-background px-2 py-1 text-[10px] font-medium text-muted-foreground">
-          youragency.rw
-        </span>
-      </div>
-    ),
-  },
-  "02": {
-    icon: <ListingsIcon className="h-5 w-5" />,
-    tint: "from-accent/15 to-accent/5",
-    preview: (
-      <div className="grid grid-cols-3 gap-1.5" aria-hidden>
-        {[0, 1, 2].map((i) => (
-          <div key={i} className="overflow-hidden rounded-md border border-border/50 bg-background">
-            <div
-              className={cn(
-                "h-8 bg-gradient-to-br",
-                i === 0 ? "from-accent/25" : i === 1 ? "from-accent/30" : "from-secondary",
-              )}
-            />
-            <div className="space-y-1 p-1.5">
-              <span className="block h-1 w-full rounded-full bg-muted" />
-              <span className="block h-1 w-2/3 rounded-full bg-muted/70" />
-            </div>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  "03": {
-    icon: <LeadsIcon className="h-5 w-5" />,
-    tint: "from-success/15 to-success/5",
-    preview: (
-      <div className="flex flex-col gap-1.5" aria-hidden>
-        {[
-          { name: "New enquiry", time: "2m ago" },
-          { name: "Viewing booked", time: "14m ago" },
-        ].map((item) => (
-          <div
-            key={item.name}
-            className="flex items-center justify-between rounded-lg border border-border/50 bg-background px-2.5 py-1.5"
-          >
-            <span className="text-[10px] font-medium text-foreground">{item.name}</span>
-            <span className="text-[9px] text-muted-foreground">{item.time}</span>
-          </div>
-        ))}
-      </div>
-    ),
-  },
+const serviceIcons: Record<(typeof services)[number]["icon"], IconComponent> = {
+  sites: GlobeIcon,
+  listings: ListingsIcon,
+  leads: LeadsIcon,
+  agents: AgentsIcon,
+  analytics: AnalyticsIcon,
+  whitelabel: BuildingIcon,
 };
 
-function StepsGrid() {
-  const reduceMotion = useReducedMotion();
-
+function ArrowUpRightIcon({ className }: { className?: string }) {
   return (
-    <div className="relative">
-      <div
-        aria-hidden
-        className="absolute left-[16.5%] right-[16.5%] top-[4.25rem] hidden h-px bg-gradient-to-r from-transparent via-border to-transparent md:block"
-      />
-      <div className="grid gap-5 md:grid-cols-3 md:gap-6">
-        {steps.map((step, i) => {
-          const meta = stepMeta[step.n];
-          return (
-            <motion.article
-              key={step.n}
-              custom={i}
-              variants={reveal}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-6% 0px" }}
-              {...(!reduceMotion ? { whileHover: { y: -6 } } : {})}
-              transition={{ duration: 0.25, ease }}
-              className={cn(
-                "group relative flex flex-col overflow-hidden rounded-3xl border border-border/70 bg-card p-6",
-                "hover:border-primary/20",
-              )}
-            >
-              <div
-                aria-hidden
-                className={cn(
-                  "pointer-events-none absolute inset-0 bg-gradient-to-br opacity-80",
-                  meta.tint,
-                )}
-              />
-              <div className="relative flex items-start justify-between">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-primary/10 bg-background/90 text-primary ring-1 ring-primary/5">
-                  {meta.icon}
-                </div>
-                <span className="text-display-md font-bold leading-none text-primary/15">{step.n}</span>
-              </div>
-
-              <div className="relative mt-5 flex flex-col gap-2">
-                <h3 className="text-h4 text-card-foreground">{step.title}</h3>
-                <p className="text-body-sm leading-relaxed text-muted-foreground">{step.body}</p>
-              </div>
-
-              <div className="relative mt-5 rounded-xl border border-border/50 bg-background/80 p-3 backdrop-blur-sm">
-                {meta.preview}
-              </div>
-
-              {i < steps.length - 1 ? (
-                <ArrowRightIcon
-                  className="absolute -right-3 top-1/2 hidden h-5 w-5 -translate-y-1/2 text-border md:block lg:-right-5"
-                  aria-hidden
-                />
-              ) : null}
-            </motion.article>
-          );
-        })}
-      </div>
-    </div>
+    <svg
+      aria-hidden
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M7 17L17 7M17 7H8M17 7V16" />
+    </svg>
   );
 }
 
-/** How it works — three steps. */
-export function Steps() {
+function ServiceCard({
+  service,
+  index,
+}: {
+  service: (typeof services)[number];
+  index: number;
+}) {
+  const reduceMotion = useReducedMotion();
+  const Icon: ComponentType<{ className?: string }> = serviceIcons[service.icon];
+
   return (
-    <section className="border-y border-border bg-secondary/30 py-24 sm:py-28">
-      <Container className="flex flex-col gap-12">
-        <SectionHeading
-          eyebrow="How it works"
-          title="Live in three steps"
-          description="From blank canvas to live listings — most agencies are up and running in a single weekend."
-        />
-        <StepsGrid />
+    <motion.article
+      custom={index}
+      variants={reveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-8% 0px" }}
+      {...(!reduceMotion ? { whileHover: { y: -4 } } : {})}
+      transition={{ duration: 0.3, ease }}
+      className="group relative rounded-[28px] bg-card border border-border p-7 sm:p-8"
+    >
+      <div className="flex items-start justify-between">
+        <Icon className="h-8 w-8 text-foreground" />
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-foreground text-background transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-105">
+          <ArrowUpRightIcon className="h-5 w-5" />
+        </span>
+      </div>
+
+      <h3 className="mt-12 text-h3 font-semibold leading-tight tracking-tight text-card-foreground">
+        {service.title}
+      </h3>
+      <p className="mt-4 text-body-md leading-relaxed text-muted-foreground">
+        {service.description}
+      </p>
+    </motion.article>
+  );
+}
+
+/** What we offer — staggered services grid with line icons + corner actions. */
+export function Steps() {
+  // Split into three columns so we can cascade them on desktop.
+  const columns = [services.slice(0, 2), services.slice(2, 4), services.slice(4, 6)];
+
+  return (
+    <section className="py-20 sm:py-28">
+      <Container className="flex flex-col gap-14 lg:gap-16">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
+          <span className="inline-flex w-fit rounded-full border border-accent/50 bg-background/40 px-5 py-2.5 text-caption font-semibold uppercase tracking-[0.14em] text-foreground">
+            What we offer
+          </span>
+          <h2 className="max-w-2xl text-balance text-display-md font-bold leading-tight tracking-tight text-foreground sm:text-display-lg lg:text-right">
+            Everything your agency needs to sell more property
+          </h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3 md:gap-7">
+          {columns.map((col, ci) => (
+            <div
+              key={ci}
+              className={cn(
+                "flex flex-col gap-6 md:gap-7",
+                ci === 1 && "md:mt-16",
+                ci === 2 && "md:mt-32",
+              )}
+            >
+              {col.map((service, i) => (
+                <ServiceCard key={service.title} service={service} index={ci * 2 + i} />
+              ))}
+            </div>
+          ))}
+        </div>
       </Container>
     </section>
   );

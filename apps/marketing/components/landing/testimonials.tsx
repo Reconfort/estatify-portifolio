@@ -66,7 +66,7 @@ function SpinningEstateBadge() {
           sizes="(max-width: 640px) 176px, 208px"
           className="object-cover"
         />
-        <div className="absolute inset-x-0 bottom-0 flex justify-center bg-linear-to-t from-black/50 to-transparent pb-2 pt-6">
+        <div className="absolute inset-x-0 bottom-0 flex justify-center bg-neutral-950/45 pb-2 pt-6">
           <QuoteMark className="h-5 w-5 text-white sm:h-6 sm:w-6" />
         </div>
       </div>

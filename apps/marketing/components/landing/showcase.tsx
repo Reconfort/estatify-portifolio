@@ -52,7 +52,7 @@ function ShowcaseGrid() {
                 className="object-cover"
               />
             </motion.div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
+            <div className="absolute inset-0 bg-neutral-950/40" />
             <div className="absolute left-4 top-4">
               <Badge variant="accent" className="bg-white/90 text-sm">
                 {property.tag}
