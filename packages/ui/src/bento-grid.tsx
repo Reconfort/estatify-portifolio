@@ -17,7 +17,7 @@ export function BentoGrid({ className, ...props }: React.HTMLAttributes<HTMLDivE
   );
 }
 
-interface BentoCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface BentoCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   icon?: React.ReactNode;
   title: React.ReactNode;
   description?: React.ReactNode;

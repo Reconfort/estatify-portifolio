@@ -14,7 +14,8 @@
     "@estatify/utils": "*",
     "class-variance-authority": "^0.7.1",
     "lucide-react": "^0.460.0",
-    "motion": "^12.0.0"
+    "motion": "^12.0.0",
+    "react-hook-form": "^7.54.0"
   },
   "peerDependencies": {
     "react": "^19",

@@ -22,6 +22,7 @@ export {
   ArrowRight as ArrowRightIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
+  ChevronDown as ChevronDownIcon,
   Quote as QuoteIcon,
   Menu as MenuIcon,
   X as CloseIcon,

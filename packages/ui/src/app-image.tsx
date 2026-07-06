@@ -23,7 +23,7 @@ export function AppImage({
   fallbackSrc,
   onLoad,
   onError,
-  priority,
+  priority = false,
   alt,
   ...props
 }: AppImageProps) {

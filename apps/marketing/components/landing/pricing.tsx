@@ -3,8 +3,9 @@
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@estatify/utils";
 import { ArrowRightIcon, CheckIcon, SparkleIcon } from "@estatify/ui/icons";
-import { Badge, Button, Container, SectionHeading } from "@estatify/ui";
+import { Badge, Button, Container } from "@estatify/ui";
 import { pricing } from "@/components/landing-data";
+import { SectionHeader } from "./section-header";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -145,7 +146,7 @@ export function Pricing() {
   return (
     <section id="pricing" className="py-24 sm:py-28">
       <Container className="flex flex-col gap-12">
-        <SectionHeading
+        <SectionHeader
           eyebrow="Pricing"
           title="Simple plans that scale with you"
           description="Start free. Upgrade when you grow. Cancel anytime."

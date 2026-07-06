@@ -42,34 +42,52 @@ export function Badge({
   );
 }
 
-interface SectionHeadingProps extends React.HTMLAttributes<HTMLDivElement> {
+interface SectionHeadingProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   eyebrow?: string;
   title: React.ReactNode;
   description?: React.ReactNode;
   align?: "left" | "center";
+  /** `dark` for headers on dark panels (e.g. enquiry band). */
+  tone?: "light" | "dark";
 }
 
-/** Reusable section header block. */
+/** Reusable section header block — eyebrow, title, optional description. */
 export function SectionHeading({
   eyebrow,
   title,
   description,
   align = "center",
+  tone = "light",
   className,
   ...props
 }: SectionHeadingProps) {
+  const isDark = tone === "dark";
+
   return (
     <div
       className={cn(
-        "flex flex-col gap-4",
-        align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl",
+        "flex flex-col gap-4 sm:gap-5",
+        align === "center" ? "mx-auto max-w-3xl items-center text-center" : "max-w-2xl",
         className,
       )}
       {...props}
     >
-      {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-      <h2 className="text-h1 text-foreground sm:text-display-md">{title}</h2>
-      {description ? <p className="text-body-lg text-muted-foreground">{description}</p> : null}
+      {eyebrow ? (
+        <Eyebrow className={cn(isDark && "text-accent")}>{eyebrow}</Eyebrow>
+      ) : null}
+      <h2
+        className={cn(
+          "text-balance text-h1 sm:text-display-md",
+          isDark ? "text-white" : "text-foreground",
+        )}
+      >
+        {title}
+      </h2>
+      {description ? (
+        <p className={cn("text-body-lg", isDark ? "text-white/70" : "text-muted-foreground")}>
+          {description}
+        </p>
+      ) : null}
     </div>
   );
 }

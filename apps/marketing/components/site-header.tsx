@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Button, Container } from "@estatify/ui";
+import Link from "next/link";
+import { buttonVariants, Container } from "@estatify/ui";
 import { cn } from "@estatify/utils";
 import { nav } from "@/components/landing-data";
+import { SiteLogo } from "@/components/site-logo";
 
 /**
  * Marketing header. Transparent with white text while over the hero photo,
@@ -30,13 +32,8 @@ export function SiteHeader() {
       )}
     >
       <Container className="flex h-16 items-center justify-between">
-        <a href="#" className="flex items-center gap-2" aria-label="Estatify home">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-accent-foreground">
-            <span className="text-body-md font-bold">E</span>
-          </span>
-          <span className={cn("text-h5 font-semibold", solid ? "text-foreground" : "text-white")}>
-            Estatify
-          </span>
+        <a href="#" aria-label="Estatify home">
+          <SiteLogo inverted={!solid} />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
@@ -57,20 +54,18 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          {solid ? (
-            <>
-              <Button variant="ghost" size="sm">
-                Sign in
-              </Button>
-              <Button size="sm" variant="accent">
-                Create free account
-              </Button>
-            </>
-          ) : (
-            <Button size="sm" variant="accent">
-              Create free account
-            </Button>
-          )}
+          <Link
+            href="/signin"
+            className={cn(
+              "text-body-sm font-medium transition-colors",
+              solid ? "text-muted-foreground hover:text-foreground" : "text-white/80 hover:text-white",
+            )}
+          >
+            Sign in
+          </Link>
+          <Link href="/signup" className={buttonVariants({ variant: "accent", size: "sm" })}>
+            Create free account
+          </Link>
         </div>
 
         <button
@@ -102,12 +97,20 @@ export function SiteHeader() {
               </a>
             ))}
             <div className="mt-2 flex gap-3">
-              <Button variant="outline" size="sm" className="flex-1">
+              <Link
+                href="/signin"
+                onClick={() => setOpen(false)}
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1")}
+              >
                 Sign in
-              </Button>
-              <Button size="sm" variant="accent" className="flex-1">
+              </Link>
+              <Link
+                href="/signup"
+                onClick={() => setOpen(false)}
+                className={cn(buttonVariants({ variant: "accent", size: "sm" }), "flex-1")}
+              >
                 Create free account
-              </Button>
+              </Link>
             </div>
           </Container>
         </div>

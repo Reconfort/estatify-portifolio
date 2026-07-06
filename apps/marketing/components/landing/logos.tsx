@@ -1,25 +1,25 @@
 import { Container, Marquee } from "@estatify/ui";
-import { logos } from "@/components/landing-data";
+import { Reveal } from "./reveal";
+import { logos, logosMarquee } from "@/components/landing-data";
+import { SectionMarquee } from "./sections";
 
-/** Logos marquee — social proof. */
+/** Logos marquee — social proof, immediately after the hero. */
 export function Logos() {
   return (
-    <section className="border-y border-border bg-secondary/30 pb-12 pt-[clamp(12rem,30vw,17rem)]">
+    <section className="rounded-t-3xl bg-background py-12">
       <Container className="flex flex-col gap-8">
-        <p className="text-center text-body-sm text-muted-foreground">
-          Trusted by growing agencies across the continent
-        </p>
-        <Marquee speed={34}>
-          {logos.map((name) => (
-            <div
-              key={name}
-              className="flex h-12 items-center rounded-lg border border-border bg-card px-6 text-body-sm font-semibold text-muted-foreground"
-            >
-              {name}
-            </div>
-          ))}
-        </Marquee>
+        <Reveal y={12}>
+          <p className="text-center text-body-sm text-muted-foreground">
+            Trusted by growing agencies across the continent
+          </p>
+        </Reveal>
       </Container>
+      <SectionMarquee
+        className="border-none bg-transparent pt-12"
+        label={logosMarquee.label}
+        separatorIcon={logosMarquee.separatorIcon}
+        separatorIconClassName="opacity-50 grayscale"
+      />
     </section>
   );
 }

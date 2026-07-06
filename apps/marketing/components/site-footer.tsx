@@ -1,4 +1,5 @@
 import { Container } from "@estatify/ui";
+import { SiteLogo } from "@/components/site-logo";
 
 const columns = [
   { title: "Product", links: ["Features", "Showcase", "Pricing", "Templates"] },
@@ -10,16 +11,12 @@ const columns = [
 /** Marketing footer. */
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-background py-16">
+    // relative z-10 keeps the footer above the pinned hero curtain.
+    <footer className="relative z-10 border-t border-border bg-background py-16">
       <Container className="flex flex-col gap-12">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-6">
           <div className="flex flex-col gap-3 lg:col-span-2">
-            <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-accent-foreground">
-                <span className="text-body-md font-bold">E</span>
-              </span>
-              <span className="text-h5 font-semibold text-foreground">Estatify</span>
-            </div>
+            <SiteLogo />
             <p className="max-w-xs text-body-sm text-muted-foreground">
               Branded property platforms for African real estate agencies.
             </p>

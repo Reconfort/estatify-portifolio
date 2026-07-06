@@ -33,6 +33,7 @@
       "@estatify/types": ["packages/types/src/index.ts"],
       "@estatify/config": ["packages/config/src/index.ts"],
       "@estatify/utils": ["packages/utils/src/index.ts"],
+      "@estatify/schemas": ["packages/schemas/src/index.ts"],
       "@estatify/database": ["packages/database/src/index.ts"],
       "@estatify/feature-property": ["packages/feature-property/src/index.ts"],
       "@estatify/feature-lead": ["packages/feature-lead/src/index.ts"],

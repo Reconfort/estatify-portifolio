@@ -4,6 +4,8 @@
  * All copy is original to Estatify.
  */
 
+export const brandLogo = "/assets/logo-gp.svg";
+
 export const nav = {
   links: [
     { label: "Features", href: "#features" },
@@ -34,6 +36,11 @@ export const logos = [
   "Atlas Residences",
   "Baobab Realty",
 ] as const;
+
+export const logosMarquee = {
+  label: "How it works",
+  separatorIcon: brandLogo,
+} as const;
 
 export const features = [
   {
@@ -208,3 +215,170 @@ export const testimonials = [
     avatar: "/assets/bento/agent-4.jpg",
   },
 ] as const;
+
+/* ------------------------------------------------------------------------ */
+/* Spaciaz-inspired landing (structure-only homage; every word is ours).     */
+/* ------------------------------------------------------------------------ */
+
+export const heroV2 = {
+  eyebrow: "Website templates for real estate professionals",
+  title: "Pick a template. Launch your agency online.",
+  statement:
+    "Estatify is the template marketplace for real estate: choose a site design you love, subscribe, make it yours — brand, listings, domain — and publish from one dashboard. No developers, no code.",
+  cta: { label: "Browse templates", href: "#templates" },
+  secondaryCta: { label: "See how it works", href: "#how-it-works" },
+  pillars: [
+    {
+      title: "Designer-grade templates",
+      body: "Every template is crafted for real estate — listings, search, agent pages — and looks agency-built out of the box.",
+    },
+    {
+      title: "Customize without code",
+      body: "Swap in your logo, colors, and properties from a simple dashboard. What you see is what goes live.",
+    },
+    {
+      title: "Publish and grow",
+      body: "Go live on your own domain in a day. Every enquiry lands in your built-in lead pipeline.",
+    },
+  ],
+} as const;
+
+export const howItWorks = {
+  marquee: "How it works",
+  title: "From template to live site in four steps",
+  description: "No agencies to hire, no code to write. If you can pick a design, you can launch.",
+  image: "/assets/showcase/city-heights.jpg",
+  imageAlt: "Modern residential tower — the kind of portfolio Estatify templates showcase",
+  footer: {
+    text: "Everything you need to launch a professional agency site.",
+    label: "View all templates",
+    href: "#templates",
+  },
+  steps: [
+    {
+      n: "01",
+      title: "Browse the gallery",
+      body: "Explore templates built specifically for real estate — each one a complete, working site you can preview live.",
+    },
+    {
+      n: "02",
+      title: "Subscribe to claim it",
+      body: "Pick a plan and the template becomes your site. Cancel anytime, no lock-in.",
+    },
+    {
+      n: "03",
+      title: "Make it yours",
+      body: "Add your logo, colors, agents, and listings from your dashboard. Everything updates live.",
+    },
+    {
+      n: "04",
+      title: "Publish and sell",
+      body: "Launch on your own domain. Leads, analytics, and updates all run from the same dashboard.",
+    },
+  ],
+} as const;
+
+export const templatesV2 = {
+  marquee: "The template gallery",
+  title: "Templates that make agencies look established",
+  description: "Preview any template as a live site — then claim it as your own.",
+  ctaLabel: "Preview template",
+  items: [
+    {
+      name: "Coastal",
+      tagline: "For villa & beachfront specialists",
+      category: "Luxury sales",
+      image: "/assets/showcase/coastal-villas.jpg",
+      href: "#",
+    },
+    {
+      name: "Metro",
+      tagline: "For city rentals & apartments",
+      category: "Urban rentals",
+      image: "/assets/showcase/city-heights.jpg",
+      href: "#",
+    },
+    {
+      name: "Terra",
+      tagline: "For residential estates & land",
+      category: "Residential",
+      image: "/assets/showcase/garden-estate.jpg",
+      href: "#",
+    },
+  ],
+} as const;
+
+export const about = {
+  marquee: "Who we are",
+  title: "The operating system for ambitious real estate agencies",
+  items: [
+    {
+      label: "Our vision",
+      body: "Every agency — from a solo agent in Kigali to a multi-branch franchise in Lagos — deserves software that looks and works world-class.",
+    },
+    {
+      label: "Our mission",
+      body: "Remove the technical barrier between agencies and their clients: one platform for sites, listings, leads, and growth.",
+    },
+  ],
+  stats: [
+    { label: "Agencies onboard", value: 240, suffix: "+", eyebrow: "trusted network" },
+    { label: "Listings published", value: 12000, suffix: "+", eyebrow: "market reach" },
+    { label: "Leads delivered", value: 85000, suffix: "+", eyebrow: "real results" },
+  ],
+} as const;
+
+export const servicesV2 = {
+  marquee: "What we offer",
+  title: "Everything an agency needs to win online",
+  closing: "One subscription. Every tool your agency needs.",
+  ctaLabel: "View all features",
+  items: [
+    { title: "Branded Websites", image: "/assets/bento/modern-home.jpg", href: "#" },
+    { title: "Listing Management", image: "/assets/bento/listings-home.jpg", href: "#" },
+    { title: "Lead Pipeline", image: "/assets/bento/listings-agent.jpg", href: "#" },
+    { title: "Agent Tools", image: "/assets/bento/agent-1.jpg", href: "#" },
+    { title: "Analytics & Insights", image: "/assets/bento/analytics-team.jpg", href: "#" },
+  ],
+} as const;
+
+export const showcaseV2 = {
+  marquee: "Featured on Estatify",
+  title: "Real sites. Real listings. Real agencies.",
+  rating: { score: "4.9", note: "Rated by agencies across 12 markets" },
+  avatars: [
+    "/assets/bento/agent-1.jpg",
+    "/assets/bento/agent-2.jpg",
+    "/assets/bento/agent-3.jpg",
+  ],
+} as const;
+
+export const commitment = {
+  marquee: "Our commitment",
+  title: "What makes Estatify different",
+  description:
+    "It's not just software — it's the difference between an agency that has a website and an agency that wins with one.",
+  values: [
+    {
+      title: "Performance first",
+      body: "Mobile-first, fast on low bandwidth, and optimized for the markets you actually sell in.",
+    },
+    {
+      title: "Built with agencies",
+      body: "Our roadmap comes from working agents — not boardroom guesses.",
+    },
+    {
+      title: "Your brand, not ours",
+      body: "White-label to the last pixel. Your clients see your agency, never our logo.",
+    },
+  ],
+  image: "/assets/bento/analytics-team.jpg",
+} as const;
+
+export const enquiry = {
+  marquee: "Quick enquiry",
+  title: "Talk to a specialist about your agency's next step",
+  note: "We reply within one business day. Required fields are marked *",
+  topics: ["Launching a new agency site", "Migrating an existing site", "Multi-branch / franchise setup", "Partnership & resellers"],
+  cta: "Request a callback",
+} as const;

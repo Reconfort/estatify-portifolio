@@ -4,8 +4,9 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@estatify/utils";
 import { ArrowRightIcon, LocationIcon } from "@estatify/ui/icons";
-import { Badge, Container, SectionHeading } from "@estatify/ui";
+import { Badge, Container } from "@estatify/ui";
 import { showcase } from "@/components/landing-data";
+import { SectionHeader } from "./section-header";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -87,7 +88,7 @@ export function Showcase() {
   return (
     <section id="showcase" className="py-24 sm:py-28">
       <Container className="flex flex-col gap-12">
-        <SectionHeading
+        <SectionHeader
           eyebrow="Showcase"
           title="Listings that look the part"
           description="Every property gets a premium, mobile-first card — automatically themed to your brand."
