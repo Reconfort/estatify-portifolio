@@ -7,9 +7,8 @@ import { useSession } from "@estatify/auth";
 import { useLogin } from "@estatify/api-client";
 import { useZodForm } from "@estatify/hooks";
 import { loginSchema, type LoginInput } from "@estatify/types";
-import { Button, Field } from "@estatify/ui";
-import { Compass, AlertCircle, KeyRound } from "lucide-react";
-import { VisitEstatifyLink } from "../../../components/visit-estatify-link";
+import { AuthForm, Button, Field } from "@estatify/ui";
+import { cn } from "@estatify/utils";
 
 const PLATFORM_URL = (process.env.NEXT_PUBLIC_PLATFORM_URL || "http://localhost:3100").replace(
   /\/$/,
@@ -21,6 +20,7 @@ export default function SignInPage() {
   const session = useSession();
   const loginMut = useLogin();
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
+  const [remember, setRemember] = React.useState(true);
 
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
@@ -37,6 +37,7 @@ export default function SignInPage() {
     try {
       const tokens = await loginMut.mutateAsync({ ...data, portal: "workspace" });
       session.setAuth(tokens);
+      void remember;
       window.location.assign(callbackUrl.startsWith("/") ? callbackUrl : "/dashboard");
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Invalid email or password.";
@@ -45,101 +46,83 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-background px-4 py-12">
-      <div className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-brand-500/5 blur-3xl" />
-      <div className="absolute right-1/4 bottom-1/4 h-80 w-80 rounded-full bg-lime-400/5 blur-3xl" />
-
-      <div className="z-10 w-full max-w-md space-y-8">
-        <div className="flex flex-col items-center space-y-3 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-brand-600 to-lime-400 shadow-md">
-            <Compass className="h-6 w-6 font-bold text-neutral-950" />
-          </div>
-          <h1 className="text-h1 font-bold tracking-tight text-foreground">Sign in to Workspace</h1>
-          <p className="text-body-sm text-muted-foreground">
-            Agency owners and team members only. Platform staff use a separate portal.
-          </p>
-        </div>
-
-        <div className="relative rounded-xl border border-border bg-card p-8 shadow-md backdrop-blur-md">
-          {errorMsg && (
-            <div className="mb-6 flex flex-col gap-2 rounded-lg border border-destructive/20 bg-destructive/10 p-3.5 text-caption font-medium text-destructive">
-              <div className="flex items-start gap-2.5">
-                <AlertCircle className="mt-0.5 h-4.5 w-4.5 shrink-0" />
-                <span>{errorMsg}</span>
-              </div>
-              {errorMsg.toLowerCase().includes("platform") && (
-                <a
-                  href={`${PLATFORM_URL}/login`}
-                  className="pl-7 font-semibold underline-offset-2 hover:underline"
-                >
-                  Go to Platform sign-in
-                </a>
-              )}
-            </div>
-          )}
-
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-            <input type="hidden" {...form.register("portal")} value="workspace" />
-            <Field
-              control={form.control}
-              name="email"
-              type="email"
-              label="Email Address"
-              placeholder="you@agency.com"
-              disabled={loginMut.isPending}
-            />
-
-            <div className="space-y-1">
-              <div className="flex items-center justify-between">
-                <label className="text-label text-foreground">Password</label>
-                <Link
-                  href="/forgot-password"
-                  className="text-caption font-semibold text-brand-600 hover:underline dark:text-brand-400"
-                >
-                  Forgot password?
-                </Link>
-              </div>
-              <Field
-                control={form.control}
-                name="password"
-                type="password"
-                label=""
-                placeholder="••••••••••••"
-                disabled={loginMut.isPending}
-              />
-            </div>
-
-            <Button
-              type="submit"
-              className="mt-2 flex h-11 w-full items-center justify-center gap-2"
-              disabled={loginMut.isPending}
-            >
-              {loginMut.isPending ? (
-                <span>Signing in...</span>
-              ) : (
-                <>
-                  <KeyRound className="h-4.5 w-4.5" />
-                  <span>Sign In</span>
-                </>
-              )}
-            </Button>
-          </form>
-        </div>
-
-        <p className="text-center text-body-sm text-muted-foreground">
-          Don&apos;t have an agency workspace yet?{" "}
+    <AuthForm
+      title="Welcome back"
+      description="Welcome back! Please enter your details."
+      footer={
+        <>
+          Don&apos;t have an account?{" "}
           <Link
             href="/sign-up"
-            className="font-semibold text-brand-600 hover:underline dark:text-brand-400"
+            className="font-semibold text-foreground underline-offset-4 hover:underline"
           >
-            Create an account
+            Sign up
           </Link>
-        </p>
+        </>
+      }
+    >
+      {errorMsg ? (
+        <div className="mb-5 rounded-lg border border-destructive/20 bg-destructive/10 px-3.5 py-3 text-caption font-medium text-destructive">
+          <p>{errorMsg}</p>
+          {errorMsg.toLowerCase().includes("platform") ? (
+            <a
+              href={`${PLATFORM_URL}/login`}
+              className="mt-1 inline-block font-semibold underline-offset-2 hover:underline"
+            >
+              Go to Platform sign-in
+            </a>
+          ) : null}
+        </div>
+      ) : null}
 
-        <p className="text-center">
-          <VisitEstatifyLink variant="home" />
-        </p>
-      </div>
-    </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        <input type="hidden" {...form.register("portal")} value="workspace" />
+
+        <Field
+          control={form.control}
+          name="email"
+          type="email"
+          label="Email"
+          placeholder="Enter your email"
+          autoComplete="email"
+          disabled={loginMut.isPending}
+        />
+
+        <Field
+          control={form.control}
+          name="password"
+          type="password"
+          label="Password"
+          placeholder="••••••••"
+          autoComplete="current-password"
+          disabled={loginMut.isPending}
+        />
+
+        <div className="flex items-center justify-between gap-3">
+          <label className="flex cursor-pointer items-center gap-2.5 text-body-sm text-foreground">
+            <input
+              type="checkbox"
+              checked={remember}
+              onChange={(e) => setRemember(e.target.checked)}
+              className={cn(
+                "size-4 rounded border-border text-foreground accent-foreground",
+                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+              )}
+            />
+            Remember for 30 days
+          </label>
+          <Link
+            href="/forgot-password"
+            className="text-body-sm font-semibold text-foreground underline-offset-4 hover:underline"
+          >
+            Forgot password
+          </Link>
+        </div>
+
+        <Button type="submit" size="lg" className="w-full" disabled={loginMut.isPending}>
+          {loginMut.isPending ? "Signing in…" : "Sign in"}
+        </Button>
+      </form>
+    </AuthForm>
   );
 }

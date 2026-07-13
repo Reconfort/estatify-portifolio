@@ -6,8 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { useResetPassword } from "@estatify/api-client";
 import { useZodForm } from "@estatify/hooks";
 import { resetPasswordSchema, type ResetPasswordInput } from "@estatify/types";
-import { Button, Field } from "@estatify/ui";
-import { Compass, KeyRound, AlertCircle, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { AuthForm, Button, Field } from "@estatify/ui";
+import { CheckIcon } from "@estatify/ui/icons";
 
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
@@ -19,16 +19,13 @@ export default function ResetPasswordPage() {
 
   const form = useZodForm(resetPasswordSchema, {
     defaultValues: {
-      token: token,
+      token,
       password: "",
     },
   });
 
-  // Re-sync token if searchParams update
   React.useEffect(() => {
-    if (token) {
-      form.setValue("token", token);
-    }
+    if (token) form.setValue("token", token);
   }, [token, form]);
 
   const onSubmit = async (data: ResetPasswordInput) => {
@@ -49,113 +46,82 @@ export default function ResetPasswordPage() {
     }
   };
 
+  if (!token) {
+    return (
+      <AuthForm
+        title="Missing token"
+        description="No password reset token was found. Request a new link from the forgot password page."
+        footer={
+          <Link
+            href="/forgot-password"
+            className="font-semibold text-foreground underline-offset-4 hover:underline"
+          >
+            Request reset link
+          </Link>
+        }
+      >
+        <div />
+      </AuthForm>
+    );
+  }
+
+  if (success) {
+    return (
+      <AuthForm
+        title="Password updated"
+        description="Your password has been updated. Other sessions have been signed out."
+        footer={
+          <Link href="/sign-in">
+            <Button size="lg" className="w-full">
+              Sign in
+            </Button>
+          </Link>
+        }
+      >
+        <div className="flex size-12 items-center justify-center rounded-full bg-lime-500/15 text-lime-700">
+          <CheckIcon className="size-6" strokeWidth={2.5} />
+        </div>
+      </AuthForm>
+    );
+  }
+
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-4 py-12 relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-brand-500/5 blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 h-80 w-80 rounded-full bg-lime-400/5 blur-3xl"></div>
-
-      <div className="w-full max-w-md space-y-8 z-10">
-        <div className="flex flex-col items-center text-center space-y-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-brand-600 to-lime-400 shadow-md">
-            <Compass className="h-6 w-6 text-neutral-950 font-bold" />
+    <AuthForm
+      title="Set new password"
+      description="Choose a strong password for your account."
+      footer={
+        <Link
+          href="/sign-in"
+          className="font-semibold text-foreground underline-offset-4 hover:underline"
+        >
+          Back to sign in
+        </Link>
+      }
+    >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        {errorMsg ? (
+          <div className="rounded-lg border border-destructive/20 bg-destructive/10 px-3.5 py-3 text-caption font-medium text-destructive">
+            {errorMsg}
           </div>
-          <h1 className="text-h1 font-bold tracking-tight text-foreground">Set New Password</h1>
-          <p className="text-body-sm text-muted-foreground">
-            Choose a strong, secure new password for your account.
-          </p>
-        </div>
+        ) : null}
 
-        <div className="rounded-xl border border-border bg-card p-8 shadow-md relative backdrop-blur-md">
-          {!token && (
-            <div className="space-y-4 text-center py-4">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
-                <AlertCircle className="h-6 w-6" />
-              </div>
-              <h3 className="text-h4 font-bold text-foreground">Missing Token</h3>
-              <p className="text-body-sm text-muted-foreground">
-                No password reset token was detected in the URL. Please click the link in your email
-                or request a new one.
-              </p>
-              <div className="pt-2">
-                <Link href="/forgot-password">
-                  <Button variant="outline" className="w-full h-11">
-                    Request Reset Link
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          )}
+        <input type="hidden" {...form.register("token")} />
 
-          {token && success && (
-            <div className="space-y-5 text-center py-4">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-50 text-brand-600 dark:bg-brand-950/50 dark:text-brand-400">
-                <CheckCircle2 className="h-6 w-6" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-h4 font-bold text-foreground">Password updated</h3>
-                <p className="text-body-sm text-muted-foreground">
-                  Your password has been successfully updated. All other active sessions have been
-                  logged out.
-                </p>
-              </div>
-              <div className="pt-4">
-                <Link href="/sign-in">
-                  <Button className="w-full h-11">Sign In</Button>
-                </Link>
-              </div>
-            </div>
-          )}
+        <Field
+          control={form.control}
+          name="password"
+          type="password"
+          label="New password"
+          placeholder="••••••••"
+          autoComplete="new-password"
+          disabled={resetMut.isPending}
+          hint="Between 12 and 128 characters."
+        />
 
-          {token && !success && (
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-              {errorMsg && (
-                <div className="flex items-start gap-2.5 rounded-lg bg-destructive/10 border border-destructive/20 p-3.5 text-caption font-medium text-destructive">
-                  <AlertCircle className="h-4.5 w-4.5 shrink-0 mt-0.5" />
-                  <span>{errorMsg}</span>
-                </div>
-              )}
-
-              {/* Hidden token field for form validation */}
-              <input type="hidden" {...form.register("token")} />
-
-              <Field
-                control={form.control}
-                name="password"
-                type="password"
-                label="New Password"
-                placeholder="••••••••••••"
-                disabled={resetMut.isPending}
-                hint="Password must be between 12 and 128 characters."
-              />
-
-              <Button
-                type="submit"
-                className="w-full h-11 flex items-center justify-center gap-2 mt-2"
-                disabled={resetMut.isPending}
-              >
-                {resetMut.isPending ? (
-                  <span>Resetting...</span>
-                ) : (
-                  <>
-                    <KeyRound className="h-4.5 w-4.5" />
-                    <span>Update Password</span>
-                  </>
-                )}
-              </Button>
-
-              <div className="text-center pt-2">
-                <Link
-                  href="/sign-in"
-                  className="inline-flex items-center gap-2 text-body-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to login
-                </Link>
-              </div>
-            </form>
-          )}
-        </div>
-      </div>
-    </div>
+        <Button type="submit" size="lg" className="w-full" disabled={resetMut.isPending}>
+          {resetMut.isPending ? "Updating…" : "Update password"}
+        </Button>
+      </form>
+    </AuthForm>
   );
 }

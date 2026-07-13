@@ -44,7 +44,7 @@ function BentoShell({
       viewport={{ once: true, margin: "-8% 0px" }}
       whileHover={{ y: -4, transition: { duration: 0.25, ease } }}
       className={cn(
-        "group/bento relative overflow-hidden rounded-3xl border border-border/60 bg-card",
+        "group/bento relative overflow-hidden rounded-lg border border-border/60 bg-card",
         "hover:border-primary/25",
         className,
       )}
@@ -80,7 +80,7 @@ function ListingsBentoCard() {
       <h3 className="text-h4 text-card-foreground">{title}</h3>
       <p className="mt-2 text-body-sm leading-relaxed text-muted-foreground">{description}</p>
 
-      <div className="relative mt-5 min-h-44 flex-1 overflow-hidden rounded-2xl ring-1 ring-border/50">
+      <div className="relative mt-5 min-h-44 flex-1 overflow-hidden rounded-lg ring-1 ring-border/50">
         <motion.div
           className="absolute inset-0"
           {...(!reduceMotion ? { whileHover: { scale: 1.04 } } : {})}
@@ -126,7 +126,7 @@ function ListingsBentoCard() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.45, duration: 0.5 }}
-        className="mt-4 flex items-start gap-2 rounded-xl border border-border/60 bg-secondary/30 px-3 py-2.5"
+        className="mt-4 flex items-start gap-2 rounded-lg border border-border/60 bg-secondary/30 px-3 py-2.5"
       >
         <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
         <p className="text-caption leading-relaxed text-muted-foreground">
@@ -203,7 +203,13 @@ function AgentsBentoCard() {
           className="absolute left-1/2 top-[46%] z-10 h-16 w-16 -translate-x-1/2 -translate-y-1/2"
         >
           <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-card ring-2 ring-primary/25">
-            <Image src="/assets/bento/agent-1.jpg" alt="" fill sizes="64px" className="object-cover" />
+            <Image
+              src="/assets/bento/agent-1.jpg"
+              alt=""
+              fill
+              sizes="64px"
+              className="object-cover"
+            />
           </div>
           {!reduceMotion ? (
             <motion.span
@@ -241,7 +247,10 @@ function SitesSearchBentoCard() {
   const { title, description } = featureCopy.sites;
 
   return (
-    <BentoShell index={2} className="flex min-h-112 flex-col md:col-start-3 md:row-span-2 md:row-start-1">
+    <BentoShell
+      index={2}
+      className="flex min-h-112 flex-col md:col-start-3 md:row-span-2 md:row-start-1"
+    >
       <div className="flex items-center justify-between border-b border-border/60 bg-muted/20 px-4 py-3">
         <div className="flex items-center gap-2.5" aria-hidden>
           <span className="h-2.5 w-2.5 rounded-full bg-destructive/75" />
@@ -249,7 +258,14 @@ function SitesSearchBentoCard() {
           <span className="h-2.5 w-2.5 rounded-full bg-success/75" />
         </div>
         <div className="flex min-w-0 flex-1 items-center justify-center gap-1.5 px-3">
-          <svg className="h-3 w-3 shrink-0 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+          <svg
+            className="h-3 w-3 shrink-0 text-muted-foreground"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden
+          >
             <rect x="3" y="11" width="18" height="11" rx="2" />
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
@@ -278,8 +294,11 @@ function SitesSearchBentoCard() {
           transition={{ delay: 0.28, duration: 0.5, ease }}
           className="relative w-full  scale-90 -mt-3"
         >
-          <div className="group/search flex items-center gap-2 rounded-xl border border-border/80 bg-background px-4 py-2.5 focus-within:border-primary/30">
-            <SearchIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-focus-within/search:text-primary" aria-hidden />
+          <div className="group/search flex items-center gap-2 rounded-lg border border-border/80 bg-background px-4 py-2.5 focus-within:border-primary/30">
+            <SearchIcon
+              className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-focus-within/search:text-primary"
+              aria-hidden
+            />
             <span className="flex-1 truncate text-left text-body-sm text-muted-foreground">
               {reduceMotion ? (
                 "Search homes, plots, rentals…"
@@ -438,7 +457,7 @@ function AnalyticsBentoCard() {
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.65, ease }}
             whileHover={{ rotate: 0, y: -4 }}
-            className="absolute -right-3 -top-3 h-full w-[88%] rounded-2xl border border-white/25 bg-white/95 p-4 backdrop-blur-sm"
+            className="absolute -right-3 -top-3 h-full w-[88%] rounded-lg border border-white/25 bg-white/95 p-4 backdrop-blur-sm"
           >
             <p className="text-caption font-semibold uppercase tracking-[0.14em] text-primary">
               Portfolio pulse
@@ -468,7 +487,7 @@ function AnalyticsBentoCard() {
             viewport={{ once: true }}
             transition={{ delay: 0.35, duration: 0.55, ease }}
             whileHover={{ scale: 1.02 }}
-            className="absolute bottom-0 left-0 h-40 w-40 overflow-hidden rounded-2xl border-4 border-white sm:h-44 sm:w-44"
+            className="absolute bottom-0 left-0 h-40 w-40 overflow-hidden rounded-lg border-4 border-white sm:h-44 sm:w-44"
           >
             <Image
               src="/assets/bento/analytics-team.jpg"

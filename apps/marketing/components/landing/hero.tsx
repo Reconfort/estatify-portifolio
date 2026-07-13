@@ -126,6 +126,13 @@ export function Hero() {
 
   return (
     <section className="relative isolate overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-20">
+      {/* Ambient light — soft drifting glows behind the hero copy */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <span className="ambient-light absolute -top-24 left-[10%] size-[26rem] rounded-full bg-lime-300/25 blur-3xl sm:size-[30rem]" />
+        <span className="ambient-light-alt absolute top-[28%] right-[6%] size-[22rem] rounded-full bg-emerald-200/20 blur-3xl sm:size-[26rem]" />
+        <span className="ambient-light absolute bottom-[-8rem] left-[38%] size-[24rem] rounded-full bg-lime-200/20 blur-3xl" />
+      </div>
+
       <Container className="flex flex-col items-center text-center">
         <motion.div
           custom={0}

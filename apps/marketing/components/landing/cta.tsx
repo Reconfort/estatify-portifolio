@@ -40,7 +40,7 @@ export function CtaBand() {
     <section className="py-24 sm:py-32">
       <Container>
         <div
-          className="relative overflow-hidden rounded-3xl border border-white/10 px-6 py-20 text-center sm:px-12 sm:py-24 lg:py-28"
+          className="relative overflow-hidden rounded-lg border border-white/10 px-6 py-20 text-center sm:px-12 sm:py-24 lg:py-28"
           style={{ background: "var(--green-950)" }}
         >
           {/* Accent hairline along the top edge. */}

@@ -10,16 +10,44 @@
 
 export const colors = {
   green: {
-    50: "#f0faf4", 100: "#dcf3e5", 200: "#bbe7cd", 300: "#8ad4ac", 400: "#52b883",
-    500: "#2e9d66", 600: "#1e7a4f", 700: "#1a6342", 800: "#184e36", 900: "#14402d", 950: "#0a2419",
+    50: "#f0faf4",
+    100: "#dcf3e5",
+    200: "#bbe7cd",
+    300: "#8ad4ac",
+    400: "#52b883",
+    500: "#2e9d66",
+    600: "#1e7a4f",
+    700: "#1a6342",
+    800: "#184e36",
+    900: "#14402d",
+    950: "#0a2419",
   },
   lime: {
-    50: "#f7fce8", 100: "#ecf9c8", 200: "#daf398", 300: "#c2e95e", 400: "#a4e636",
-    500: "#8bc91f", 600: "#6b9f12", 700: "#517910", 800: "#406013", 900: "#365015", 950: "#1b2c05",
+    50: "#f7fce8",
+    100: "#ecf9c8",
+    200: "#daf398",
+    300: "#c2e95e",
+    400: "#a4e636",
+    500: "#8bc91f",
+    600: "#6b9f12",
+    700: "#517910",
+    800: "#406013",
+    900: "#365015",
+    950: "#1b2c05",
   },
   neutral: {
-    0: "#ffffff", 50: "#f8faf9", 100: "#f1f4f3", 200: "#e4e9e7", 300: "#cfd6d3", 400: "#9ca8a3",
-    500: "#6b7873", 600: "#4d5a55", 700: "#3a4541", 800: "#28302d", 900: "#1a201e", 950: "#0e1211",
+    0: "#ffffff",
+    50: "#f8faf9",
+    100: "#f1f4f3",
+    200: "#e4e9e7",
+    300: "#cfd6d3",
+    400: "#9ca8a3",
+    500: "#6b7873",
+    600: "#4d5a55",
+    700: "#3a4541",
+    800: "#28302d",
+    900: "#1a201e",
+    950: "#0e1211",
   },
   success: { 50: "#ecfdf3", 500: "#22a35a", 600: "#15803d", 700: "#126c34" },
   warning: { 50: "#fffaeb", 400: "#fbbf24", 500: "#f59e0b", 600: "#b45309" },
@@ -38,14 +66,38 @@ export const chartSeries = [
 
 /** 4px base spacing scale (matches Tailwind v4 dynamic spacing). */
 export const spacing = {
-  0: "0px", 1: "0.25rem", 2: "0.5rem", 3: "0.75rem", 4: "1rem", 5: "1.25rem", 6: "1.5rem",
-  8: "2rem", 10: "2.5rem", 12: "3rem", 16: "4rem", 20: "5rem", 24: "6rem", 32: "8rem",
-  40: "10rem", 48: "12rem", 64: "16rem", 80: "20rem", 96: "24rem", 128: "32rem",
+  0: "0px",
+  1: "0.25rem",
+  2: "0.5rem",
+  3: "0.75rem",
+  4: "1rem",
+  5: "1.25rem",
+  6: "1.5rem",
+  8: "2rem",
+  10: "2.5rem",
+  12: "3rem",
+  16: "4rem",
+  20: "5rem",
+  24: "6rem",
+  32: "8rem",
+  40: "10rem",
+  48: "12rem",
+  64: "16rem",
+  80: "20rem",
+  96: "24rem",
+  128: "32rem",
 } as const;
 
+/** xl/2xl/3xl match lg — product max for sections/cards (pills still use full). */
 export const radius = {
-  xs: "0.25rem", sm: "0.375rem", md: "0.5rem", lg: "0.75rem",
-  xl: "1rem", "2xl": "1.5rem", "3xl": "2rem", full: "9999px",
+  xs: "0.25rem",
+  sm: "0.375rem",
+  md: "0.5rem",
+  lg: "0.75rem",
+  xl: "0.75rem",
+  "2xl": "0.75rem",
+  "3xl": "0.75rem",
+  full: "9999px",
 } as const;
 
 export const fontSize = {
@@ -70,10 +122,10 @@ export const fontSize = {
 
 /** Responsive breakpoints (min-width). Matches Tailwind v4 defaults + 3xl. */
 export const breakpoints = {
-  sm: "640px",   // large phone / small tablet
-  md: "768px",   // tablet
-  lg: "1024px",  // laptop
-  xl: "1280px",  // desktop
+  sm: "640px", // large phone / small tablet
+  md: "768px", // tablet
+  lg: "1024px", // laptop
+  xl: "1280px", // desktop
   "2xl": "1536px", // large desktop
   "3xl": "1920px", // ultra-wide
 } as const;

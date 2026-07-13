@@ -16,6 +16,9 @@ export async function proxy(request: NextRequest) {
 }
 
 // Matcher must be a static literal — Next parses it at compile time.
+// Skip /assets/* and any path with a file extension so next/image can load public files.
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|_next/data|favicon.ico|sitemap.xml|robots.txt).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|_next/data|favicon.ico|sitemap.xml|robots.txt|assets/|.*\\..*).*)",
+  ],
 };

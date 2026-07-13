@@ -39,6 +39,8 @@ export {
   Star as StarIcon,
   Mail as MailIcon,
   MoreVertical as MoreVerticalIcon,
+  Eye as EyeIcon,
+  EyeOff as EyeOffIcon,
 } from "lucide-react";
 
 export type { LucideIcon as IconComponent } from "lucide-react";

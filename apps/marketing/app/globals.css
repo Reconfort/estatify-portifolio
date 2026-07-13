@@ -2,7 +2,18 @@
 @import "@estatify/design-system/styles/tokens.css";
 @source "../../../packages/**/src/**/*.{ts,tsx}";
 
+/* Brand text selection — small detail, big polish. */
+::selection {
+  background: var(--lime-200);
+  color: var(--lime-950);
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  /* Smooth anchor navigation (#solution, #pricing, …). */
+  html {
+    scroll-behavior: smooth;
+  }
+
   @keyframes bento-march {
     to {
       stroke-dashoffset: -24;
@@ -11,5 +22,32 @@
 
   .bento-march-line {
     animation: bento-march 1.3s linear infinite;
+  }
+
+  /*
+   * Ambient light — soft blurred glows that drift very slowly.
+   * transform-only (GPU), long durations, barely-there: professional, not flashy.
+   */
+  @keyframes ambient-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    33% {
+      transform: translate3d(3.5rem, -1.75rem, 0) scale(1.08);
+    }
+    66% {
+      transform: translate3d(-2.5rem, 2rem, 0) scale(0.94);
+    }
+  }
+
+  .ambient-light {
+    animation: ambient-drift 26s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .ambient-light-alt {
+    animation: ambient-drift 34s ease-in-out -9s infinite reverse;
+    will-change: transform;
   }
 }

@@ -1,0 +1,14 @@
+{
+  "name": "@estatify/assets",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Single source of truth for static assets shared by every Estatify app (brand marks, auth imagery). Apps expose these via symlinks in their public/assets folders.",
+  "sideEffects": false,
+  "nx": {
+    "name": "assets",
+    "tags": [
+      "scope:shared",
+      "type:assets"
+    ]
+  }
+}

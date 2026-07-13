@@ -454,7 +454,7 @@ function SkeletonLaunch() {
               </span>
             </div>
             <div className="mt-2.5 flex items-center gap-2.5">
-              <span className="relative size-11 shrink-0 overflow-hidden rounded-xl">
+              <span className="relative size-11 shrink-0 overflow-hidden rounded-lg">
                 <Image
                   src="/assets/showcase/coastal-villas.jpg"
                   alt=""
@@ -463,7 +463,7 @@ function SkeletonLaunch() {
                   className="object-cover"
                 />
               </span>
-              <span className="h-9 flex-1 rounded-xl bg-muted" aria-hidden />
+              <span className="h-9 flex-1 rounded-lg bg-muted" aria-hidden />
             </div>
           </motion.div>
         </div>
@@ -494,7 +494,7 @@ function SkeletonLaunch() {
               </motion.span>
             </div>
             <div className="mt-2.5 flex items-center gap-2.5">
-              <span className="relative size-11 shrink-0 overflow-hidden rounded-xl">
+              <span className="relative size-11 shrink-0 overflow-hidden rounded-lg">
                 <Image
                   src="/assets/showcase/garden-estate.jpg"
                   alt=""
@@ -503,7 +503,7 @@ function SkeletonLaunch() {
                   className="object-cover"
                 />
               </span>
-              <span className="h-9 flex-1 rounded-xl bg-muted" aria-hidden />
+              <span className="h-9 flex-1 rounded-lg bg-muted" aria-hidden />
             </div>
           </motion.div>
         </div>

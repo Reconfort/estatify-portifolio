@@ -11,13 +11,7 @@
  * for client-side live preview in the tenant theme editor.
  */
 
-import {
-  bestForeground,
-  hexToHsl,
-  hslToHex,
-  isAccessibleSurface,
-  type HSL,
-} from "./contrast";
+import { bestForeground, hexToHsl, hslToHex, isAccessibleSurface, type HSL } from "./contrast";
 
 export type ThemeMode = "light" | "dark";
 
@@ -41,8 +35,17 @@ export type ColorScale = Record<
 
 /** Lightness targets per scale step — tuned to read as a balanced ramp. */
 const SCALE_LIGHTNESS: Record<keyof ColorScale, number> = {
-  "50": 96, "100": 91, "200": 82, "300": 70, "400": 58,
-  "500": 48, "600": 40, "700": 33, "800": 26, "900": 20, "950": 12,
+  "50": 96,
+  "100": 91,
+  "200": 82,
+  "300": 70,
+  "400": 58,
+  "500": 48,
+  "600": 40,
+  "700": 33,
+  "800": 26,
+  "900": 20,
+  "950": 12,
 };
 
 /**
@@ -58,7 +61,10 @@ export function generateScale(baseHex: string): ColorScale {
   let min = Infinity;
   for (const step of steps) {
     const d = Math.abs(SCALE_LIGHTNESS[step] - base.l);
-    if (d < min) { min = d; nearest = step; }
+    if (d < min) {
+      min = d;
+      nearest = step;
+    }
   }
   const scale = {} as ColorScale;
   for (const step of steps) {
@@ -68,8 +74,10 @@ export function generateScale(baseHex: string): ColorScale {
     }
     // Lighter steps desaturate slightly; darker steps deepen — avoids muddiness.
     const targetL = SCALE_LIGHTNESS[step];
-    const satAdj = targetL > base.l ? Math.max(base.s - (targetL - base.l) * 0.3, 8)
-                                    : Math.min(base.s + (base.l - targetL) * 0.15, 100);
+    const satAdj =
+      targetL > base.l
+        ? Math.max(base.s - (targetL - base.l) * 0.3, 8)
+        : Math.min(base.s + (base.l - targetL) * 0.15, 100);
     const hsl: HSL = { h: base.h, s: satAdj, l: targetL };
     scale[step] = hslToHex(hsl);
   }
@@ -78,7 +86,13 @@ export function generateScale(baseHex: string): ColorScale {
 
 function normalizeHex(hex: string): string {
   const h = hex.replace("#", "").trim().toLowerCase();
-  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  const full =
+    h.length === 3
+      ? h
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : h;
   return `#${full}`;
 }
 
@@ -110,7 +124,7 @@ export function resolveTenantTheme(config: TenantThemeConfig): ResolvedTenantThe
   if (!isAccessibleSurface(lightAction)) {
     warnings.push(
       `Brand color ${config.brandColor} is too light for an action surface — ` +
-        `its 600 step (${lightAction}) cannot hold legible text. Consider a deeper brand color.`
+        `its 600 step (${lightAction}) cannot hold legible text. Consider a deeper brand color.`,
     );
   }
 
@@ -129,14 +143,14 @@ export function resolveTenantTheme(config: TenantThemeConfig): ResolvedTenantThe
     "--sidebar-ring": lightAction,
     "--chart-1": lightAction,
     "--chart-2": accent["500"],
-    // radius scale (xs..3xl derived from base)
+    // radius scale — lg is the product max; xl/2xl/3xl alias to it
     "--radius-xs": r(radius * 0.5),
     "--radius-sm": r(radius * 0.75),
     "--radius-md": r(radius),
     "--radius-lg": r(radius * 1.5),
-    "--radius-xl": r(radius * 2),
-    "--radius-2xl": r(radius * 3),
-    "--radius-3xl": r(radius * 4),
+    "--radius-xl": r(radius * 1.5),
+    "--radius-2xl": r(radius * 1.5),
+    "--radius-3xl": r(radius * 1.5),
   };
   if (config.fontFamily) light["--font-sans"] = config.fontFamily;
 
@@ -160,12 +174,13 @@ export function resolveTenantTheme(config: TenantThemeConfig): ResolvedTenantThe
 /** Live-apply a tenant theme to a DOM element (client-only, theme editor). */
 export function applyTenantTheme(
   config: TenantThemeConfig,
-  target: HTMLElement = document.documentElement
+  target: HTMLElement = document.documentElement,
 ): ResolvedTenantTheme {
   const resolved = resolveTenantTheme(config);
-  const vars = (target.classList.contains("dark") || config.mode === "dark")
-    ? { ...resolved.light, ...resolved.dark }
-    : resolved.light;
+  const vars =
+    target.classList.contains("dark") || config.mode === "dark"
+      ? { ...resolved.light, ...resolved.dark }
+      : resolved.light;
   for (const [key, value] of Object.entries(vars)) {
     target.style.setProperty(key, value);
   }
@@ -177,13 +192,12 @@ export function applyTenantTheme(
  * Scope it to the tenant root (e.g. `[data-tenant="acme"]`) for multi-tenant
  * pages, or `:root` for a dedicated tenant site. Prevents flash of wrong brand.
  */
-export function tenantThemeToCssText(
-  config: TenantThemeConfig,
-  selector = ":root"
-): string {
+export function tenantThemeToCssText(config: TenantThemeConfig, selector = ":root"): string {
   const { light, dark } = resolveTenantTheme(config);
   const block = (vars: Record<string, string>) =>
-    Object.entries(vars).map(([k, v]) => `  ${k}: ${v};`).join("\n");
+    Object.entries(vars)
+      .map(([k, v]) => `  ${k}: ${v};`)
+      .join("\n");
   return [
     `${selector} {\n${block(light)}\n}`,
     `${selector}.dark, .dark ${selector} {\n${block(dark)}\n}`,

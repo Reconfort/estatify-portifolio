@@ -40,7 +40,7 @@ export function Process() {
           {processSection.steps.map((step, i) => (
             <Reveal key={step.key} index={i}>
               <li className="flex h-full flex-col items-center text-center">
-                <div className="mb-6 w-full overflow-hidden rounded-3xl bg-secondary/70 p-4 sm:p-5">
+                <div className="mb-6 w-full overflow-hidden rounded-lg bg-secondary/70 p-4 sm:p-5">
                   {step.key === "purchase" ? <TemplateMarqueeDemo /> : null}
                   {step.key === "customize" ? <ColorCustomizeDemo /> : null}
                   {step.key === "launch" ? <PublishDemo /> : null}
@@ -68,7 +68,7 @@ function TemplateMarqueeDemo() {
   const colB = [...images].reverse();
 
   return (
-    <div className="relative h-56 overflow-hidden rounded-2xl bg-muted/40 sm:h-64">
+    <div className="relative h-56 overflow-hidden rounded-lg bg-muted/40 sm:h-64">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 z-10 h-10 bg-linear-to-b from-secondary/90 to-transparent"
@@ -99,7 +99,7 @@ function VerticalLoop({
   const yTo = direction === "down" ? "-50%" : "0%";
 
   return (
-    <div className="relative h-full overflow-hidden rounded-xl">
+    <div className="relative h-full overflow-hidden rounded-lg">
       <motion.div
         className="flex flex-col gap-2.5"
         animate={paused ? { y: yFrom } : { y: [yFrom, yTo] }}
@@ -139,7 +139,7 @@ function ColorCustomizeDemo() {
   const current = colors[active] ?? colors[0]!;
 
   return (
-    <div className="flex h-56 items-stretch gap-3 rounded-2xl bg-muted/40 p-3 sm:h-64 sm:gap-4 sm:p-4">
+    <div className="flex h-56 items-stretch gap-3 rounded-lg bg-muted/40 p-3 sm:h-64 sm:gap-4 sm:p-4">
       <ul className="flex w-[42%] flex-col justify-center gap-1.5 sm:gap-2">
         {colors.map((color, i) => {
           const selected = i === active;
@@ -149,7 +149,7 @@ function ColorCustomizeDemo() {
                 type="button"
                 onClick={() => setActive(i)}
                 className={cn(
-                  "flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition-colors",
+                  "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
                   selected
                     ? "bg-background shadow-sm ring-1 ring-border"
                     : "hover:bg-background/60",
@@ -174,7 +174,7 @@ function ColorCustomizeDemo() {
         })}
       </ul>
 
-      <div className="relative flex flex-1 items-center justify-center overflow-hidden rounded-2xl bg-background p-3 shadow-sm ring-1 ring-border/70">
+      <div className="relative flex flex-1 items-center justify-center overflow-hidden rounded-lg bg-background p-3 shadow-sm ring-1 ring-border/70">
         <AnimatePresence mode="wait">
           <motion.div
             key={current.key}
@@ -182,7 +182,7 @@ function ColorCustomizeDemo() {
             animate={{ opacity: 1, scale: 1 }}
             exit={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.35 }}
-            className="aspect-square w-[78%] max-w-[9.5rem] rounded-2xl shadow-md"
+            className="aspect-square w-[78%] max-w-[9.5rem] rounded-lg shadow-md"
             style={{
               background: `linear-gradient(145deg, ${current.swatch}, color-mix(in srgb, ${current.swatch} 55%, black))`,
             }}
@@ -229,7 +229,7 @@ function PublishDemo() {
   }, [clearStepTimers, reduceMotion, runSequence]);
 
   return (
-    <div className="relative flex h-56 items-center justify-center overflow-hidden rounded-2xl bg-muted/40 p-3 sm:h-64 sm:p-4">
+    <div className="relative flex h-56 items-center justify-center overflow-hidden rounded-lg bg-muted/40 p-3 sm:h-64 sm:p-4">
       <AnimatePresence mode="wait">
         {phase === "idle" || phase === "loading" ? (
           <motion.div
@@ -238,7 +238,7 @@ function PublishDemo() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.3 }}
-            className="w-full max-w-[15.5rem] rounded-2xl border border-border bg-background p-3.5 shadow-md"
+            className="w-full max-w-[15.5rem] rounded-lg border border-border bg-background p-3.5 shadow-md"
           >
             <div className="flex items-center gap-2 text-body-sm text-foreground">
               <GlobeIcon className="size-4 text-muted-foreground" aria-hidden />
@@ -262,7 +262,7 @@ function PublishDemo() {
               onClick={() => runSequence()}
               disabled={phase === "loading"}
               className={cn(
-                "mt-3.5 flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-violet-600 text-body-sm font-semibold text-white transition-opacity",
+                "mt-3.5 flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-violet-600 text-body-sm font-semibold text-white transition-opacity",
                 "hover:bg-violet-500 disabled:cursor-wait",
               )}
             >
@@ -285,7 +285,7 @@ function PublishDemo() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.35 }}
-            className="w-full max-w-[17rem] overflow-hidden rounded-xl border border-border bg-background shadow-lg"
+            className="w-full max-w-[17rem] overflow-hidden rounded-lg border border-border bg-background shadow-lg"
           >
             <div className="flex items-center gap-1.5 border-b border-border bg-muted/50 px-2.5 py-2">
               <span className="size-2 rounded-full bg-destructive/70" aria-hidden />
@@ -317,7 +317,7 @@ function PublishDemo() {
             {[0, 1].map((i) => (
               <div
                 key={i}
-                className="overflow-hidden rounded-xl border border-border bg-background shadow-sm"
+                className="overflow-hidden rounded-lg border border-border bg-background shadow-sm"
               >
                 <div className="aspect-4/3 animate-pulse bg-muted" />
                 <div className="space-y-2 p-2.5">

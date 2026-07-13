@@ -12,6 +12,15 @@ import { workspaceSignInUrl } from "@/lib/workspace-urls";
  */
 export function SiteHeader() {
   const [open, setOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
+
+  // Elevate the capsule once the page scrolls — subtle depth cue.
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-4 sm:px-5 sm:pt-5">
@@ -19,7 +28,9 @@ export function SiteHeader() {
         className={cn(
           "pointer-events-auto mx-auto flex max-w-5xl flex-col",
           "rounded-lg border border-black/8 bg-black/5 backdrop-blur-xl",
-          open && "rounded-3xl",
+          "transition-[background-color,border-color,box-shadow] duration-300 ease-out",
+          scrolled && "border-black/10 bg-white/70 shadow-lg shadow-black/5",
+          open && "rounded-lg",
         )}
       >
         <div className="flex h-14 items-center justify-between gap-3 px-3 sm:px-4 md:px-5">
@@ -90,7 +101,7 @@ export function SiteHeader() {
                 <a
                   key={l.label}
                   href={l.href}
-                  className="rounded-xl px-3 py-2.5 text-body-sm font-medium text-neutral-800 hover:bg-neutral-100"
+                  className="rounded-lg px-3 py-2.5 text-body-sm font-medium text-neutral-800 hover:bg-neutral-100"
                   onClick={() => setOpen(false)}
                 >
                   {l.label}

@@ -24,7 +24,10 @@ export function TemplateShowcase() {
         <ol className="flex flex-col">
           {templatesV2.items.map((template, i) => (
             <li key={template.name} className="border-t border-border py-10 last:border-b">
-              <Reveal index={i} className="grid items-center gap-6 sm:grid-cols-[6rem_1fr_auto] lg:grid-cols-[8rem_1fr_26rem]">
+              <Reveal
+                index={i}
+                className="grid items-center gap-6 sm:grid-cols-[6rem_1fr_auto] lg:grid-cols-[8rem_1fr_26rem]"
+              >
                 <Parallax range={24}>
                   <span
                     aria-hidden
@@ -35,7 +38,9 @@ export function TemplateShowcase() {
                 </Parallax>
 
                 <div className="flex flex-col gap-3">
-                  <Badge variant="primary" className="w-fit">{template.category}</Badge>
+                  <Badge variant="primary" className="w-fit">
+                    {template.category}
+                  </Badge>
                   <h3 className="text-h2 font-semibold text-foreground sm:text-h1">
                     {template.name}
                   </h3>
@@ -52,7 +57,7 @@ export function TemplateShowcase() {
                   </a>
                 </div>
 
-                <ImageReveal className="overflow-hidden rounded-2xl">
+                <ImageReveal className="overflow-hidden rounded-lg">
                   <Image
                     src={template.image}
                     alt={`${template.name} template preview — ${template.tagline}`}

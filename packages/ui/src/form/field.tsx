@@ -1,14 +1,10 @@
 "use client";
 
 import * as React from "react";
-import {
-  Controller,
-  type Control,
-  type FieldPath,
-  type FieldValues,
-} from "react-hook-form";
+import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form";
 import { cn } from "@estatify/utils";
 import { Input } from "./input";
+import { PasswordInput } from "./password-input";
 import { Label } from "./label";
 import { Select, type SelectOption } from "./select";
 import { Textarea } from "./textarea";
@@ -76,6 +72,8 @@ export function Field<TValues extends FieldValues>(props: FieldProps<TValues>) {
               <Textarea {...shared} {...field} rows={props.rows ?? 4} />
             ) : props.type === "select" ? (
               <Select {...shared} {...field} options={props.options} placeholder={placeholder} />
+            ) : props.type === "password" ? (
+              <PasswordInput {...shared} {...field} />
             ) : (
               <Input {...shared} {...field} type={props.type} />
             )}

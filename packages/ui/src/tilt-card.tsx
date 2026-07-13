@@ -50,7 +50,7 @@ export function TiltCard({
       onMouseLeave={handleLeave}
       style={{ rotateX, rotateY, transformPerspective: 900 }}
       className={cn(
-        "rounded-2xl border border-border bg-card [transform-style:preserve-3d]",
+        "rounded-lg border border-border bg-card [transform-style:preserve-3d]",
         className,
       )}
     >

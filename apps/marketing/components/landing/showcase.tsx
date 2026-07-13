@@ -35,7 +35,7 @@ function ShowcaseGrid() {
           {...(!reduceMotion ? { whileHover: { y: -8 } } : {})}
           transition={{ duration: 0.28, ease }}
           className={cn(
-            "group overflow-hidden rounded-3xl border border-border/70 bg-card",
+            "group overflow-hidden rounded-lg border border-border/70 bg-card",
             "hover:border-primary/20",
           )}
         >

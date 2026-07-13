@@ -18,5 +18,5 @@ export const DASHBOARD_PATH = "/dashboard";
 
 /** Shared matcher — skip static assets and Next internals. */
 export const authProxyMatcher = [
-  "/((?!api|_next/static|_next/image|_next/data|favicon.ico|sitemap.xml|robots.txt).*)",
+  "/((?!api|_next/static|_next/image|_next/data|favicon.ico|sitemap.xml|robots.txt|assets/|.*\\..*).*)",
 ];
