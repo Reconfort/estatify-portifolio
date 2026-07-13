@@ -198,3 +198,29 @@ contracts (Button, Input, Select, …) consuming only semantic tokens · real-es
 components (PropertyCard, AgentCard, LeadPipeline) · marketplace block system
 (Header/Hero/Feature/CTA/Footer blocks, all themeable) · a token codegen step so
 `globals.css` and `tokens.ts` derive from one source.
+
+---
+
+## 11. Component library decision — shadcn/ui only (Untitled UI descoped)
+
+The original foundation brief listed "shadcn/ui + **Untitled UI**." Untitled UI is
+a commercial, licensed Figma/React kit; it was never added to the repo and pulling
+it in requires a license we do not hold. **Decision: the design system standardizes
+on shadcn/ui alone.** shadcn is fully wired (`packages/ui/components.json`,
+new-york style, `@estatify/*` aliases, tokens sourced from
+`packages/design-system/src/styles/tokens.css`).
+
+What this means in practice:
+
+- Untitled UI's *influence* stays where it already is — the shadow ramp in §5 keeps
+  the "Untitled-UI-style" low-spread, layered look, expressed purely through our own
+  tokens. No third-party code or license is involved.
+- Components are built on shadcn primitives + Radix, styled exclusively via the
+  semantic token layer (§2), so nothing is coupled to a vendor kit.
+- If Untitled UI is licensed later, it can be layered on top without rework: its
+  components would consume the same semantic tokens. Re-open this decision then.
+
+> Note: §2 and §7 above reference legacy paths (`app/globals.css`, `lib/theme/*`)
+> from before the design system moved into `packages/design-system/`. The
+> canonical locations are now `packages/design-system/src/styles/tokens.css` and
+> `packages/design-system/src/theme/*`. Doc paths to be reconciled in a docs pass.

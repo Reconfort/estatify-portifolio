@@ -2,21 +2,21 @@
   "name": "estatify",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
     "graph": "nx graph",
     "build": "nx run-many -t build",
     "lint": "nx run-many -t lint",
     "typecheck": "nx run-many -t typecheck",
     "test": "nx run-many -t test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "dev:marketing": "nx dev marketing",
     "dev:workspace": "nx dev workspace",
     "dev:platform": "nx dev platform",
     "dev:sites": "nx dev sites",
-    "dev:api": "nx serve api"
+    "dev:api": "nx serve api",
+    "prepare": "husky"
   },
   "dependencies": {
     "next": "16.2.9",
@@ -37,6 +37,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
     "nx": "latest",
     "@nx/eslint": "latest",
     "@nx/eslint-plugin": "latest",
@@ -47,7 +49,17 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mjs,cjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md,yaml,yml}": [
+      "prettier --write"
+    ]
+  },
   "engines": {
-    "node": ">=20"
+    "node": ">=20",
+    "pnpm": ">=9"
   }
 }
