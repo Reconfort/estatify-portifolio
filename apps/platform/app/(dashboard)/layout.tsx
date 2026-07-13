@@ -10,6 +10,7 @@ import {
   Activity,
   Bell,
   Database,
+  KeyRound,
   LayoutDashboard,
   Layers,
   LogOut,
@@ -19,6 +20,7 @@ import {
   Settings,
   ShieldCheck,
   User,
+  Users,
   X,
 } from "lucide-react";
 
@@ -33,8 +35,13 @@ const NAV_GROUPS = [
     items: [{ label: "Dashboard", href: "/dashboard", icon: LayoutDashboard }],
   },
   {
-    label: "Customers",
-    items: [{ label: "Tenants", href: "/tenants", icon: Layers }],
+    label: "Access Management",
+    items: [
+      { label: "Tenants", href: "/tenants", icon: Layers },
+      { label: "Platform Staff", href: "/staff", icon: Users },
+      { label: "Roles", href: "/roles", icon: ShieldCheck },
+      { label: "Permissions", href: "/permissions", icon: KeyRound },
+    ],
   },
   {
     label: "Infrastructure",
@@ -68,7 +75,7 @@ function NavLink({
       {...(onClick ? { onClick } : {})}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "group relative flex items-center gap-3 rounded-lg px-3 py-2 text-body-sm font-medium outline-none",
+        "group relative flex items-center gap-4 rounded-md px-2.5 py-2.5 text-sm! text-caption font-medium outline-none",
         "transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         active
           ? "bg-sidebar-accent text-sidebar-accent-foreground"
@@ -78,13 +85,13 @@ function NavLink({
       <span
         aria-hidden
         className={cn(
-          "absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-accent transition-opacity",
+          "absolute left-0 top-1/2 h-3.5 w-0.5 -translate-y-1/2 rounded-full bg-accent transition-opacity",
           active ? "opacity-100" : "opacity-0",
         )}
       />
       <Icon
         className={cn(
-          "size-4 shrink-0 transition-colors",
+          "size-3.5 shrink-0 transition-colors",
           active ? "text-foreground" : "text-muted-foreground group-hover:text-foreground",
         )}
       />
@@ -99,50 +106,33 @@ function SidebarContent({ email, onNavigate }: { email?: string; onNavigate?: ()
   return (
     <>
       {/* Brand */}
-      <div className="flex h-16 shrink-0 items-center gap-2.5 px-5">
+      <div className="flex h-14 shrink-0 items-center gap-2 px-3.5">
         <Image
           src="/assets/logo-gp.svg"
           alt=""
-          width={22}
-          height={26}
-          className="h-6.5 w-auto shrink-0"
+          width={20}
+          height={24}
+          className="h-5.5 w-auto shrink-0"
           aria-hidden
         />
         <div className="leading-tight">
-          <span className="block text-body-md font-semibold tracking-tight text-foreground">
+          <span className="block text-body-sm font-semibold tracking-tight text-foreground">
             Estatify
           </span>
-          <span className="-mt-0.5 block text-[0.65rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          <span className="-mt-0.5 block text-[0.6rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
             Platform
           </span>
         </div>
       </div>
 
-      {/* Operator badge */}
-      <div className="px-3 pb-2">
-        <div className="flex w-full items-center gap-2.5 rounded-lg border border-sidebar-border bg-card px-3 py-2.5 shadow-2xs">
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-700 text-neutral-50">
-            <ShieldCheck className="size-4" aria-hidden />
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block truncate text-body-sm font-semibold text-foreground">
-              Staff Operations
-            </span>
-            <span className="block truncate text-caption text-muted-foreground">
-              {email ?? "Internal console"}
-            </span>
-          </span>
-        </div>
-      </div>
-
       {/* Navigation */}
-      <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4" aria-label="Platform">
+      <nav className="flex-1 space-y-3 overflow-y-auto px-2.5 py-2" aria-label="Platform">
         {NAV_GROUPS.map((group) => (
           <div key={group.label}>
-            <p className="mb-1.5 px-3 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground/80">
+            <p className="mb-1 px-2.5 text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground/80">
               {group.label}
             </p>
-            <div className="space-y-0.5">
+            <div className="space-y-px">
               {group.items.map((item) => (
                 <NavLink
                   key={item.href}
@@ -156,9 +146,22 @@ function SidebarContent({ email, onNavigate }: { email?: string; onNavigate?: ()
         ))}
       </nav>
 
-      {/* Footer */}
-      <div className="shrink-0 border-t border-sidebar-border px-5 py-4">
-        <p className="text-caption text-muted-foreground">
+      {/* Staff + region */}
+      <div className="shrink-0 space-y-2 border-t border-sidebar-border px-2.5 py-3">
+        <div className="flex w-full items-center gap-2 rounded-lg border border-sidebar-border bg-card px-2.5 py-2 shadow-2xs">
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-brand-700 text-neutral-50">
+            <ShieldCheck className="size-3.5" aria-hidden />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block truncate text-caption font-semibold text-foreground">
+              Staff Operations
+            </span>
+            <span className="block truncate text-[0.65rem] text-muted-foreground">
+              {email ?? "Internal console"}
+            </span>
+          </span>
+        </div>
+        <p className="px-0.5 text-[0.65rem] text-muted-foreground">
           Production · <span className="font-medium text-foreground">eu-west-1</span>
         </p>
       </div>
@@ -174,7 +177,7 @@ export default function PlatformDashboardLayout({ children }: { children: React.
   return (
     <div className="flex h-dvh overflow-hidden bg-background text-foreground">
       {/* Desktop sidebar — fixed column; page scroll lives in main */}
-      <aside className="hidden h-full w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
+      <aside className="hidden h-full w-52 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
         <SidebarContent {...(user?.email ? { email: user.email } : {})} />
       </aside>
 
@@ -186,7 +189,7 @@ export default function PlatformDashboardLayout({ children }: { children: React.
             onClick={() => setMobileOpen(false)}
             aria-hidden
           />
-          <aside className="relative flex w-72 max-w-[85vw] flex-col border-r border-sidebar-border bg-sidebar shadow-xl animate-in slide-in-from-left duration-200">
+          <aside className="relative flex w-60 max-w-[85vw] flex-col border-r border-sidebar-border bg-sidebar shadow-xl animate-in slide-in-from-left duration-200">
             <button
               type="button"
               onClick={() => setMobileOpen(false)}

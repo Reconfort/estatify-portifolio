@@ -6,6 +6,9 @@ export interface AccessTokenPayload {
   sub: string; // user id
   tid: string | null; // active tenant id
   role: z.infer<typeof membershipRoleSchema> | null;
+  /** Session/token version at issue time; validated per-request against the
+   * authoritative value so a suspended account's tokens fail immediately. */
+  ver: number;
   typ: "access";
   iat?: number;
   exp?: number;
@@ -34,6 +37,10 @@ export const authUserSchema = z.object({
   emailVerified: z.boolean(),
   isPlatformStaff: z.boolean(),
   platformRole: platformRoleSchema,
+  /** Staff RBAC role name (platform users only). */
+  staffRoleName: z.string().nullable().default(null),
+  /** Permission keys the platform user holds via their role — drives UI gating. */
+  platformPermissions: z.array(z.string()).default([]),
   activeTenant: tenantMembershipViewSchema.nullable(),
   memberships: z.array(tenantMembershipViewSchema),
 });

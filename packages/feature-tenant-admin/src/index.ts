@@ -1,9 +1,12 @@
 /**
  * @estatify/feature-tenant-admin
- * Internal tenant management (provisioning, status, domains).
+ * Access Management feature surface (tenants + platform staff; roles/permissions
+ * land here in AM-4/AM-5).
  *
  * Tags: scope:platform,type:feature
- * Foundation stub — public API surface. Implement domain code here following the
- * feature structure (components/ hooks/ types/ schemas/ services/ constants/ utils/).
  */
-export {};
+export { TenantsPage } from "./tenants/tenants-page";
+export { StatusBadge, PlanBadge } from "./tenants/status-badges";
+export { StaffPage } from "./staff/staff-page";
+export { RolesPage } from "./roles/roles-page";
+export { PermissionsPage } from "./permissions/permissions-page";

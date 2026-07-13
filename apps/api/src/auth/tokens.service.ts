@@ -16,8 +16,8 @@ export function parseDurationSeconds(ttl: string): number {
 export class TokensService {
   constructor(private readonly jwt: JwtService) {}
 
-  /** Sign a short-lived access JWT. */
-  signAccess(payload: Pick<AccessTokenPayload, "sub" | "tid" | "role">): {
+  /** Sign a short-lived access JWT. `ver` binds it to the user's session version. */
+  signAccess(payload: Pick<AccessTokenPayload, "sub" | "tid" | "role" | "ver">): {
     token: string;
     expiresIn: number;
   } {

@@ -21,6 +21,7 @@ import type {
 import { ROLE_RANK } from "@estatify/types";
 import { PrismaService } from "../prisma/prisma.service";
 import { MailService } from "../mail/mail.service";
+import { AccountStateService } from "../security/account-state.service";
 import { env } from "../config/env";
 import { PasswordService } from "./password.service";
 import { TokensService } from "./tokens.service";
@@ -49,6 +50,7 @@ export class AuthService {
     private readonly passwords: PasswordService,
     private readonly tokens: TokensService,
     private readonly mail: MailService,
+    private readonly accounts: AccountStateService,
   ) {}
 
   // ---------------------------------------------------------------- register
@@ -151,7 +153,47 @@ export class AuthService {
     });
     const user = await this.prisma.client.user.findUniqueOrThrow({ where: { id: session.userId } });
     const tenantId = session.tenantId && session.tenantId.length > 0 ? session.tenantId : null;
+
+    // Status gate: a live refresh cookie must NOT resurrect a suspended tenant or
+    // a disabled/deleted staff account. Nuke the whole family and refuse.
+    await this.assertStillActive(user, tenantId, session.familyId);
+
     return this.issue(user, tenantId, ctx, session.familyId);
+  }
+
+  /** Throws (and revokes the session family) if the account/workspace was cut off. */
+  private async assertStillActive(
+    user: { id: string; isPlatformStaff: boolean },
+    tenantId: string | null,
+    familyId: string,
+  ): Promise<void> {
+    const revokeFamily = () =>
+      this.prisma.client.session.updateMany({
+        where: { familyId, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
+
+    if (user.isPlatformStaff) {
+      const profile = await this.prisma.client.staffProfile.findUnique({
+        where: { userId: user.id },
+        select: { status: true, deletedAt: true },
+      });
+      if (!profile || profile.deletedAt || profile.status !== "active") {
+        await revokeFamily();
+        throw new UnauthorizedException("This account is no longer active");
+      }
+    }
+
+    if (tenantId) {
+      const tenant = await this.prisma.client.tenant.findUnique({
+        where: { id: tenantId },
+        select: { status: true, deletedAt: true },
+      });
+      if (!tenant || tenant.deletedAt || tenant.status !== "active") {
+        await revokeFamily();
+        throw new UnauthorizedException("This workspace is suspended");
+      }
+    }
   }
 
   // ------------------------------------------------------------------ logout
@@ -232,6 +274,8 @@ export class AuthService {
         data: { consumedAt: new Date() },
       }),
     ]);
+    // Bump the session version so any surviving access tokens are rejected too.
+    await this.accounts.bumpUserVersion(rec.userId);
   }
 
   // -------------------------------------------------------------- internals
@@ -298,12 +342,28 @@ export class AuthService {
       agencyName: m.tenantId === active ? agencyName : null,
     }));
 
+    // Surface platform-staff RBAC so the admin UI can hide unavailable actions.
+    let platformPermissions: string[] = [];
+    let staffRoleName: string | null = null;
+    if (user.isPlatformStaff) {
+      const profile = await this.prisma.client.staffProfile.findUnique({
+        where: { userId },
+        include: { role: { include: { permissions: { include: { permission: true } } } } },
+      });
+      if (profile && !profile.deletedAt && profile.status === "active") {
+        staffRoleName = profile.role?.name ?? null;
+        platformPermissions = (profile.role?.permissions ?? []).map((rp) => rp.permission.key);
+      }
+    }
+
     return {
       id: user.id,
       email: user.email,
       emailVerified: user.emailVerified,
       isPlatformStaff: user.isPlatformStaff,
       platformRole: user.platformRole,
+      staffRoleName,
+      platformPermissions,
       activeTenant: views.find((v) => v.tenantId === active) ?? null,
       memberships: views,
     };
@@ -319,7 +379,12 @@ export class AuthService {
     const tid = authUser.activeTenant?.tenantId ?? null;
     const role = authUser.activeTenant?.role ?? null;
 
-    const access = this.tokens.signAccess({ sub: user.id, tid, role });
+    // Bind the token to the user's current session version (per-request validated).
+    const { tokenVersion } = await this.prisma.client.user.findUniqueOrThrow({
+      where: { id: user.id },
+      select: { tokenVersion: true },
+    });
+    const access = this.tokens.signAccess({ sub: user.id, tid, role, ver: tokenVersion });
     const raw = this.tokens.generateRefreshToken();
     const expiresAt = this.tokens.refreshExpiry();
 

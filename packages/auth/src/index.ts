@@ -7,7 +7,15 @@
  */
 export { SessionProvider, useSession, type SessionStatus } from "./session";
 export { TenantProvider, useTenant } from "./tenant";
-export { hasRole, hasPlatformRole, RequireRole, RequireAuth } from "./rbac";
+export {
+  hasRole,
+  hasPlatformRole,
+  hasPermission,
+  usePermissions,
+  RequireRole,
+  RequirePermission,
+  RequireAuth,
+} from "./rbac";
 export {
   WORKSPACE_GUEST_ROUTES,
   PLATFORM_GUEST_ROUTES,

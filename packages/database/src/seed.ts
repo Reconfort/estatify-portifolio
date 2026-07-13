@@ -9,9 +9,16 @@
 import argon2 from "argon2";
 import { prisma } from "./client";
 import { withTenant } from "./tenant";
+import { attachStaff, syncRbac } from "./rbac-seed";
 
 async function createTenant(slug: string, agencyName: string, ownerEmail: string) {
   const passwordHash = await argon2.hash("Password123!", { type: argon2.argon2id });
+
+  const existing = await prisma.tenant.findUnique({ where: { slug } });
+  if (existing) {
+    console.log(`tenant ${slug} already exists (${existing.id}) — skipping`);
+    return existing;
+  }
 
   const tenant = await prisma.tenant.create({
     data: { slug, status: "active" },
@@ -35,6 +42,10 @@ async function createTenant(slug: string, agencyName: string, ownerEmail: string
 }
 
 async function main() {
+  // RBAC catalog first — roles must exist before we attach staff to them.
+  await syncRbac();
+  console.log("synced permission catalog + default roles");
+
   await createTenant("acme", "Acme Realty", "owner@acme.test");
   await createTenant("globex", "Globex Homes", "owner@globex.test");
 
@@ -50,7 +61,13 @@ async function main() {
       platformRole: "superadmin",
     },
   });
-  console.log("seeded platform superadmin staff@estatify.com");
+  await attachStaff({
+    email: "staff@estatify.com",
+    fullName: "Estatify Admin",
+    roleName: "Super Admin",
+    department: "executive",
+  });
+  console.log("seeded platform superadmin staff@estatify.com (Super Admin)");
 }
 
 main()

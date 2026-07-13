@@ -8,6 +8,9 @@ interface FetchOptions extends Omit<RequestInit, "body"> {
   auth?: boolean;
 }
 
+/** Fired on window when a session is hard-invalidated (refresh refused). */
+export const AUTH_EXPIRED_EVENT = "estatify:auth-expired";
+
 // Single-flight refresh: many parallel 401s trigger exactly one /auth/refresh.
 let refreshInFlight: Promise<boolean> | null = null;
 
@@ -78,7 +81,12 @@ export async function apiFetch<T>(path: string, options: FetchOptions = {}): Pro
     if (ok) {
       res = await run();
     } else {
+      // Refresh refused (e.g. account/tenant suspended server-side). Clear the
+      // token and broadcast so the SessionProvider clears + redirects to login.
       clearAccessToken();
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
+      }
     }
   }
 

@@ -51,6 +51,33 @@ export function RequireRole({
   return children;
 }
 
+/** Cosmetic client check for a platform permission key (e.g. "tenant.create"). */
+export function hasPermission(user: AuthUser | null | undefined, permission: string): boolean {
+  return Boolean(user?.platformPermissions?.includes(permission));
+}
+
+/** Hook returning a `can(permission)` predicate for the current session. */
+export function usePermissions(): { can: (permission: string) => boolean } {
+  const { user } = useSession();
+  return { can: (permission: string) => hasPermission(user, permission) };
+}
+
+/** Conditionally render children when the staff user holds `permission`. UI-only. */
+export function RequirePermission({
+  permission,
+  children,
+  fallback = null,
+}: {
+  permission: string;
+  children: ReactNode;
+  fallback?: ReactNode;
+}) {
+  const { user, status } = useSession();
+  if (status === "loading") return fallback;
+  if (!hasPermission(user, permission)) return fallback;
+  return children;
+}
+
 /**
  * Conditionally render children when a session is authenticated.
  * UI-only — route protection belongs in protectRoutes (app proxy.ts).

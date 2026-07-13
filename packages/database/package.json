@@ -11,12 +11,14 @@
     "migrate:deploy": "prisma migrate deploy",
     "db:push": "prisma db push",
     "seed": "tsx src/seed.ts",
+    "rbac:sync": "tsx src/rbac-seed.ts",
     "studio": "prisma studio"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"
   },
   "dependencies": {
+    "@estatify/types": "workspace:*",
     "@prisma/client": "^6.2.0",
     "argon2": "^0.41.1"
   },

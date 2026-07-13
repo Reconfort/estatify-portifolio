@@ -3,7 +3,7 @@ import {
   prisma,
   withTenant,
   withUser,
-  asPlatform,
+  withPlatform,
   type PrismaClient,
   type TenantTx,
 } from "@estatify/database";
@@ -40,7 +40,8 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
     return withUser(this.client, userId, fn);
   }
 
-  asPlatform<T>(fn: (tx: TenantTx) => Promise<T>): Promise<T> {
-    return asPlatform(this.client, fn);
+  /** Platform-staff cross-tenant access (sets app.platform GUC). Behind PlatformGuard only. */
+  withPlatform<T>(fn: (tx: TenantTx) => Promise<T>): Promise<T> {
+    return withPlatform(this.client, fn);
   }
 }

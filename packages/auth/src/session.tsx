@@ -2,7 +2,12 @@
 
 import * as React from "react";
 import type { AuthTokens, AuthUser } from "@estatify/types";
-import { authApi, clearAccessToken, setAccessToken } from "@estatify/api-client";
+import {
+  AUTH_EXPIRED_EVENT,
+  authApi,
+  clearAccessToken,
+  setAccessToken,
+} from "@estatify/api-client";
 
 export type SessionStatus = "loading" | "authenticated" | "unauthenticated";
 
@@ -113,6 +118,22 @@ export function SessionProvider({
       cancelled = true;
     };
   }, [initialUser, initialAccessToken]);
+
+  // Hard-invalidation: a request was rejected and refresh was refused (account or
+  // tenant suspended server-side). Clear session and bounce to the sign-in page.
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onExpired = () => {
+      clearAccessToken();
+      setUser(null);
+      setStatus("unauthenticated");
+      if (!window.location.pathname.startsWith("/login")) {
+        window.location.assign("/login?reason=session_expired");
+      }
+    };
+    window.addEventListener(AUTH_EXPIRED_EVENT, onExpired);
+    return () => window.removeEventListener(AUTH_EXPIRED_EVENT, onExpired);
+  }, []);
 
   const value = React.useMemo<SessionValue>(
     () => ({ user, status, setAuth, reload, signOut }),

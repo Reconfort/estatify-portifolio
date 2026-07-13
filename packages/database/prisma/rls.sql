@@ -36,3 +36,21 @@ ALTER TABLE "Invite" FORCE  ROW LEVEL SECURITY;
 CREATE POLICY tenant_isolation ON "Invite"
   USING ("tenantId" = NULLIF(current_setting('app.current_tenant', true), '')::uuid)
   WITH CHECK ("tenantId" = NULLIF(current_setting('app.current_tenant', true), '')::uuid);
+
+-- =============================================================================
+-- PLATFORM BYPASS  (Access Management — admins read/write across ALL tenants)
+-- =============================================================================
+-- Permissive policies are OR'd, so these ADD a second way a row is visible:
+-- when `app.platform = 'on'`. That GUC is set ONLY inside withPlatform(), which
+-- is only called from services behind PlatformGuard (authenticated + authorized
+-- platform staff). Normal tenant requests never set it, so tenant isolation is
+-- unchanged for customers. Apply as its own migration alongside the above.
+CREATE POLICY platform_bypass ON "Agency" FOR ALL
+  USING (current_setting('app.platform', true) = 'on')
+  WITH CHECK (current_setting('app.platform', true) = 'on');
+CREATE POLICY platform_bypass ON "Membership" FOR ALL
+  USING (current_setting('app.platform', true) = 'on')
+  WITH CHECK (current_setting('app.platform', true) = 'on');
+CREATE POLICY platform_bypass ON "Invite" FOR ALL
+  USING (current_setting('app.platform', true) = 'on')
+  WITH CHECK (current_setting('app.platform', true) = 'on');

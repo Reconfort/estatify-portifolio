@@ -51,16 +51,25 @@ export async function withUser<T>(
 }
 
 /**
- * Escape hatch for the platform-staff path (ADR: audited, never ambient).
- * Runs a transaction with NO tenant GUC set — RLS therefore matches zero
- * tenant-scoped rows unless the caller explicitly filters. Use only in
- * platform-admin services that have passed a platform-role check.
+ * Platform-staff cross-tenant access (ADR: audited, never ambient).
+ *
+ * Sets `app.platform = 'on'` for the transaction, which the `platform_bypass`
+ * RLS policy (see prisma/rls.sql) recognizes to lift tenant scoping on
+ * Agency/Membership/Invite. This is how Access Management admins read/write
+ * across ALL tenants. It MUST only be called from services sitting behind
+ * PlatformGuard — never on a user-facing tenant path.
  */
-export async function asPlatform<T>(
+export async function withPlatform<T>(
   prisma: PrismaClient,
   fn: (tx: TenantTx) => Promise<T>,
 ): Promise<T> {
-  return prisma.$transaction(async (tx) => fn(tx as unknown as TenantTx));
+  return prisma.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT set_config('app.platform', 'on', true)`;
+    return fn(tx as unknown as TenantTx);
+  });
 }
+
+/** @deprecated Use withPlatform. Kept for back-compat; now aliases withPlatform. */
+export const asPlatform = withPlatform;
 
 export type { Prisma };

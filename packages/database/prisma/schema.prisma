@@ -39,17 +39,53 @@ enum PlatformRole {
   superadmin
 }
 
+enum TenantPlan {
+  free
+  starter
+  growth
+  scale
+  enterprise
+}
+
+enum StaffDepartment {
+  engineering
+  support
+  finance
+  customer_success
+  marketing
+  operations
+  executive
+}
+
+enum StaffStatus {
+  active
+  disabled
+  invited
+}
+
+enum UserStatus {
+  active
+  suspended
+}
+
 /// The isolation root. One Tenant == one Agency (M2-D1). Not itself RLS-scoped
 /// (it has no parent tenant); access is gated by membership at the app layer.
 model Tenant {
-  id          String         @id @default(uuid()) @db.Uuid
-  slug        String         @unique // -> {slug}.estatify.com
-  status      TenantStatus   @default(pending)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  agency      Agency?
-  memberships Membership[]
-  invites     Invite[]
+  id           String       @id @default(uuid()) @db.Uuid
+  slug         String       @unique // -> {slug}.estatify.com
+  status       TenantStatus @default(pending)
+  plan         TenantPlan   @default(free)
+  lastActiveAt DateTime?
+  deletedAt    DateTime? // soft delete (platform admin)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  agency       Agency?
+  memberships  Membership[]
+  invites      Invite[]
+
+  @@index([status])
+  @@index([plan])
+  @@index([deletedAt])
 }
 
 /// The tenant's public brand/profile. RLS-scoped.
@@ -74,12 +110,85 @@ model User {
   emailVerified       Boolean              @default(false)
   isPlatformStaff     Boolean              @default(false)
   platformRole        PlatformRole         @default(none)
+  /// Universal kill switch. Suspending flips this and bumps tokenVersion.
+  status              UserStatus           @default(active)
+  /// Session/token version. Every access token embeds the value at issue time;
+  /// bumping it invalidates ALL of the user's live access tokens immediately.
+  tokenVersion        Int                  @default(0)
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
   memberships         Membership[]
   sessions            Session[]
   verificationTokens  VerificationToken[]
   passwordResetTokens PasswordResetToken[]
+  staffProfile        StaffProfile?
+}
+
+// ===========================================================================
+// PLATFORM RBAC & STAFF (Access Management)
+// These are GLOBAL platform tables — NOT tenant-scoped, so no RLS policy.
+// Access is gated by the platform authorization layer (PermissionsGuard).
+// ===========================================================================
+
+/// A single, code-defined capability (e.g. "tenant.view"). Read-only in product;
+/// the catalog is synced from @estatify/types PERMISSION_CATALOG on seed.
+model Permission {
+  id          String           @id @default(uuid()) @db.Uuid
+  key         String           @unique // "tenant.view"
+  module      String // "Tenants"
+  action      String // "view"
+  description String
+  createdAt   DateTime         @default(now())
+  roles       RolePermission[]
+
+  @@index([module])
+}
+
+/// A named bundle of permissions assignable to platform staff.
+model Role {
+  id          String           @id @default(uuid()) @db.Uuid
+  name        String           @unique
+  description String           @default("")
+  isSystem    Boolean          @default(false) // system roles (Super Admin) can't be deleted
+  deletedAt   DateTime? // soft delete
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  permissions RolePermission[]
+  staff       StaffProfile[]
+}
+
+/// Join: role ↔ permission (many-to-many).
+model RolePermission {
+  roleId       String     @db.Uuid
+  permissionId String     @db.Uuid
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@index([permissionId])
+}
+
+/// Estatify employee profile, attached to a global User (isPlatformStaff=true).
+model StaffProfile {
+  id               String          @id @default(uuid()) @db.Uuid
+  userId           String          @unique @db.Uuid
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName         String
+  avatarUrl        String?
+  department       StaffDepartment @default(operations)
+  roleId           String?         @db.Uuid
+  role             Role?           @relation(fields: [roleId], references: [id])
+  status           StaffStatus     @default(active)
+  twoFactorEnabled Boolean         @default(false)
+  lastLoginAt      DateTime?
+  deletedAt        DateTime? // soft delete
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([roleId])
+  @@index([department])
+  @@index([status])
+  @@index([deletedAt])
 }
 
 /// Binds a user to a tenant with a role. RLS-scoped.
