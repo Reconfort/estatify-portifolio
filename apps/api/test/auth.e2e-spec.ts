@@ -67,11 +67,15 @@ describe("Auth (e2e)", () => {
   it("gives an identical error for wrong password vs unknown user (no enumeration)", async () => {
     const wrongPass = await request(app.getHttpServer())
       .post("/auth/login")
-      .send({ email, password: "wrong-password-here" })
+      .send({ email, password: "wrong-password-here", portal: "workspace" })
       .expect(401);
     const unknown = await request(app.getHttpServer())
       .post("/auth/login")
-      .send({ email: `nobody-${suffix}@test.local`, password: "whatever-value" })
+      .send({
+        email: `nobody-${suffix}@test.local`,
+        password: "whatever-value",
+        portal: "workspace",
+      })
       .expect(401);
     expect(wrongPass.body.message).toBe(unknown.body.message);
   });
@@ -79,7 +83,7 @@ describe("Auth (e2e)", () => {
   it("logs in and rotates the refresh token", async () => {
     const login = await request(app.getHttpServer())
       .post("/auth/login")
-      .send({ email, password })
+      .send({ email, password, portal: "workspace" })
       .expect(200);
     const cookie = login.headers["set-cookie"][0].split(";")[0];
 
@@ -93,6 +97,15 @@ describe("Auth (e2e)", () => {
 
     // Reusing the OLD (now revoked) refresh token must fail.
     await request(app.getHttpServer()).post("/auth/refresh").set("Cookie", cookie).expect(401);
+  });
+
+  it("rejects agency owners from the platform portal", async () => {
+    const res = await request(app.getHttpServer())
+      .post("/auth/login")
+      .send({ email, password, portal: "platform" })
+      .expect(403);
+    expect(String(res.body.message)).toMatch(/workspace/i);
+    expect(res.headers["set-cookie"]).toBeUndefined();
   });
 
   it("always 200s on forgot-password (no enumeration)", async () => {

@@ -5,11 +5,17 @@
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./proxy": "./src/proxy.ts",
+    "./constants": "./src/constants.ts"
+  },
   "dependencies": {
     "@estatify/api-client": "workspace:*",
     "@estatify/types": "workspace:*"
   },
   "peerDependencies": {
+    "next": ">=15",
     "react": "^19",
     "react-dom": "^19"
   },

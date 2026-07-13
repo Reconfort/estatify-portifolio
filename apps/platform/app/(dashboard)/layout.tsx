@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 
 const SIDEBAR_ITEMS = [
-  { label: "Console Home", href: "/", icon: LayoutDashboard },
+  { label: "Console Home", href: "/dashboard", icon: LayoutDashboard },
   { label: "Tenants Directory", href: "/tenants", icon: Layers },
   { label: "Database Pools", href: "/db", icon: Database },
   { label: "System Health", href: "/health", icon: Activity },
@@ -59,7 +59,7 @@ export default function PlatformDashboardLayout({ children }: { children: React.
         <nav className="flex-1 space-y-1.5 px-4 py-6">
           {SIDEBAR_ITEMS.map((item) => {
             const Icon = item.icon;
-            const active = pathname === item.href;
+            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
               <Link
                 key={item.href}
@@ -123,7 +123,7 @@ export default function PlatformDashboardLayout({ children }: { children: React.
             <nav className="flex-1 space-y-2">
               {SIDEBAR_ITEMS.map((item) => {
                 const Icon = item.icon;
-                const active = pathname === item.href;
+                const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
                   <Link
                     key={item.href}
@@ -203,7 +203,10 @@ export default function PlatformDashboardLayout({ children }: { children: React.
                   <button
                     onClick={() => {
                       setProfileDropdownOpen(false);
-                      void signOut();
+                      void (async () => {
+                        await signOut();
+                        window.location.assign("/login");
+                      })();
                     }}
                     className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-body-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
                   >

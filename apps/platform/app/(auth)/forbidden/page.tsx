@@ -1,15 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "@estatify/ui";
 import { ShieldAlert, ArrowLeft } from "lucide-react";
 
+const WORKSPACE_URL = (process.env.NEXT_PUBLIC_WORKSPACE_URL || "http://localhost:3000").replace(
+  /\/$/,
+  "",
+);
+
 export default function ForbiddenPage() {
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-4 py-12 relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-destructive/5 blur-3xl"></div>
+    <div className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-background px-4 py-12">
+      <div className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-destructive/5 blur-3xl" />
 
-      <div className="w-full max-w-md space-y-8 z-10 text-center">
+      <div className="z-10 w-full max-w-md space-y-8 text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 text-destructive">
           <ShieldAlert className="h-8 w-8" />
         </div>
@@ -23,19 +27,18 @@ export default function ForbiddenPage() {
           </p>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm text-body-sm text-muted-foreground">
-          This portal is reserved strictly for authenticated administrator and support team members.
-          If you are looking for your workspace dashboard, please log in at your tenant's workspace
-          domain.
+        <div className="rounded-xl border border-border bg-card p-6 text-body-sm text-muted-foreground shadow-sm">
+          This portal is reserved for authenticated administrator and support team members. Agency
+          users should continue in Workspace.
         </div>
 
         <div className="pt-2">
-          <Link href="/login">
-            <Button variant="outline" className="inline-flex items-center gap-2 h-11 px-6">
+          <a href={`${WORKSPACE_URL}/dashboard`}>
+            <Button variant="outline" className="inline-flex h-11 items-center gap-2 px-6">
               <ArrowLeft className="h-4.5 w-4.5" />
-              <span>Back to Login</span>
+              <span>Go to Workspace</span>
             </Button>
-          </Link>
+          </a>
         </div>
       </div>
     </div>

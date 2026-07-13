@@ -53,7 +53,7 @@ export function RequireRole({
 
 /**
  * Conditionally render children when a session is authenticated.
- * Redirects belong in Next middleware (P7); this only gates UI.
+ * UI-only — route protection belongs in protectRoutes (app proxy.ts).
  */
 export function RequireAuth({
   children,

@@ -22,7 +22,7 @@ import {
 import { VisitEstatifyLink } from "../../components/visit-estatify-link";
 
 const SIDEBAR_ITEMS = [
-  { label: "Dashboard", href: "/", icon: LayoutDashboard },
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Properties", href: "/properties", icon: Building2 },
   { label: "Leads", href: "/leads", icon: Users },
   { label: "Agents", href: "/agents", icon: ShieldCheck },
@@ -61,7 +61,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <nav className="flex-1 space-y-1.5 px-4 py-6">
           {SIDEBAR_ITEMS.map((item) => {
             const Icon = item.icon;
-            const active = pathname === item.href;
+            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
               <Link
                 key={item.href}
@@ -134,7 +134,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <nav className="flex-1 space-y-2">
               {SIDEBAR_ITEMS.map((item) => {
                 const Icon = item.icon;
-                const active = pathname === item.href;
+                const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
                   <Link
                     key={item.href}
@@ -217,7 +217,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <button
                     onClick={() => {
                       setProfileDropdownOpen(false);
-                      void signOut();
+                      void (async () => {
+                        await signOut();
+                        window.location.assign("/sign-in");
+                      })();
                     }}
                     className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-body-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
                   >

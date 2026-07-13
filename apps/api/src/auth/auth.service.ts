@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   Logger,
   UnauthorizedException,
@@ -102,6 +103,18 @@ export class AuthService {
     const ok = await this.passwords.verify(user.passwordHash, input.password);
     if (!ok) throw new UnauthorizedException("Invalid email or password");
 
+    // Portal seam — never issue a session for the wrong product surface.
+    if (input.portal === "workspace" && user.isPlatformStaff) {
+      throw new ForbiddenException(
+        "This account is for the Platform portal. Sign in at platform.estatify.africa.",
+      );
+    }
+    if (input.portal === "platform" && !user.isPlatformStaff) {
+      throw new ForbiddenException(
+        "This account is for Workspace. Sign in at workspace.estatify.africa.",
+      );
+    }
+
     const memberships = await this.loadMemberships(user.id);
     const activeTenantId = this.pickActive(memberships);
     return this.issue(user, activeTenantId, ctx);
@@ -137,7 +150,8 @@ export class AuthService {
       data: { revokedAt: new Date() },
     });
     const user = await this.prisma.client.user.findUniqueOrThrow({ where: { id: session.userId } });
-    return this.issue(user, session.tenantId ?? null, ctx, session.familyId);
+    const tenantId = session.tenantId && session.tenantId.length > 0 ? session.tenantId : null;
+    return this.issue(user, tenantId, ctx, session.familyId);
   }
 
   // ------------------------------------------------------------------ logout
@@ -264,7 +278,8 @@ export class AuthService {
     if (!user) throw new UnauthorizedException();
 
     const memberships = await this.loadMemberships(userId);
-    const active = activeTenantId ?? this.pickActive(memberships);
+    const requested = activeTenantId && activeTenantId.length > 0 ? activeTenantId : undefined;
+    const active = requested ?? this.pickActive(memberships);
 
     let agencyName: string | null = null;
     if (active) {

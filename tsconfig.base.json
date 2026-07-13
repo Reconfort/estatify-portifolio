@@ -28,6 +28,8 @@
       "@estatify/providers": ["./packages/providers/src/index.ts"],
       "@estatify/hooks": ["./packages/hooks/src/index.ts"],
       "@estatify/auth": ["./packages/auth/src/index.ts"],
+      "@estatify/auth/proxy": ["./packages/auth/src/proxy.ts"],
+      "@estatify/auth/constants": ["./packages/auth/src/constants.ts"],
       "@estatify/api-client": ["./packages/api-client/src/index.ts"],
       "@estatify/types": ["./packages/types/src/index.ts"],
       "@estatify/config": ["./packages/config/src/index.ts"],

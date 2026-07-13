@@ -105,7 +105,7 @@ export default function VerifyEmailPage() {
                     </p>
                   </div>
                   <div className="pt-4">
-                    <Link href="/">
+                    <Link href="/dashboard">
                       <Button className="flex h-11 w-full items-center justify-center gap-2">
                         <span>Go to Dashboard</span>
                         <ArrowRight className="h-4.5 w-4.5" />

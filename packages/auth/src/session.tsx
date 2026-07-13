@@ -77,6 +77,8 @@ export function SessionProvider({
   const signOut = React.useCallback(async () => {
     try {
       await authApi.logout();
+    } catch {
+      // Always clear local state even if the network call fails.
     } finally {
       clearAccessToken();
       setUser(null);

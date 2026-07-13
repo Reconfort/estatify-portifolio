@@ -56,10 +56,16 @@ export const registerSchema = z.object({
 });
 export type RegisterInput = z.infer<typeof registerSchema>;
 
+/** Which product surface is requesting login — enforced server-side. */
+export const authPortalSchema = z.enum(["workspace", "platform"]);
+export type AuthPortal = z.infer<typeof authPortalSchema>;
+
 /** POST /auth/login — do NOT apply the full password policy to existing creds. */
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, "Password is required"),
+  /** Required: staff may only use platform; agency users may only use workspace. */
+  portal: authPortalSchema,
 });
 export type LoginInput = z.infer<typeof loginSchema>;
 

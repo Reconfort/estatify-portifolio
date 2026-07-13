@@ -278,11 +278,12 @@ guard for conditional UI — cosmetic only; the API is the real enforcement poin
 Order: `JwtAuthGuard` → `TenantGuard` → `RolesGuard`. Public endpoints:
 `/auth/register|login|forgot|reset|verify|refresh`, health.
 
-**Frontend (`apps/workspace`, `apps/platform`):** Next.js 16 middleware checks for
-a valid session (refresh cookie presence + lightweight `/auth/me`), redirects
-unauthenticated users to `/sign-in`, and enforces route groups: `app/(auth)/*`
-(sign-in, sign-up, verify, forgot, reset — public) vs `app/(dashboard)/*` (gated).
-Server Components read the user server-side; no flash of protected content.
+**Frontend (`apps/workspace`, `apps/platform`):** Next.js 16 `proxy.ts` uses shared
+`protectRoutes` from `@estatify/auth`. It validates the refresh cookie via
+`POST /auth/refresh`, redirects unauthenticated users to `/sign-in` (workspace) or
+`/login` (platform), redirects authenticated users away from guest-only routes to
+`/dashboard`, and enforces role seams (customers ↔ workspace, staff ↔ platform).
+Server Components read the user from proxy-injected headers; no flash of protected content.
 
 ---
 

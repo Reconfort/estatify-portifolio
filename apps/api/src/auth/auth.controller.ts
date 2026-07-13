@@ -8,6 +8,7 @@ import {
   ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
   ApiBadRequestResponse,
   ApiNoContentResponse,
 } from "@nestjs/swagger";
@@ -62,6 +63,7 @@ export class AuthController {
   @ApiOperation({ summary: "Sign in with email + password" })
   @ApiOkResponse({ description: "Signed in", type: AuthTokensDto })
   @ApiUnauthorizedResponse({ description: "Invalid email or password" })
+  @ApiForbiddenResponse({ description: "Correct credentials but wrong portal for this account" })
   async login(
     @Body() body: LoginDto,
     @Req() req: Request,

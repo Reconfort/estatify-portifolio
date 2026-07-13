@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useSession } from "@estatify/auth";
 import { useRegister } from "@estatify/api-client";
 import { useZodForm } from "@estatify/hooks";
@@ -12,7 +11,6 @@ import { Compass, AlertCircle, Sparkles } from "lucide-react";
 import { VisitEstatifyLink } from "../../../components/visit-estatify-link";
 
 export default function SignUpPage() {
-  const router = useRouter();
   const session = useSession();
   const registerMut = useRegister();
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
@@ -31,7 +29,7 @@ export default function SignUpPage() {
     try {
       const tokens = await registerMut.mutateAsync(data);
       session.setAuth(tokens);
-      router.push("/");
+      window.location.assign("/dashboard");
     } catch (err: unknown) {
       const message =
         err instanceof Error
