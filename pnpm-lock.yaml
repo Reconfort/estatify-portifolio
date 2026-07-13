@@ -215,16 +215,32 @@ importers:
         version: 3.0.0
 
   apps/marketing:
+    dependencies:
+      "@estatify/design-system":
+        specifier: workspace:*
+        version: link:../../packages/design-system
     devDependencies:
       nx:
         specifier: 23.0.1
         version: 23.0.1
 
-  apps/platform: {}
+  apps/platform:
+    dependencies:
+      "@estatify/design-system":
+        specifier: workspace:*
+        version: link:../../packages/design-system
 
-  apps/sites: {}
+  apps/sites:
+    dependencies:
+      "@estatify/design-system":
+        specifier: workspace:*
+        version: link:../../packages/design-system
 
-  apps/workspace: {}
+  apps/workspace:
+    dependencies:
+      "@estatify/design-system":
+        specifier: workspace:*
+        version: link:../../packages/design-system
 
   packages/api-client:
     dependencies:
