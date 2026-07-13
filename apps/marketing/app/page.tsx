@@ -1,46 +1,28 @@
+import { DotBackground } from "@estatify/ui";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Hero } from "@/components/landing/hero";
-import {
-  AboutStats,
-  Commitment,
-  CtaBand,
-  Enquiry,
-  HowItWorks,
-  Logos,
-  Pricing,
-  ServicesList,
-  TemplateShowcase,
-} from "@/components/landing/sections";
+import { CtaBand, Problem, Pricing, Process, Solution } from "@/components/landing/sections";
 
 /**
- * Landing page — ordered as a 30-second trust funnel:
- * what it is (Hero) → who uses it (Logos) → how it works (Steps) →
- * the product (Templates) → what you get (Services) → proof (Stats,
- * Commitment) → price (Pricing) → act (Enquiry, CTA).
- *
- * The Hero is pinned (sticky); this curtain wrapper scrolls over it with a
- * rounded top edge — the section-transition parallax.
+ * Landing page — fixed dotted backdrop (z-0) sits behind all content (z-10).
  */
 export default function HomePage() {
   return (
     <>
-      <SiteHeader />
-      <main className="flex-1">
-        <Hero />
-        <div className="relative z-10 -mt-10 rounded-t-3xl bg-background shadow-[0_-24px_48px_-24px_rgba(0,0,0,0.35)]">
-          <Logos />
-          <HowItWorks />
-          <TemplateShowcase />
-          <ServicesList />
-          <AboutStats />
-          <Commitment />
+      <DotBackground />
+      <div className="relative z-10 flex min-h-full flex-col">
+        <SiteHeader />
+        <main className="flex-1">
+          <Hero />
+          <Problem />
+          <Solution />
+          <Process />
           <Pricing />
-          <Enquiry />
           <CtaBand />
-        </div>
-      </main>
-      <SiteFooter />
+        </main>
+        <SiteFooter />
+      </div>
     </>
   );
 }

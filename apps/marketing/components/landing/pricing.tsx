@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@estatify/utils";
 import { ArrowRightIcon, CheckIcon, SparkleIcon } from "@estatify/ui/icons";
-import { Badge, buttonVariants, Container } from "@estatify/ui";
+import { Badge, Button, Container } from "@estatify/ui";
 import { pricing } from "@/components/landing-data";
 import { workspaceSignUpUrl } from "@/lib/workspace-urls";
 import { SectionHeader } from "./section-header";
@@ -123,13 +123,11 @@ function PricingGrid() {
                 ))}
               </ul>
 
-              <a
+              <Button
                 href={tier.name === "Scale" ? "#contact" : workspaceSignUpUrl()}
+                variant={isFeatured ? "accent" : "outline"}
                 className={cn(
-                  buttonVariants({
-                    variant: isFeatured ? "accent" : "outline",
-                  }),
-                  "group mt-auto w-full rounded-full",
+                  "group mt-auto w-full",
                   !isFeatured && "hover:border-accent/40 hover:text-foreground",
                 )}
               >
@@ -140,7 +138,7 @@ function PricingGrid() {
                     aria-hidden
                   />
                 ) : null}
-              </a>
+              </Button>
             </div>
           </motion.article>
         );

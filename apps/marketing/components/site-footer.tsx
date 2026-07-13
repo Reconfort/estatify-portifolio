@@ -12,7 +12,7 @@ const columns = [
 export function SiteFooter() {
   return (
     // relative z-10 keeps the footer above the pinned hero curtain.
-    <footer className="relative z-10 border-t border-border bg-background py-16">
+    <footer className="relative z-10 border-t border-border/60 py-16">
       <Container className="flex flex-col gap-12">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-6">
           <div className="flex flex-col gap-3 lg:col-span-2">
@@ -40,7 +40,9 @@ export function SiteFooter() {
           <p className="text-caption text-muted-foreground">
             © {new Date().getFullYear()} Estatify. All rights reserved.
           </p>
-          <p className="text-caption text-muted-foreground">Built for the African real estate market.</p>
+          <p className="text-caption text-muted-foreground">
+            Built for the African real estate market.
+          </p>
         </div>
       </Container>
     </footer>

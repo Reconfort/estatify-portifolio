@@ -29,6 +29,16 @@ export {
   MapPin as LocationIcon,
   Search as SearchIcon,
   Sparkles as SparkleIcon,
+  Hourglass as HourglassIcon,
+  Frown as FrownIcon,
+  WandSparkles as WandIcon,
+  Clock as ClockIcon,
+  User as UserIcon,
+  Loader2 as LoaderIcon,
+  Lock as LockIcon,
+  Star as StarIcon,
+  Mail as MailIcon,
+  MoreVertical as MoreVerticalIcon,
 } from "lucide-react";
 
 export type { LucideIcon as IconComponent } from "lucide-react";

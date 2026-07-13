@@ -8,6 +8,11 @@
  * Tags: scope:shared, type:ui
  */
 export * from "./button";
+export * from "./announcement-badge";
+export * from "./dot-background";
+export * from "./pointer-highlight";
+export * from "./coverflow-carousel";
+export * from "./wobble-card";
 export * from "./app-image";
 export * from "./primitives";
 export * from "./spotlight";

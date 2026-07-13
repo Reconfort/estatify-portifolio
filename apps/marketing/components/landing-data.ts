@@ -8,10 +8,9 @@ export const brandLogo = "/assets/logo-gp.svg";
 
 export const nav = {
   links: [
-    { label: "Features", href: "#features" },
-    { label: "Showcase", href: "#showcase" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Docs", href: "#" },
+    { label: "About", href: "/#problem" },
+    { label: "Templates", href: "/templates" },
+    { label: "Pricing", href: "/#pricing" },
   ],
 } as const;
 
@@ -170,7 +169,13 @@ export const pricing = [
     price: "$49",
     cadence: "/mo",
     blurb: "For agencies scaling their pipeline.",
-    features: ["Custom domain", "Unlimited listings", "Lead pipeline + automations", "Team of 10 agents", "Analytics"],
+    features: [
+      "Custom domain",
+      "Unlimited listings",
+      "Lead pipeline + automations",
+      "Team of 10 agents",
+      "Analytics",
+    ],
     cta: "Start trial",
     featured: true,
   },
@@ -179,7 +184,13 @@ export const pricing = [
     price: "Custom",
     cadence: "",
     blurb: "For multi-branch and franchises.",
-    features: ["Everything in Growth", "Unlimited agents", "Priority support", "White-label billing", "API access"],
+    features: [
+      "Everything in Growth",
+      "Unlimited agents",
+      "Priority support",
+      "White-label billing",
+      "API access",
+    ],
     cta: "Talk to sales",
     featured: false,
   },
@@ -221,26 +232,155 @@ export const testimonials = [
 /* ------------------------------------------------------------------------ */
 
 export const heroV2 = {
-  eyebrow: "Website templates for real estate professionals",
-  title: "Pick a template. Launch your agency online.",
-  statement:
-    "Estatify is the template marketplace for real estate: choose a site design you love, subscribe, make it yours — brand, listings, domain — and publish from one dashboard. No developers, no code.",
-  cta: { label: "Browse templates", href: "#templates" },
-  secondaryCta: { label: "See how it works", href: "#how-it-works" },
-  pillars: [
+  badge: {
+    text: "New: Agency sites launched!",
+    cta: "Start free →",
+    href: "#pricing",
+  },
+  title: {
+    before: "Launch your agency website fast within",
+    highlight: "Few hours",
+  },
+  subtitle:
+    "Get a standout real estate site without hiring a design agency — brand, listings, and leads in one place.",
+  cta: { label: "Browse all templates", href: "/templates" },
+  secondaryCta: { label: "See the problem", href: "#problem" },
+  seenIn: {
+    label: "Frequently seen in:",
+    /** Rotates in pages of 5 every 5s in the hero. */
+    pageSize: 5,
+    intervalMs: 5000,
+    brands: [
+      { name: "Acacia", icon: "grid" },
+      { name: "Lagos Living", icon: "wordmark" },
+      { name: "Nile", icon: "chat" },
+      { name: "Sahel", icon: "leaf" },
+      { name: "Savanna", icon: "bars" },
+      { name: "Kilimanjaro", icon: "grid" },
+      { name: "Atlas Homes", icon: "wordmark" },
+      { name: "Baobab", icon: "chat" },
+      { name: "Zambezi", icon: "leaf" },
+      { name: "Casablanca", icon: "bars" },
+      { name: "Ivory Coast", icon: "grid" },
+      { name: "Cape Realty", icon: "wordmark" },
+      { name: "Serengeti", icon: "chat" },
+      { name: "Accra Estates", icon: "leaf" },
+      { name: "Mombasa", icon: "bars" },
+    ],
+  },
+} as const;
+
+export const problem = {
+  eyebrow: "The problem",
+  title: {
+    lead: "Building a new website",
+    muted: "can be challenging",
+  },
+  cards: [
     {
-      title: "Designer-grade templates",
-      body: "Every template is crafted for real estate — listings, search, agent pages — and looks agency-built out of the box.",
+      key: "time",
+      icon: "hourglass",
+      title: "Your time and budget are stretched thin",
+      body: "Weeks and thousands wasted in designing, rewriting copy, revisions and development.",
+      tone: "violet",
     },
     {
-      title: "Customize without code",
-      body: "Swap in your logo, colors, and properties from a simple dashboard. What you see is what goes live.",
+      key: "convert",
+      icon: "frown",
+      title: "Your website does not convert well",
+      body: "You have a great business idea, but you have no clue how to go about marketing it the right way.",
+      tone: "orange",
     },
     {
-      title: "Publish and grow",
-      body: "Go live on your own domain in a day. Every enquiry lands in your built-in lead pipeline.",
+      key: "execution",
+      icon: "wand",
+      title: "Execution matters more than ever",
+      body: "Design is no longer nice to have — you need excellence and that takes time and money.",
+      tone: "teal",
     },
   ],
+} as const;
+
+export const solution = {
+  eyebrow: "The solution",
+  title: {
+    lead: "It's easier than",
+    muted: "what you think",
+  },
+  cards: [
+    {
+      key: "design",
+      title: "Premium design with high-end appeal",
+      description: "Look premium and leave your competitors in awe",
+      className: "lg:col-span-2",
+      skeleton: "design" as const,
+    },
+    {
+      key: "invest",
+      title: "Investing in a website that makes sense",
+      description: "Save money for design and development",
+      className: "lg:col-span-1",
+      skeleton: "invest" as const,
+    },
+    {
+      key: "support",
+      title: "Fast support for smooth experience",
+      description: "Dedicated email support that cares about you",
+      className: "lg:col-span-1",
+      skeleton: "support" as const,
+    },
+    {
+      key: "launch",
+      title: "Easy launch, no coding required",
+      description: "Organized, high-quality and responsive build",
+      className: "lg:col-span-2",
+      skeleton: "launch" as const,
+    },
+  ],
+} as const;
+
+export const processSection = {
+  eyebrow: "The process",
+  title: {
+    lead: "It's simple and fast:",
+    muted: "Customize, launch, grow",
+  },
+  steps: [
+    {
+      key: "purchase",
+      title: "Purchase a template",
+      body: "Browse our selection of high-quality templates, designed for different types of businesses.",
+    },
+    {
+      key: "customize",
+      title: "Make it yours",
+      body: "Easily customize all the colors, text styles, and content—or even layout—to match your brand.",
+    },
+    {
+      key: "launch",
+      title: "Launch and deliver",
+      body: "Connect your domain, hit the publish button and watch your website converting first visitors.",
+    },
+  ],
+  templates: [
+    "/assets/showcase/coastal-villas.jpg",
+    "/assets/showcase/city-heights.jpg",
+    "/assets/showcase/garden-estate.jpg",
+    "/assets/bento/modern-home.jpg",
+    "/assets/bento/listings-home.jpg",
+    "/assets/Concrete_Building_Daytime.jpg",
+  ],
+  colors: [
+    { key: "violet", label: "Violet", swatch: "#8B5CF6" },
+    { key: "blue", label: "Blue", swatch: "#3B82F6" },
+    { key: "green", label: "Green", swatch: "#22C55E" },
+    { key: "red", label: "Red", swatch: "#EF4444" },
+  ],
+  publish: {
+    domain: "youragency.estatify.rw",
+    author: "Sylvester",
+    when: "1d ago",
+  },
 } as const;
 
 export const howItWorks = {
@@ -252,7 +392,7 @@ export const howItWorks = {
   footer: {
     text: "Everything you need to launch a professional agency site.",
     label: "View all templates",
-    href: "#templates",
+    href: "/templates",
   },
   steps: [
     {
@@ -274,6 +414,74 @@ export const howItWorks = {
       n: "04",
       title: "Publish and sell",
       body: "Launch on your own domain. Leads, analytics, and updates all run from the same dashboard.",
+    },
+  ],
+} as const;
+
+/** Coverflow carousel under the hero — template / product stills. */
+export const templateCarousel = {
+  ariaLabel: "Template previews",
+  intervalMs: 4000,
+  items: [
+    {
+      id: "coastal",
+      label: "Coastal",
+      image: "/assets/showcase/coastal-villas.jpg",
+      alt: "Coastal villas template preview",
+    },
+    {
+      id: "metro",
+      label: "Metro",
+      image: "/assets/showcase/city-heights.jpg",
+      alt: "City heights template preview",
+    },
+    {
+      id: "terra",
+      label: "Terra",
+      image: "/assets/showcase/garden-estate.jpg",
+      alt: "Garden estate template preview",
+    },
+    {
+      id: "modern",
+      label: "Modern Home",
+      image: "/assets/bento/modern-home.jpg",
+      alt: "Modern home listing preview",
+    },
+    {
+      id: "listings",
+      label: "Listings",
+      image: "/assets/bento/listings-home.jpg",
+      alt: "Listings home preview",
+    },
+    {
+      id: "agents",
+      label: "Agents",
+      image: "/assets/bento/listings-agent.jpg",
+      alt: "Agent listings preview",
+    },
+    {
+      id: "analytics",
+      label: "Analytics",
+      image: "/assets/bento/analytics-team.jpg",
+      alt: "Analytics dashboard preview",
+    },
+    {
+      id: "agent-1",
+      label: "Directory",
+      image: "/assets/bento/agent-1.jpg",
+      alt: "Agent directory preview",
+    },
+    {
+      id: "agent-2",
+      label: "Profiles",
+      image: "/assets/bento/agent-2.jpg",
+      alt: "Agent profile preview",
+    },
+    {
+      id: "concrete",
+      label: "Urban",
+      image: "/assets/Concrete_Building_Daytime.jpg",
+      alt: "Urban building preview",
     },
   ],
 } as const;
@@ -346,11 +554,7 @@ export const showcaseV2 = {
   marquee: "Featured on Estatify",
   title: "Real sites. Real listings. Real agencies.",
   rating: { score: "4.9", note: "Rated by agencies across 12 markets" },
-  avatars: [
-    "/assets/bento/agent-1.jpg",
-    "/assets/bento/agent-2.jpg",
-    "/assets/bento/agent-3.jpg",
-  ],
+  avatars: ["/assets/bento/agent-1.jpg", "/assets/bento/agent-2.jpg", "/assets/bento/agent-3.jpg"],
 } as const;
 
 export const commitment = {
@@ -379,6 +583,11 @@ export const enquiry = {
   marquee: "Quick enquiry",
   title: "Talk to a specialist about your agency's next step",
   note: "We reply within one business day. Required fields are marked *",
-  topics: ["Launching a new agency site", "Migrating an existing site", "Multi-branch / franchise setup", "Partnership & resellers"],
+  topics: [
+    "Launching a new agency site",
+    "Migrating an existing site",
+    "Multi-branch / franchise setup",
+    "Partnership & resellers",
+  ],
   cta: "Request a callback",
 } as const;

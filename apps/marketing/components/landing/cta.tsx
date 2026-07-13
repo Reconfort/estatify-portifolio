@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
+import { Button, Container } from "@estatify/ui";
 import { ArrowRightIcon, CheckIcon } from "@estatify/ui/icons";
-import { Container } from "@estatify/ui";
 import { workspaceSignUpUrl } from "@/lib/workspace-urls";
 
 const ease = [0.23, 1, 0.32, 1] as const;
@@ -97,22 +97,21 @@ export function CtaBand() {
               viewport={{ once: true, margin: "-80px" }}
               className="flex w-full flex-col items-center gap-5 sm:w-auto sm:flex-row sm:gap-7"
             >
-              <a
+              <Button
                 href={workspaceSignUpUrl()}
-                className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-9 py-3.5 text-body-sm font-semibold text-accent-foreground transition-[background-color,transform] duration-150 ease-out hover:bg-accent/90 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-auto"
+                variant="accent"
+                size="lg"
+                className="w-full sm:w-auto"
               >
                 Start Free
                 <ArrowRightIcon
                   className="h-4 w-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5"
                   aria-hidden
                 />
-              </a>
-              <a
-                href="#templates"
-                className="text-body-sm font-semibold text-white/80 underline-offset-4 transition-colors duration-150 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
-              >
+              </Button>
+              <Button href="/templates" variant="link" className="text-white/80 hover:text-white">
                 Browse templates
-              </a>
+              </Button>
             </motion.div>
 
             <motion.ul

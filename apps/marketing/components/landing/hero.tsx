@@ -1,137 +1,208 @@
 "use client";
 
-import * as React from "react";
-import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { Container } from "@estatify/ui";
-import { ArrowRightIcon } from "@estatify/ui/icons";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnnouncementBadge, Button, Container, PointerHighlight } from "@estatify/ui";
+import { ListingsIcon } from "@estatify/ui/icons";
 import { heroV2 } from "@/components/landing-data";
+import { TemplateCarousel } from "./template-carousel";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, delay: i * 0.08, ease: [0.2, 0, 0, 1] as const },
-  }),
-};
+const ease = [0.2, 0, 0, 1] as const;
+
+type BrandIcon = (typeof heroV2.seenIn.brands)[number]["icon"];
+type Brand = (typeof heroV2.seenIn.brands)[number];
+
+function BrandMark({ icon }: { icon: BrandIcon }) {
+  const className = "h-5 w-5 shrink-0";
+  switch (icon) {
+    case "grid":
+      return (
+        <svg viewBox="0 0 20 20" className={className} aria-hidden fill="currentColor">
+          <rect x="2" y="2" width="6" height="6" rx="1" />
+          <rect x="12" y="2" width="6" height="6" rx="1" />
+          <rect x="2" y="12" width="6" height="6" rx="1" />
+          <rect x="12" y="12" width="6" height="6" rx="1" />
+        </svg>
+      );
+    case "wordmark":
+      return null;
+    case "chat":
+      return (
+        <svg viewBox="0 0 20 20" className={className} aria-hidden fill="currentColor">
+          <path d="M4 3.5A2.5 2.5 0 0 1 6.5 1h7A2.5 2.5 0 0 1 16 3.5v7A2.5 2.5 0 0 1 13.5 13H9.2L5.8 16.4A.75.75 0 0 1 4.5 15.9V13A2.5 2.5 0 0 1 4 10.5v-7Z" />
+        </svg>
+      );
+    case "leaf":
+      return (
+        <svg viewBox="0 0 20 20" className={className} aria-hidden fill="currentColor">
+          <path d="M16.5 3.5c-4.2-.4-8.4 1.2-10.6 4.6-1.5 2.3-1.8 5-1.1 7.4.1.4.6.5.9.3l7.7-4.4c.4-.2.5-.7.3-1.1C12.4 7.5 10.8 5.4 8.7 4.2c2.6-.7 5.4-.6 7.8.3.4.2.8 0 .9-.4.1-.4-.1-.8-.5-.9-.1 0-.2 0-.4 0Z" />
+        </svg>
+      );
+    case "bars":
+      return (
+        <svg viewBox="0 0 20 20" className={className} aria-hidden fill="currentColor">
+          <path d="M7.2 2.5 3.8 17.5h3.2L10.4 2.5H7.2Zm6.2 0L9.8 17.5h3.2l3.6-15H13.4Z" />
+        </svg>
+      );
+    default: {
+      const _exhaustive: never = icon;
+      return _exhaustive;
+    }
+  }
+}
 
 /**
- * Hero — full-bleed photo, editorial split layout: oversized headline left,
- * supporting statement + CTA right, three pillar cards anchored at the bottom.
- *
- * Pinned (`sticky top-0`) so the rest of the page scrolls over it like a
- * curtain — page.tsx supplies the rounded overlay wrapper. The photo drifts
- * slowly while pinned for depth; disabled under reduced motion.
+ * Rotates brand pages (5 at a time) every interval with a soft blur crossfade.
  */
-export function Hero() {
-  const ref = React.useRef<HTMLElement>(null);
+function SeenInBrands({ brands }: { brands: readonly Brand[] }) {
   const reduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+  const pageSize = heroV2.seenIn.pageSize;
+  const pageCount = Math.ceil(brands.length / pageSize);
+  const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    if (reduceMotion || pageCount <= 1) return;
+    const id = window.setInterval(() => {
+      setPage((current) => (current + 1) % pageCount);
+    }, heroV2.seenIn.intervalMs);
+    return () => window.clearInterval(id);
+  }, [pageCount, reduceMotion]);
+
+  const visible = brands.slice(page * pageSize, page * pageSize + pageSize);
 
   return (
-    <section
-      ref={ref}
-      className="sticky top-0 z-0 isolate flex min-h-[86svh] flex-col justify-end overflow-hidden"
-    >
-      <motion.div
-        aria-hidden
-        {...(reduceMotion ? {} : { style: { y: bgY } })}
-        className="absolute inset-0 -z-20 scale-110"
-      >
-        <Image
-          src="/assets/Concrete_Building_Daytime.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[center_30%]"
-        />
-      </motion.div>
-
-      {/* Solid legibility scrim (no gradients per design constitution). */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{ background: "color-mix(in oklab, var(--neutral-950) 62%, transparent)" }}
-      />
-
-      <Container className="flex flex-col gap-10 pb-32 pt-32 sm:pt-36 lg:gap-14">
-        <div className="grid items-end gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
-          <div className="flex flex-col gap-5">
-            <motion.p
-              custom={0}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              className="inline-flex items-center gap-2 text-overline uppercase tracking-[0.2em] text-accent"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
-              {heroV2.eyebrow}
-            </motion.p>
-            <motion.h1
-              custom={1}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              className="text-balance text-display-lg font-bold tracking-tight text-white sm:text-display-xl lg:text-display-2xl"
-            >
-              {heroV2.title}
-            </motion.h1>
-          </div>
-
-          <motion.div
-            custom={2}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="flex max-w-md flex-col gap-6"
-          >
-            <p className="text-body-md font-medium text-white/90 sm:text-body-lg">
-              {heroV2.statement}
-            </p>
-            <div className="flex flex-wrap items-center gap-3">
-              <a
-                href={heroV2.cta.href}
-                className="group inline-flex w-fit items-center gap-2 rounded-full bg-accent px-6 py-3 text-body-sm font-semibold text-accent-foreground transition-[background-color,transform] duration-150 ease-out hover:bg-accent/90 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-              >
-                {heroV2.cta.label}
-                <ArrowRightIcon
-                  className="h-4 w-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5"
-                  aria-hidden
-                />
-              </a>
-              <a
-                href={heroV2.secondaryCta.href}
-                className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-body-sm font-semibold text-white transition-[background-color,transform] duration-150 ease-out hover:bg-white/10 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              >
-                {heroV2.secondaryCta.label}
-              </a>
-            </div>
-          </motion.div>
-        </div>
-
-        <ul className="grid gap-4 sm:grid-cols-3">
-          {heroV2.pillars.map((pillar, i) => (
-            <motion.li
-              key={pillar.title}
-              custom={3 + i}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              className="flex flex-col gap-2 p-6 rounded-xl border border-white/15"
-              style={{ background: "color-mix(in oklab, var(--neutral-950) 55%, transparent)" }}
-            >
-              <h2 className="text-h5 font-semibold text-white">{pillar.title}</h2>
-              <p className="text-body-sm leading-relaxed text-white/70">{pillar.body}</p>
-            </motion.li>
+    <div className="relative min-h-10 w-full">
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.ul
+          key={page}
+          initial={
+            reduceMotion
+              ? { opacity: 1, filter: "blur(0px)" }
+              : { opacity: 0, filter: "blur(10px)" }
+          }
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          exit={
+            reduceMotion
+              ? { opacity: 0, filter: "blur(0px)" }
+              : { opacity: 0, filter: "blur(10px)" }
+          }
+          transition={{ duration: reduceMotion ? 0 : 0.55, ease }}
+          className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 sm:gap-x-12"
+          aria-live="polite"
+        >
+          {visible.map((brand) => (
+            <li key={brand.name} className="inline-flex items-center gap-2 text-neutral-400">
+              <BrandMark icon={brand.icon} />
+              <span className="text-body-md font-semibold tracking-tight sm:text-body-lg">
+                {brand.name}
+              </span>
+            </li>
           ))}
-        </ul>
+        </motion.ul>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/**
+ * Hero — centered, light, typography-led first viewport.
+ * Badge → headline → support line → CTA pair → social proof row.
+ */
+export function Hero() {
+  const reduceMotion = useReducedMotion();
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: reduceMotion ? 0 : 16 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: reduceMotion ? 0 : 0.5,
+        delay: reduceMotion ? 0 : i * 0.07,
+        ease,
+      },
+    }),
+  };
+
+  return (
+    <section className="relative isolate overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-20">
+      <Container className="flex flex-col items-center text-center">
+        <motion.div
+          custom={0}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mb-8"
+        >
+          <AnnouncementBadge
+            href={heroV2.badge.href}
+            text={heroV2.badge.text}
+            cta={heroV2.badge.cta}
+          />
+        </motion.div>
+
+        <motion.h1
+          custom={1}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="max-w-3xl md:py-12 text-display-lg font-light tracking-tight text-neutral-950 sm:text-display-lg lg:text-display-2xl"
+        >
+          {heroV2.title.before}
+          <PointerHighlight rectangleClassName="border-black" pointerClassName="text-accent">
+            <span className="font-light text-accent">{heroV2.title.highlight}</span>
+          </PointerHighlight>
+        </motion.h1>
+
+        <motion.p
+          custom={2}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mt-5 max-w-xl text-pretty text-body-md text-neutral-500 sm:text-body-lg"
+        >
+          {heroV2.subtitle}
+        </motion.p>
+
+        <motion.div
+          custom={3}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mt-9 flex flex-wrap items-center justify-center gap-3"
+        >
+          <Button href={heroV2.cta.href} variant="primary" size="lg">
+            <ListingsIcon className="h-4 w-4" aria-hidden />
+            {heroV2.cta.label}
+          </Button>
+          <Button href={heroV2.secondaryCta.href} variant="outline" size="lg">
+            {heroV2.secondaryCta.label}
+          </Button>
+        </motion.div>
+
+        {/* <motion.div
+          custom={4}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mt-16 flex w-full max-w-5xl flex-col items-center gap-5"
+        >
+          <p className="text-caption font-medium text-neutral-400">
+            {heroV2.seenIn.label}
+          </p>
+          <SeenInBrands brands={heroV2.seenIn.brands} />
+        </motion.div> */}
       </Container>
+
+      <motion.div
+        custom={5}
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        className="mt-12 w-full overflow-x-clip sm:mt-16"
+      >
+        <TemplateCarousel />
+      </motion.div>
     </section>
   );
 }
