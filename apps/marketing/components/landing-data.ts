@@ -310,29 +310,31 @@ export const solution = {
   cards: [
     {
       key: "design",
-      title: "Premium design with high-end appeal",
-      description: "Look premium and leave your competitors in awe",
+      title: "Premium Websites with high-end appeal",
+      description:
+        "Look premium and feel like a professional agency without the hassle of hiring a designer",
       className: "lg:col-span-2",
       skeleton: "design" as const,
     },
     {
       key: "invest",
-      title: "Investing in a website that makes sense",
-      description: "Save money for design and development",
+      title: "Invest in a Website that Makes Sense",
+      description:
+        "Save money for design and development by using a website that is already built and ready to use",
       className: "lg:col-span-1",
       skeleton: "invest" as const,
     },
     {
       key: "support",
-      title: "Fast support for smooth experience",
-      description: "Dedicated email support that cares about you",
+      title: "Fast Support for Smooth Experience",
+      description: "Dedicated email support that cares about your success",
       className: "lg:col-span-1",
       skeleton: "support" as const,
     },
     {
       key: "launch",
-      title: "Easy launch, no coding required",
-      description: "Organized, high-quality and responsive build",
+      title: "Easy Launch, No Coding Required",
+      description: "Organized, high-quality and responsive build that you can launch in minutes",
       className: "lg:col-span-2",
       skeleton: "launch" as const,
     },
@@ -378,7 +380,7 @@ export const processSection = {
   ],
   publish: {
     domain: "youragency.estatify.rw",
-    author: "Sylvester",
+    author: "Reconfort",
     when: "1d ago",
   },
 } as const;
