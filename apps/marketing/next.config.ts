@@ -13,8 +13,35 @@ const nextConfig: NextConfig = {
     "@estatify/ui",
     "@estatify/providers",
     "@estatify/hooks",
-    "@estatify/utils"
+    "@estatify/utils",
   ],
+  // Auth lives only on Workspace — marketing never hosts sessions or forms.
+  async redirects() {
+    const workspace =
+      process.env.NEXT_PUBLIC_WORKSPACE_URL?.replace(/\/$/, "") || "http://localhost:3000";
+    return [
+      {
+        source: "/signin",
+        destination: `${workspace}/sign-in`,
+        permanent: false,
+      },
+      {
+        source: "/signup",
+        destination: `${workspace}/sign-up`,
+        permanent: false,
+      },
+      {
+        source: "/sign-in",
+        destination: `${workspace}/sign-in`,
+        permanent: false,
+      },
+      {
+        source: "/sign-up",
+        destination: `${workspace}/sign-up`,
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -1,6 +1,20 @@
 import type { Metadata } from "next";
-import { fontVariables } from "@estatify/design-system/fonts";
+import { Rubik, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+const rubik = Rubik({
+  variable: "--font-rubik",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const mono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const fontVariables = `${rubik.variable} ${mono.variable}`;
 
 export const metadata: Metadata = {
   title: "Estatify — Sites Runtime",

@@ -2,6 +2,16 @@
   "name": "@estatify/sites",
   "version": "0.1.0",
   "private": true,
-  "scripts": { "dev": "next dev", "build": "next build", "start": "next start" },
-  "nx": { "name": "sites", "tags": ["scope:sites", "type:app"] }
+  "scripts": {
+    "dev": "next dev --port 3300",
+    "build": "next build",
+    "start": "next start --port 3300"
+  },
+  "nx": {
+    "name": "sites",
+    "tags": [
+      "scope:sites",
+      "type:app"
+    ]
+  }
 }

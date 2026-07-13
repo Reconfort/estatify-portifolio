@@ -3,8 +3,9 @@
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@estatify/utils";
 import { ArrowRightIcon, CheckIcon, SparkleIcon } from "@estatify/ui/icons";
-import { Badge, Button, Container } from "@estatify/ui";
+import { Badge, buttonVariants, Container } from "@estatify/ui";
 import { pricing } from "@/components/landing-data";
+import { workspaceSignUpUrl } from "@/lib/workspace-urls";
 import { SectionHeader } from "./section-header";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -72,7 +73,9 @@ function PricingGrid() {
               <div
                 className={cn(
                   "rounded-2xl px-1 py-1",
-                  isFeatured ? "border border-accent/15 bg-accent/5 px-4 py-4" : "border-b border-border/60 pb-6",
+                  isFeatured
+                    ? "border border-accent/15 bg-accent/5 px-4 py-4"
+                    : "border-b border-border/60 pb-6",
                 )}
               >
                 <p className="flex items-end gap-1">
@@ -108,7 +111,9 @@ function PricingGrid() {
                     <span
                       className={cn(
                         "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
-                        isFeatured ? "bg-accent text-accent-foreground" : "bg-accent/10 text-lime-800",
+                        isFeatured
+                          ? "bg-accent text-accent-foreground"
+                          : "bg-accent/10 text-lime-800",
                       )}
                     >
                       <CheckIcon className="h-3 w-3" />
@@ -118,9 +123,12 @@ function PricingGrid() {
                 ))}
               </ul>
 
-              <Button
-                variant={isFeatured ? "accent" : "outline"}
+              <a
+                href={tier.name === "Scale" ? "#contact" : workspaceSignUpUrl()}
                 className={cn(
+                  buttonVariants({
+                    variant: isFeatured ? "accent" : "outline",
+                  }),
                   "group mt-auto w-full rounded-full",
                   !isFeatured && "hover:border-accent/40 hover:text-foreground",
                 )}
@@ -132,7 +140,7 @@ function PricingGrid() {
                     aria-hidden
                   />
                 ) : null}
-              </Button>
+              </a>
             </div>
           </motion.article>
         );

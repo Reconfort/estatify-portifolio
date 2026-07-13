@@ -2,6 +2,16 @@
   "name": "@estatify/workspace",
   "version": "0.1.0",
   "private": true,
-  "scripts": { "dev": "next dev", "build": "next build", "start": "next start" },
-  "nx": { "name": "workspace", "tags": ["scope:workspace", "type:app"] }
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start --port 3000"
+  },
+  "nx": {
+    "name": "workspace",
+    "tags": [
+      "scope:workspace",
+      "type:app"
+    ]
+  }
 }

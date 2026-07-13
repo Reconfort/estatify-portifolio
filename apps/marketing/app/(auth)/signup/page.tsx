@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
-import { AuthForm } from "@/components/auth/auth-form";
+import { redirect } from "next/navigation";
+import { workspaceSignUpUrl } from "@/lib/workspace-urls";
 
-export const metadata: Metadata = {
-  title: "Create your account — Estatify",
-  description:
-    "Create your Estatify account to claim templates, preview your dashboard, and manage your profile.",
-};
-
-export default function SignUpPage() {
-  return <AuthForm mode="signup" />;
+/**
+ * Marketing never hosts auth. Legacy /signup → Workspace /sign-up.
+ */
+export default function MarketingSignUpRedirect() {
+  redirect(workspaceSignUpUrl());
 }

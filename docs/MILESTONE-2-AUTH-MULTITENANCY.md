@@ -280,8 +280,8 @@ Order: `JwtAuthGuard` → `TenantGuard` → `RolesGuard`. Public endpoints:
 
 **Frontend (`apps/workspace`, `apps/platform`):** Next.js 16 middleware checks for
 a valid session (refresh cookie presence + lightweight `/auth/me`), redirects
-unauthenticated users to `/login`, and enforces route groups: `app/(auth)/*`
-(login, register, verify, forgot, reset — public) vs `app/(dashboard)/*` (gated).
+unauthenticated users to `/sign-in`, and enforces route groups: `app/(auth)/*`
+(sign-in, sign-up, verify, forgot, reset — public) vs `app/(dashboard)/*` (gated).
 Server Components read the user server-side; no flash of protected content.
 
 ---

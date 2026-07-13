@@ -89,5 +89,9 @@ reason; `DATABASE_DIRECT_URL` (owner) is used only for migrations.
 | POST   | `/auth/forgot-password`     | public | email reset link (always 200)         |
 | POST   | `/auth/reset-password`      | public | set new password, revoke all sessions |
 
-Frontend (workspace/platform auth UI + protected routes) is the next phase
-(P6–P8) — the API above is what it will consume via `@estatify/api-client`.
+Frontend **P6 (client data layer)** is in place: `@estatify/api-client` silent
+refresh on 401, `SessionProvider` / `TenantProvider` / RBAC helpers in
+`@estatify/auth`, mounted via app `Providers` on workspace + platform.
+
+Next: **P7 Workspace auth UI** (login/register/verify/forgot/reset + protected
+shell + middleware), then **P8 Platform staff UI**.

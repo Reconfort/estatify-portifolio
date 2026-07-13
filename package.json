@@ -16,6 +16,7 @@
     "dev:platform": "nx dev platform",
     "dev:sites": "nx dev sites",
     "dev:api": "nx serve api",
+    "dev:web": "nx run-many -t dev -p marketing,workspace,platform --parallel=3",
     "prepare": "husky"
   },
   "dependencies": {

@@ -13,7 +13,14 @@ const nextConfig: NextConfig = {
     "@estatify/ui",
     "@estatify/providers",
     "@estatify/hooks",
-    "@estatify/utils", "@estatify/feature-tenant-admin", "@estatify/feature-templates", "@estatify/feature-subscriptions", "@estatify/feature-analytics"
+    "@estatify/utils",
+    "@estatify/auth",
+    "@estatify/api-client",
+    "@estatify/types",
+    "@estatify/feature-tenant-admin",
+    "@estatify/feature-templates",
+    "@estatify/feature-subscriptions",
+    "@estatify/feature-analytics",
   ],
 };
 

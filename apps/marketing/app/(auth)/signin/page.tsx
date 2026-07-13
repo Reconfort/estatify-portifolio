@@ -1,11 +1,9 @@
-import type { Metadata } from "next";
-import { AuthForm } from "@/components/auth/auth-form";
+import { redirect } from "next/navigation";
+import { workspaceSignInUrl } from "@/lib/workspace-urls";
 
-export const metadata: Metadata = {
-  title: "Sign in — Estatify",
-  description: "Sign in to manage your templates, dashboard, and profile.",
-};
-
-export default function SignInPage() {
-  return <AuthForm mode="signin" />;
+/**
+ * Marketing never hosts auth. Legacy /signin → Workspace /sign-in.
+ */
+export default function MarketingSignInRedirect() {
+  redirect(workspaceSignInUrl());
 }

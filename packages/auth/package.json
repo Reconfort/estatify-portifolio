@@ -5,5 +5,19 @@
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
-  "nx": { "name": "auth", "tags": ["scope:shared", "type:data-access"] }
+  "dependencies": {
+    "@estatify/api-client": "workspace:*",
+    "@estatify/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "nx": {
+    "name": "auth",
+    "tags": [
+      "scope:shared",
+      "type:data-access"
+    ]
+  }
 }

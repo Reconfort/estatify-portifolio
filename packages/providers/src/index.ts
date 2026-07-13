@@ -1,9 +1,8 @@
 /**
  * @estatify/providers
- * React context providers: QueryClient, Theme, Tenant. Wrap app root layouts.
+ * React context providers: QueryClient (Theme lands here later).
+ * Auth/tenant session lives in @estatify/auth — apps compose the stack.
  *
- * Tags: scope:shared,type:ui
- * Foundation stub — public API surface. Implement domain code here following the
- * feature structure (components/ hooks/ types/ schemas/ services/ constants/ utils/).
+ * Tags: scope:shared, type:ui
  */
-export {};
+export { QueryProvider } from "./query-provider";

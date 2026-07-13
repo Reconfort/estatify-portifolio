@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { buttonVariants, Container } from "@estatify/ui";
 import { cn } from "@estatify/utils";
 import { nav } from "@/components/landing-data";
 import { SiteLogo } from "@/components/site-logo";
+import { workspaceSignInUrl, workspaceSignUpUrl } from "@/lib/workspace-urls";
 
 /**
  * Marketing header. Transparent with white text while over the hero photo,
@@ -32,7 +32,7 @@ export function SiteHeader() {
       )}
     >
       <Container className="flex h-16 items-center justify-between">
-        <a href="#" aria-label="Estatify home">
+        <a href="/" aria-label="Estatify home">
           <SiteLogo inverted={!solid} />
         </a>
 
@@ -54,18 +54,23 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Link
-            href="/signin"
+          <a
+            href={workspaceSignInUrl()}
             className={cn(
               "text-body-sm font-medium transition-colors",
-              solid ? "text-muted-foreground hover:text-foreground" : "text-white/80 hover:text-white",
+              solid
+                ? "text-muted-foreground hover:text-foreground"
+                : "text-white/80 hover:text-white",
             )}
           >
             Sign in
-          </Link>
-          <Link href="/signup" className={buttonVariants({ variant: "accent", size: "sm" })}>
-            Create free account
-          </Link>
+          </a>
+          <a
+            href={workspaceSignUpUrl()}
+            className={buttonVariants({ variant: "accent", size: "sm" })}
+          >
+            Get Started
+          </a>
         </div>
 
         <button
@@ -77,7 +82,14 @@ export function SiteHeader() {
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             {open ? <path d="M6 6l12 12M18 6l-12 12" /> : <path d="M3 6h18M3 12h18M3 18h18" />}
           </svg>
         </button>
@@ -97,20 +109,20 @@ export function SiteHeader() {
               </a>
             ))}
             <div className="mt-2 flex gap-3">
-              <Link
-                href="/signin"
+              <a
+                href={workspaceSignInUrl()}
                 onClick={() => setOpen(false)}
                 className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1")}
               >
                 Sign in
-              </Link>
-              <Link
-                href="/signup"
+              </a>
+              <a
+                href={workspaceSignUpUrl()}
                 onClick={() => setOpen(false)}
                 className={cn(buttonVariants({ variant: "accent", size: "sm" }), "flex-1")}
               >
-                Create free account
-              </Link>
+                Get Started
+              </a>
             </div>
           </Container>
         </div>
