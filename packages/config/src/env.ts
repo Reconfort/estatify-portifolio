@@ -12,9 +12,7 @@ import { z } from "zod";
  *  - Each app composes its own schema on top of the shared base via `createEnv`.
  */
 
-const nodeEnvSchema = z
-  .enum(["development", "test", "production"])
-  .default("development");
+const nodeEnvSchema = z.enum(["development", "test", "production"]).default("development");
 
 /** Vars available on the server for every app. Extend per-app as needed. */
 export const baseServerSchema = z.object({
@@ -49,6 +47,17 @@ interface CreateEnvOptions<TServer extends ZodShape, TClient extends ZodShape> {
   skipValidation?: boolean;
 }
 
+/** Merged server + client env for a given `createEnv` call. */
+export type CreatedEnv<
+  TServer extends ZodShape = ZodShape,
+  TClient extends ZodShape = ZodShape,
+> = Readonly<
+  z.infer<typeof baseServerSchema> &
+    z.infer<z.ZodObject<TServer>> &
+    z.infer<typeof baseClientSchema> &
+    z.infer<z.ZodObject<TClient>>
+>;
+
 function formatIssues(source: string, error: z.ZodError): never {
   const lines = error.issues.map((i) => `  • ${i.path.join(".") || "(root)"}: ${i.message}`);
   throw new Error(
@@ -61,9 +70,9 @@ function formatIssues(source: string, error: z.ZodError): never {
  * Validate and return a typed, frozen env object. Throws immediately (fail-fast)
  * if anything is missing or malformed.
  */
-export function createEnv<TServer extends ZodShape = {}, TClient extends ZodShape = {}>(
+export function createEnv<TServer extends ZodShape = ZodShape, TClient extends ZodShape = ZodShape>(
   opts: CreateEnvOptions<TServer, TClient> = {},
-) {
+): CreatedEnv<TServer, TClient> {
   const runtimeEnv = opts.runtimeEnv ?? process.env;
   const isServer = typeof window === "undefined";
 
@@ -71,15 +80,14 @@ export function createEnv<TServer extends ZodShape = {}, TClient extends ZodShap
   const clientSchema = opts.client ? baseClientSchema.merge(opts.client) : baseClientSchema;
 
   if (opts.skipValidation || runtimeEnv.SKIP_ENV_VALIDATION === "true") {
-    return runtimeEnv as unknown as z.infer<typeof serverSchema> & z.infer<typeof clientSchema>;
+    return runtimeEnv as unknown as CreatedEnv<TServer, TClient>;
   }
 
   // Client bundle: only client vars are present; never touch server secrets.
   if (!isServer) {
     const parsed = clientSchema.safeParse(runtimeEnv);
     if (!parsed.success) formatIssues("client", parsed.error);
-    return Object.freeze(parsed.data) as z.infer<typeof serverSchema> &
-      z.infer<typeof clientSchema>;
+    return Object.freeze(parsed.data) as CreatedEnv<TServer, TClient>;
   }
 
   const parsedServer = serverSchema.safeParse(runtimeEnv);
@@ -93,7 +101,10 @@ export function createEnv<TServer extends ZodShape = {}, TClient extends ZodShap
     throw new Error("[@estatify/config] AUTH_SECRET is required when NODE_ENV=production.");
   }
 
-  return Object.freeze({ ...parsedServer.data, ...parsedClient.data });
+  return Object.freeze({
+    ...parsedServer.data,
+    ...parsedClient.data,
+  }) as CreatedEnv<TServer, TClient>;
 }
 
 /** Default env, validated against the shared base schemas from `process.env`. */

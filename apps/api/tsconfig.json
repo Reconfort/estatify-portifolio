@@ -1,13 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
     "target": "ES2023",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "declaration": false,
     "noEmit": false,
+    "rootDir": "../..",
     "outDir": "dist",
     "exactOptionalPropertyTypes": false
   },

@@ -1,0 +1,47 @@
+# Local development infrastructure for Estatify.
+# Bring up:  docker compose up -d
+#   - Postgres 16 (RLS-enforced multi-tenancy; app connects as a NON-superuser)
+#   - Redis 7   (tenant-resolution cache, rate-limit buckets, sessions later)
+#   - Mailpit    (captures all dev email; UI at http://localhost:8025)
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: estatify-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: estatify
+    ports:
+      - "5432:5432"
+    volumes:
+      - estatify-pg:/var/lib/postgresql/data
+      # Creates the non-superuser app role BEFORE the app ever connects.
+      - ./packages/database/docker/init.sql:/docker-entrypoint-initdb.d/10-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d estatify"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: estatify-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: estatify-mailpit
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+    environment:
+      MP_MAX_MESSAGES: 500
+
+volumes:
+  estatify-pg:

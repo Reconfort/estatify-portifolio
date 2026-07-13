@@ -1,9 +1,11 @@
 /**
  * @estatify/types
- * Shared DTO/contract types + zod schemas. Single source of truth across client and api.
+ * Shared DTO/contract types + zod schemas. Single source of truth across client
+ * and api (imported by apps/api for server validation and by frontends for form
+ * validation — no duplicated interfaces).
  *
  * Tags: scope:shared,type:util
- * Foundation stub — public API surface. Implement domain code here following the
- * feature structure (components/ hooks/ types/ schemas/ services/ constants/ utils/).
  */
-export {};
+export * from "./roles";
+export * from "./auth";
+export * from "./session";

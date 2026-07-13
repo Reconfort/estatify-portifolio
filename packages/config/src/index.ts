@@ -25,6 +25,7 @@ export {
   env,
   baseServerSchema,
   baseClientSchema,
+  type CreatedEnv,
   type Env,
   type ZodShape,
 } from "./env";

@@ -11,7 +11,7 @@
     "./image": "./src/app-image.tsx"
   },
   "dependencies": {
-    "@estatify/utils": "*",
+    "@estatify/utils": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "lucide-react": "^0.460.0",
     "motion": "^12.0.0",
@@ -21,5 +21,11 @@
     "react": "^19",
     "react-dom": "^19"
   },
-  "nx": { "name": "ui", "tags": ["scope:shared", "type:ui"] }
+  "nx": {
+    "name": "ui",
+    "tags": [
+      "scope:shared",
+      "type:ui"
+    ]
+  }
 }

@@ -5,7 +5,61 @@
   "scripts": {
     "build": "nest build",
     "serve": "nest start --watch",
-    "start": "node dist/main.js"
+    "start": "node dist/main.js",
+    "test": "jest --config test/jest-e2e.json",
+    "test:isolation": "jest --config test/jest-e2e.json rls-isolation"
   },
-  "nx": { "name": "api", "tags": ["scope:api", "type:app"] }
+  "dependencies": {
+    "@estatify/config": "workspace:*",
+    "@estatify/database": "workspace:*",
+    "@estatify/types": "workspace:*",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/passport": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/swagger": "^11.0.0",
+    "@nestjs/throttler": "^6.3.0",
+    "argon2": "^0.41.1",
+    "cookie-parser": "^1.4.7",
+    "nestjs-zod": "^4.3.1",
+    "nodemailer": "^6.9.16",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.0.0",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/nodemailer": "^6.4.17",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-loader": "^9.6.2",
+    "webpack": "^5.108.4",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "nx": {
+    "name": "api",
+    "tags": [
+      "scope:api",
+      "type:app"
+    ],
+    "targets": {
+      "test": {
+        "command": "jest --config test/jest-e2e.json",
+        "options": {
+          "cwd": "apps/api"
+        }
+      }
+    }
+  }
 }

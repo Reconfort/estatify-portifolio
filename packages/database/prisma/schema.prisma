@@ -1,0 +1,157 @@
+// Estatify data model — Milestone 2 (Auth & Multi-Tenancy).
+// See docs/MILESTONE-2-AUTH-MULTITENANCY.md §2.
+//
+// Isolation contract: every TENANT-SCOPED table carries `tenantId` and is guarded
+// by a Postgres RLS policy (see prisma/rls.sql). Identity tables (User, Session,
+// token tables) are GLOBAL — a user authenticates before a tenant is known — and
+// are protected by application-level ownership checks, not RLS.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  // App role (non-superuser) — subject to RLS. Used by the running API.
+  url        = env("DATABASE_URL")
+  // Owner role — used ONLY by `prisma migrate` / `db push` for DDL.
+  directUrl  = env("DATABASE_DIRECT_URL")
+  extensions = [citext]
+}
+
+enum TenantStatus {
+  active
+  suspended
+  pending
+}
+
+enum MembershipRole {
+  owner
+  admin
+  agent
+  member
+}
+
+enum PlatformRole {
+  none
+  support
+  superadmin
+}
+
+/// The isolation root. One Tenant == one Agency (M2-D1). Not itself RLS-scoped
+/// (it has no parent tenant); access is gated by membership at the app layer.
+model Tenant {
+  id          String         @id @default(uuid()) @db.Uuid
+  slug        String         @unique // -> {slug}.estatify.com
+  status      TenantStatus   @default(pending)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  agency      Agency?
+  memberships Membership[]
+  invites     Invite[]
+}
+
+/// The tenant's public brand/profile. RLS-scoped.
+model Agency {
+  id            String   @id @default(uuid()) @db.Uuid
+  tenantId      String   @unique @db.Uuid
+  tenant        Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name          String
+  primaryDomain String?  @unique // custom domain, nullable
+  brand         Json? // white-label theme config
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+/// Global identity. No tenantId — the ONLY bridge to a tenant is Membership.
+model User {
+  id                  String               @id @default(uuid()) @db.Uuid
+  email               String               @unique @db.Citext
+  passwordHash        String
+  emailVerified       Boolean              @default(false)
+  isPlatformStaff     Boolean              @default(false)
+  platformRole        PlatformRole         @default(none)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  memberships         Membership[]
+  sessions            Session[]
+  verificationTokens  VerificationToken[]
+  passwordResetTokens PasswordResetToken[]
+}
+
+/// Binds a user to a tenant with a role. RLS-scoped.
+model Membership {
+  id        String         @id @default(uuid()) @db.Uuid
+  userId    String         @db.Uuid
+  tenantId  String         @db.Uuid
+  role      MembershipRole @default(member)
+  createdAt DateTime       @default(now())
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant    Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tenantId])
+  @@index([tenantId])
+  @@index([userId])
+}
+
+/// Refresh-token sessions. `familyId` groups a rotation chain so reuse detection
+/// can revoke the whole family. Global (keyed by user), not RLS-scoped.
+model Session {
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           String    @db.Uuid
+  tenantId         String?   @db.Uuid // active tenant bound to this session
+  refreshTokenHash String    @unique // sha-256 of the opaque refresh token
+  familyId         String    @db.Uuid
+  userAgent        String?
+  ip               String?
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+}
+
+model VerificationToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @db.Uuid
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @db.Uuid
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// Pending invitation to join a tenant. RLS-scoped.
+model Invite {
+  id         String         @id @default(uuid()) @db.Uuid
+  tenantId   String         @db.Uuid
+  email      String         @db.Citext
+  role       MembershipRole @default(member)
+  tokenHash  String         @unique
+  expiresAt  DateTime
+  acceptedAt DateTime?
+  createdAt  DateTime       @default(now())
+  tenant     Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+}

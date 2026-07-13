@@ -11,6 +11,10 @@ node_modules/
 !.yarn/releases
 !.yarn/versions
 
+# pnpm — never commit the content-addressable store (it lands in-repo when the
+# store dir isn't global). Keep pnpm-lock.yaml tracked; ignore only the store.
+.pnpm-store/
+
 # testing
 coverage/
 
@@ -28,7 +32,13 @@ dist/
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
+
+# IDE / editor
+.idea/
+*.swp
+# .vscode/ is intentionally NOT ignored — commit shared workspace settings if you add them.
 
 # debug
 npm-debug.log*

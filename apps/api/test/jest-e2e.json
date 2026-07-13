@@ -1,0 +1,13 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": { "^.+\\.(t|j)s$": ["ts-jest", { "tsconfig": "<rootDir>/../tsconfig.json" }] },
+  "moduleNameMapper": {
+    "^@estatify/database$": "<rootDir>/../../../packages/database/src/index.ts",
+    "^@estatify/types$": "<rootDir>/../../../packages/types/src/index.ts",
+    "^@estatify/config$": "<rootDir>/../../../packages/config/src/index.ts"
+  },
+  "testTimeout": 30000
+}
