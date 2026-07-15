@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@estatify/utils";
+import { DotBackground } from "./dot-background";
 import { AuthTestimonialPanel, type AuthTestimonial } from "./auth-testimonial-panel";
 
 export interface AuthLayoutProps {
@@ -35,18 +36,21 @@ export function AuthLayout({ children, brand, testimonials, panel, className }: 
     ) : null);
 
   return (
-    <div className={cn("grid min-h-dvh bg-background lg:grid-cols-2", className)}>
-      <div className="relative flex min-h-dvh flex-col px-5 py-8 sm:px-8 lg:px-12 lg:py-10">
-        {brand ? (
-          <div className="mb-10 flex w-full shrink-0 items-center justify-between gap-4">
-            {brand}
-          </div>
+    <div className={cn("relative min-h-dvh", className)}>
+      <DotBackground />
+      <div className="relative z-10 grid min-h-dvh lg:grid-cols-2">
+        <div className="relative flex min-h-dvh flex-col px-5 py-8 sm:px-8 lg:px-12 lg:py-10">
+          {brand ? (
+            <div className="mb-10 flex w-full shrink-0 items-center justify-between gap-4">
+              {brand}
+            </div>
+          ) : null}
+          <div className="mx-auto flex w-full max-w-md flex-1 flex-col">{children}</div>
+        </div>
+        {right ? (
+          <div className="relative hidden min-h-dvh overflow-hidden lg:block">{right}</div>
         ) : null}
-        <div className="mx-auto flex w-full max-w-md flex-1 flex-col">{children}</div>
       </div>
-      {right ? (
-        <div className="relative hidden min-h-dvh overflow-hidden lg:block">{right}</div>
-      ) : null}
     </div>
   );
 }
