@@ -67,7 +67,7 @@ export function Commitment() {
               </Parallax>
             </ImageReveal>
 
-            <div className="relative z-10 -mt-16 flex flex-col gap-4 self-end rounded-lg bg-card p-6 shadow-lg ring-1 ring-border sm:mr-6 sm:max-w-md">
+            <div className="relative z-10 -mt-16 flex flex-col gap-4 self-end rounded-lg bg-card p-6  ring-1 ring-border sm:mr-6 sm:max-w-md">
               <QuoteIcon className="h-6 w-6 text-accent" aria-hidden />
               <div aria-live="polite" className="min-h-24">
                 <AnimatePresence mode="wait" initial={false}>

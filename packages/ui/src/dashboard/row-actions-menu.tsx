@@ -80,7 +80,7 @@ export function RowActionsMenu({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, transition: { duration: 0.1 } }}
             transition={{ duration: 0.16, ease: DASH_EASE }}
-            className="absolute right-0 top-9 z-30 w-44 origin-top-right rounded-lg border border-border/70 bg-popover p-1.5 shadow-lg"
+            className="absolute right-0 top-9 z-30 w-44 origin-top-right rounded-lg border border-border/70 bg-popover p-1.5 "
           >
             {actions.map((a, i) => {
               const Icon = a.icon;

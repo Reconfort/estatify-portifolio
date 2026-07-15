@@ -64,7 +64,7 @@ export function DashboardCard({
     <section
       className={cn(
         "group/card flex h-full flex-col rounded-lg border border-border/70 bg-card shadow-2xs",
-        "transition-shadow duration-200 hover:shadow-xs",
+        "transition-shadow duration-200",
         className,
       )}
     >

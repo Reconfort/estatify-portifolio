@@ -149,7 +149,7 @@ function SkeletonDesign() {
               <span className="size-1.5 rounded-full bg-[#FEBC2E]" />
               <span className="size-1.5 rounded-full bg-[#28C840]" />
             </span>
-            <span className="mx-auto flex min-w-0 flex-1 items-center gap-1 rounded-full border border-border/50 bg-background px-2.5 py-0.5 shadow-sm">
+            <span className="mx-auto flex min-w-0 flex-1 items-center gap-1 rounded-full border border-border/50 bg-background px-2.5 py-0.5">
               <LockIcon className="size-2.5 shrink-0 text-muted-foreground" aria-hidden />
               <span className="truncate text-[0.65rem] text-muted-foreground">
                 youragency.estatify.rw
@@ -189,7 +189,7 @@ function SkeletonDesign() {
               }}
             >
               <motion.span
-                className="relative block size-full overflow-hidden rounded-full border-[2.5px] border-card shadow-lg ring-1 ring-black/5"
+                className="relative block size-full overflow-hidden rounded-full border-[2.5px] border-card  ring-1 ring-black/5"
                 initial={{ opacity: 0, scale: 0.75 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -208,7 +208,7 @@ function SkeletonDesign() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.35, duration: 0.45, ease: EASE_OUT }}
-            className="rounded-lg border border-border/60 bg-card p-2.5 shadow-xl"
+            className="rounded-lg border border-border/60 bg-card p-2.5 "
           >
             <div className="flex items-center gap-2.5">
               <div className="min-w-0 flex-1">
@@ -313,7 +313,7 @@ function SkeletonInvest() {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4, duration: 0.45, ease: EASE_OUT }}
-            className="flex items-center gap-1.5 whitespace-nowrap rounded-full bg-lime-500 px-3 py-1.5 text-caption font-bold text-lime-950 shadow-lg shadow-lime-600/25"
+            className="flex items-center gap-1.5 whitespace-nowrap rounded-full bg-lime-500 px-3 py-1.5 text-caption font-bold text-lime-950  shadow-lime-600/25"
           >
             Net Profit
             <span className="rounded-full bg-lime-950/10 px-1.5 py-0.5 text-[0.65rem]">+80%</span>
@@ -349,7 +349,7 @@ function SkeletonSupport() {
       >
         <div className="relative -rotate-[4deg]">
           {/* Device shell */}
-          <div className="relative overflow-hidden rounded-[2.1rem] border-[3px] border-neutral-900 bg-neutral-900 p-[3px] shadow-lg shadow-black/25">
+          <div className="relative overflow-hidden rounded-[2.1rem] border-[3px] border-neutral-900 bg-neutral-900 p-[3px]  shadow-black/25">
             <div className="relative overflow-hidden rounded-[1.85rem] bg-[#f7f6f3]">
               {/* Dynamic Island */}
               <div className="absolute top-2.5 left-1/2 z-10 h-5 w-[4.25rem] -translate-x-1/2 rounded-full bg-neutral-950" />
@@ -389,7 +389,7 @@ function SkeletonSupport() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.35, duration: 0.5, ease: EASE_OUT }}
-          className="rounded-lg border border-border/60 bg-card p-3 shadow-xl"
+          className="rounded-lg border border-border/60 bg-card p-3 "
         >
           <div className="flex items-start gap-3">
             <span className="relative size-10 shrink-0 overflow-hidden rounded-full ring-2 ring-border/30">
@@ -439,7 +439,7 @@ function SkeletonLaunch() {
             viewport={{ once: true }}
             transition={{ duration: 0.55, ease: EASE_OUT }}
             {...(reduceMotion ? {} : { whileHover: { y: -2 } })}
-            className="rounded-lg border border-border/80 bg-card p-3 shadow-sm"
+            className="rounded-lg border border-border/80 bg-card p-3"
           >
             <div className="flex items-center justify-between gap-2">
               <p className="min-w-0 truncate text-caption text-muted-foreground">
@@ -476,7 +476,7 @@ function SkeletonLaunch() {
             viewport={{ once: true }}
             transition={{ delay: 0.15, duration: 0.55, ease: EASE_OUT }}
             {...(reduceMotion ? {} : { whileHover: { y: -2 } })}
-            className="rounded-lg border border-border/80 bg-card p-3 shadow-lg"
+            className="rounded-lg border border-border/80 bg-card p-3 "
           >
             <div className="flex items-center justify-between gap-2">
               <p className="min-w-0 truncate text-caption text-muted-foreground">

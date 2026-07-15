@@ -49,7 +49,7 @@ export function WobbleCard({ children, containerClassName, className }: WobbleCa
         containerClassName,
       )}
     >
-      <div className="relative h-full overflow-hidden rounded-[inherit] shadow-sm">
+      <div className="relative h-full overflow-hidden rounded-[inherit]">
         <motion.div
           style={{
             transform: hovering

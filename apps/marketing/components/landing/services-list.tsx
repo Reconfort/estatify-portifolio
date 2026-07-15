@@ -68,7 +68,7 @@ export function ServicesList() {
           <div
             aria-hidden
             className={cn(
-              "pointer-events-none absolute right-24 top-1/2 z-10 hidden w-64 -translate-y-1/2 overflow-hidden rounded-lg shadow-xl transition-all duration-300 lg:block",
+              "pointer-events-none absolute right-24 top-1/2 z-10 hidden w-64 -translate-y-1/2 overflow-hidden rounded-lg  transition-all duration-300 lg:block",
               active !== null ? "scale-100 opacity-100" : "scale-95 opacity-0",
             )}
           >

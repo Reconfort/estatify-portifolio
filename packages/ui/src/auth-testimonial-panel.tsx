@@ -102,7 +102,7 @@ export function AuthTestimonialPanel({
       ))}
 
       <div className="absolute inset-x-0 bottom-0 z-10 p-8 xl:p-10">
-        <div className="relative overflow-hidden rounded-lg border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-md xl:p-7">
+        <div className="relative overflow-hidden rounded-lg border border-white/15 bg-white/10 p-6 backdrop-blur-md xl:p-7">
           {autoplay ? (
             <div aria-hidden className="absolute inset-x-0 top-0 h-0.5 overflow-hidden bg-white/10">
               <motion.div

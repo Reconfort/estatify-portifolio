@@ -189,7 +189,7 @@ export default function PlatformDashboardLayout({ children }: { children: React.
             onClick={() => setMobileOpen(false)}
             aria-hidden
           />
-          <aside className="relative flex w-60 max-w-[85vw] flex-col border-r border-sidebar-border bg-sidebar shadow-xl animate-in slide-in-from-left duration-200">
+          <aside className="relative flex w-60 max-w-[85vw] flex-col border-r border-sidebar-border bg-sidebar  animate-in slide-in-from-left duration-200">
             <button
               type="button"
               onClick={() => setMobileOpen(false)}
@@ -281,7 +281,7 @@ export default function PlatformDashboardLayout({ children }: { children: React.
                 />
                 <div
                   role="menu"
-                  className="absolute right-0 top-11 z-20 w-60 rounded-lg border border-border bg-popover p-1.5 shadow-lg animate-in fade-in slide-in-from-top-1 duration-150"
+                  className="absolute right-0 top-11 z-20 w-60 rounded-lg border border-border bg-popover p-1.5  animate-in fade-in slide-in-from-top-1 duration-150"
                 >
                   <div className="mb-1 border-b border-border/60 px-3 py-2.5">
                     <p className="text-caption font-medium text-muted-foreground">Signed in as</p>

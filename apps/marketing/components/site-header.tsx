@@ -29,7 +29,7 @@ export function SiteHeader() {
           "pointer-events-auto mx-auto flex max-w-5xl flex-col",
           "rounded-lg border border-black/8 bg-black/5 backdrop-blur-xl",
           "transition-[background-color,border-color,box-shadow] duration-300 ease-out",
-          scrolled && "border-black/10 bg-white/70 shadow-lg shadow-black/5",
+          scrolled && "border-black/10 bg-white/70  shadow-black/5",
           open && "rounded-lg",
         )}
       >

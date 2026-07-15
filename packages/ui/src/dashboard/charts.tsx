@@ -29,7 +29,7 @@ function ChartTooltip({
       role="tooltip"
       style={style}
       className={cn(
-        "pointer-events-none z-20 w-max min-w-24 overflow-hidden rounded-lg border border-border/60 bg-popover shadow-lg",
+        "pointer-events-none z-20 w-max min-w-24 overflow-hidden rounded-lg border border-border/60 bg-popover ",
         className,
       )}
     >

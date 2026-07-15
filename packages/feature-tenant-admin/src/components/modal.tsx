@@ -37,7 +37,7 @@ export function Modal({
         aria-hidden
       />
       <div
-        className={`relative z-10 max-h-[90vh] w-full overflow-y-auto rounded-xl border border-border bg-card p-6 shadow-xl animate-in fade-in zoom-in-95 duration-150 ${SIZE_CLASS[size]}`}
+        className={`relative z-10 max-h-[90vh] w-full overflow-y-auto rounded-xl border border-border bg-card p-6  animate-in fade-in zoom-in-95 duration-150 ${SIZE_CLASS[size]}`}
       >
         <button
           type="button"

@@ -115,7 +115,7 @@ export function PlatformHero({ firstName }: { firstName?: string | undefined }) 
               <h1 className="text-h2 font-semibold tracking-tight text-white sm:text-h1">
                 Platform status
               </h1>
-              <span className="inline-flex items-center gap-1.5 rounded-md bg-lime-400/95 px-2.5 py-1 text-caption font-semibold text-green-950 shadow-xs">
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-lime-400/95 px-2.5 py-1 text-caption font-semibold text-green-950">
                 <span className="size-1.5 animate-pulse rounded-full bg-green-900" aria-hidden />
                 {platformStatus.state}
               </span>

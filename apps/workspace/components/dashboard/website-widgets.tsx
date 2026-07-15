@@ -85,7 +85,7 @@ export function QuickActions({ className }: { className?: string }) {
             <Link
               key={a.label}
               href={a.href}
-              className="group flex flex-col gap-2.5 rounded-lg border border-border/60 bg-background p-3.5 transition-all hover:-translate-y-0.5 hover:border-border hover:shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className="group flex flex-col gap-2.5 rounded-lg border border-border/60 bg-background p-3.5 transition-all hover:-translate-y-0.5 hover:border-border  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               <span className="flex size-8.5 items-center justify-center rounded-lg bg-secondary text-foreground transition-colors group-hover:bg-accent/20 group-hover:text-lime-700 dark:group-hover:text-lime-400">
                 <Icon className="size-4" aria-hidden />

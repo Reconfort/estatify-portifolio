@@ -110,7 +110,7 @@ function VerticalLoop({
             {images.map((src) => (
               <div
                 key={`${copy}-${src}`}
-                className="relative aspect-4/3 w-full overflow-hidden rounded-lg bg-background shadow-sm ring-1 ring-border/60"
+                className="relative aspect-4/3 w-full overflow-hidden rounded-lg bg-background ring-1 ring-border/60"
               >
                 <Image src={src} alt="" fill sizes="160px" className="object-cover" />
               </div>
@@ -150,9 +150,7 @@ function ColorCustomizeDemo() {
                 onClick={() => setActive(i)}
                 className={cn(
                   "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
-                  selected
-                    ? "bg-background shadow-sm ring-1 ring-border"
-                    : "hover:bg-background/60",
+                  selected ? "bg-background ring-1 ring-border" : "hover:bg-background/60",
                 )}
               >
                 <span
@@ -174,7 +172,7 @@ function ColorCustomizeDemo() {
         })}
       </ul>
 
-      <div className="relative flex flex-1 items-center justify-center overflow-hidden rounded-lg bg-background p-3 shadow-sm ring-1 ring-border/70">
+      <div className="relative flex flex-1 items-center justify-center overflow-hidden rounded-lg bg-background p-3 ring-1 ring-border/70">
         <AnimatePresence mode="wait">
           <motion.div
             key={current.key}
@@ -285,7 +283,7 @@ function PublishDemo() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.35 }}
-            className="w-full max-w-[17rem] overflow-hidden rounded-lg border border-border bg-background shadow-lg"
+            className="w-full max-w-[17rem] overflow-hidden rounded-lg border border-border bg-background "
           >
             <div className="flex items-center gap-1.5 border-b border-border bg-muted/50 px-2.5 py-2">
               <span className="size-2 rounded-full bg-destructive/70" aria-hidden />
@@ -317,7 +315,7 @@ function PublishDemo() {
             {[0, 1].map((i) => (
               <div
                 key={i}
-                className="overflow-hidden rounded-lg border border-border bg-background shadow-sm"
+                className="overflow-hidden rounded-lg border border-border bg-background"
               >
                 <div className="aspect-4/3 animate-pulse bg-muted" />
                 <div className="space-y-2 p-2.5">

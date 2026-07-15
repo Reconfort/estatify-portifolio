@@ -250,7 +250,7 @@ export function CoverflowCarousel({
           return (
             <motion.div
               key={item.id}
-              className="absolute top-0 left-0 h-full origin-center overflow-hidden rounded-lg bg-muted shadow-lg ring-1 ring-foreground/10 will-change-transform [backface-visibility:hidden]"
+              className="absolute top-0 left-0 h-full origin-center overflow-hidden rounded-lg bg-muted  ring-1 ring-foreground/10 will-change-transform [backface-visibility:hidden]"
               style={{
                 width: trackWidth > 0 ? cardW : `${layout.baseWidth * 100}%`,
                 zIndex: pose.zIndex,

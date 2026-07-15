@@ -44,7 +44,7 @@ function RowActions({
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} aria-hidden />
           <div
             role="menu"
-            className="absolute right-0 top-9 z-20 w-44 rounded-lg border border-border bg-popover p-1 shadow-lg"
+            className="absolute right-0 top-9 z-20 w-44 rounded-lg border border-border bg-popover p-1 "
           >
             <button
               role="menuitem"
