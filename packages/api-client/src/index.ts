@@ -68,3 +68,9 @@ export {
   useCreateMediaUpload,
   useDeleteMedia,
 } from "./workspace-media";
+export {
+  onboardingApi,
+  onboardingKeys,
+  useOnboardingPreferences,
+  useSaveOnboardingPreferences,
+} from "./workspace-onboarding";

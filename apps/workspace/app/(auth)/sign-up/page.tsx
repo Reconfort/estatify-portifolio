@@ -27,7 +27,7 @@ export default function SignUpPage() {
     try {
       const tokens = await registerMut.mutateAsync(data);
       session.setAuth(tokens);
-      window.location.assign("/dashboard");
+      window.location.assign("/verify-email");
     } catch (err: unknown) {
       const message =
         err instanceof Error

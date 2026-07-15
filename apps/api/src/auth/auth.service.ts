@@ -335,11 +335,20 @@ export class AuthService {
       agencyName = agency?.name ?? null;
     }
 
+    const onboardingByTenant = await Promise.all(
+      memberships.map(async (m) => ({
+        tenantId: m.tenantId,
+        completed: await this.isOnboardingCompleted(m.tenantId),
+      })),
+    );
+    const onboardingMap = new Map(onboardingByTenant.map((o) => [o.tenantId, o.completed]));
+
     const views: TenantMembershipView[] = memberships.map((m) => ({
       tenantId: m.tenantId,
       slug: m.slug,
       role: m.role,
       agencyName: m.tenantId === active ? agencyName : null,
+      onboardingCompleted: onboardingMap.get(m.tenantId) ?? false,
     }));
 
     // Surface platform-staff RBAC so the admin UI can hide unavailable actions.
@@ -404,5 +413,15 @@ export class AuthService {
       tokens: { accessToken: access.token, expiresIn: access.expiresIn, user: authUser },
       refresh: { token: raw, expiresAt },
     };
+  }
+
+  private async isOnboardingCompleted(tenantId: string): Promise<boolean> {
+    const row = await this.prisma.withTenant(tenantId, async (tx) =>
+      tx.tenantPreference.findUnique({
+        where: { tenantId },
+        select: { completedAt: true },
+      }),
+    );
+    return Boolean(row?.completedAt);
   }
 }

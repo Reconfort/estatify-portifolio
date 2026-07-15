@@ -82,6 +82,7 @@ model Tenant {
   agency       Agency?
   memberships  Membership[]
   invites      Invite[]
+  preference   TenantPreference?
 
   @@index([status])
   @@index([plan])
@@ -158,6 +159,21 @@ model MediaAsset {
   @@index([tenantId])
   @@index([agencyId])
   @@index([category])
+}
+
+/// Tenant onboarding goals selected after signup (RLS-scoped). One row per tenant.
+model TenantPreference {
+  id          String    @id @default(uuid()) @db.Uuid
+  tenantId    String    @unique @db.Uuid
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  /// Array of goal keys, e.g. ["list_properties", "capture_leads"]
+  goals       Json      @default("[]")
+  completedAt DateTime?
+  completedBy String?   @db.Uuid
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([tenantId])
 }
 
 /// Global identity. No tenantId — the ONLY bridge to a tenant is Membership.

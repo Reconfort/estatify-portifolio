@@ -52,7 +52,10 @@ const NAV_GROUPS = [
   },
   {
     label: "Account",
-    items: [{ label: "Billing", href: "/billing", icon: CreditCard }],
+    items: [
+      { label: "Profile", href: "/profile", icon: User },
+      { label: "Billing", href: "/billing", icon: CreditCard },
+    ],
   },
 ] as const;
 
@@ -309,6 +312,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         {user?.email}
                       </p>
                     </div>
+                    <Link
+                      href="/profile"
+                      role="menuitem"
+                      onClick={() => setProfileDropdownOpen(false)}
+                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-body-sm font-medium text-foreground transition-colors hover:bg-secondary"
+                    >
+                      <User className="size-4" aria-hidden />
+                      View profile
+                    </Link>
                     <button
                       role="menuitem"
                       onClick={() => {

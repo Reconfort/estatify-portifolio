@@ -15,6 +15,7 @@ export const WORKSPACE_GUEST_ROUTES = [
 export const PLATFORM_GUEST_ROUTES = ["/login"] as const;
 
 export const DASHBOARD_PATH = "/dashboard";
+export const ONBOARDING_PATH = "/onboarding";
 
 /** Shared matcher — skip static assets and Next internals. */
 export const authProxyMatcher = [

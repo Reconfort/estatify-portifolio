@@ -31,6 +31,7 @@ export type {
   Agency,
   AgencyConfiguration,
   MediaAsset,
+  TenantPreference,
   User,
   Membership,
   Session,

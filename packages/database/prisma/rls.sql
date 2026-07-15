@@ -75,3 +75,13 @@ CREATE POLICY platform_bypass ON "AgencyConfiguration" FOR ALL
 CREATE POLICY platform_bypass ON "MediaAsset" FOR ALL
   USING (current_setting('app.platform', true) = 'on')
   WITH CHECK (current_setting('app.platform', true) = 'on');
+
+-- ---- TenantPreference -----------------------------------------------------
+ALTER TABLE "TenantPreference" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "TenantPreference" FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation ON "TenantPreference"
+  USING ("tenantId" = NULLIF(current_setting('app.current_tenant', true), '')::uuid)
+  WITH CHECK ("tenantId" = NULLIF(current_setting('app.current_tenant', true), '')::uuid);
+CREATE POLICY platform_bypass ON "TenantPreference" FOR ALL
+  USING (current_setting('app.platform', true) = 'on')
+  WITH CHECK (current_setting('app.platform', true) = 'on');

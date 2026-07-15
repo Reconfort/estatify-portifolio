@@ -5,7 +5,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import type { AuthTokens } from "@estatify/types";
-import { DASHBOARD_PATH } from "./constants";
+import { DASHBOARD_PATH, ONBOARDING_PATH } from "./constants";
 
 export type AuthAppKind = "workspace" | "platform";
 
@@ -14,6 +14,7 @@ export type ProtectRoutesOptions = {
   guestRoutes: readonly string[];
   signInPath: string;
   dashboardPath?: string;
+  onboardingPath?: string;
   foreignAppUrl?: string;
   allowAuthenticatedPublicRoutes?: readonly string[];
   apiUrl?: string;
@@ -90,6 +91,7 @@ export async function protectRoutes(
     guestRoutes,
     signInPath,
     dashboardPath = DASHBOARD_PATH,
+    onboardingPath = ONBOARDING_PATH,
     foreignAppUrl,
     allowAuthenticatedPublicRoutes,
     apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000",
@@ -178,14 +180,38 @@ export async function protectRoutes(
       }
     }
 
+    const needsOnboarding =
+      app === "workspace" &&
+      Boolean(data.user.activeTenant) &&
+      !data.user.activeTenant?.onboardingCompleted;
+
+    const postAuthPath = needsOnboarding ? onboardingPath : dashboardPath;
+
     if (guest) {
+      const response = NextResponse.redirect(new URL(postAuthPath, request.url));
+      if (setCookie) response.headers.set("set-cookie", setCookie);
+      return response;
+    }
+
+    if (matchesPath(pathname, onboardingPath) && !needsOnboarding) {
       const response = NextResponse.redirect(new URL(dashboardPath, request.url));
       if (setCookie) response.headers.set("set-cookie", setCookie);
       return response;
     }
 
+    if (
+      app === "workspace" &&
+      needsOnboarding &&
+      !matchesPath(pathname, onboardingPath) &&
+      !allowPublic
+    ) {
+      const response = NextResponse.redirect(new URL(onboardingPath, request.url));
+      if (setCookie) response.headers.set("set-cookie", setCookie);
+      return response;
+    }
+
     if (shouldCanonicalizeRoot) {
-      const response = NextResponse.redirect(new URL(dashboardPath, request.url));
+      const response = NextResponse.redirect(new URL(postAuthPath, request.url));
       if (setCookie) response.headers.set("set-cookie", setCookie);
       return response;
     }

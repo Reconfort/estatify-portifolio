@@ -27,6 +27,7 @@ export const tenantMembershipViewSchema = z.object({
   slug: z.string(),
   agencyName: z.string().nullable(),
   role: membershipRoleSchema,
+  onboardingCompleted: z.boolean(),
 });
 export type TenantMembershipView = z.infer<typeof tenantMembershipViewSchema>;
 

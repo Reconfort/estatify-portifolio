@@ -3,16 +3,18 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "@estatify/auth";
 import { useVerifyEmail, useResendVerification } from "@estatify/api-client";
 import { useZodForm } from "@estatify/hooks";
 import { resendVerificationSchema, type ResendVerificationInput } from "@estatify/types";
 import { AuthForm, Button, Field } from "@estatify/ui";
-import { CheckIcon, LoaderIcon } from "@estatify/ui/icons";
+import { LoaderIcon } from "@estatify/ui/icons";
 
 type VerifyStatus = "idle" | "verifying" | "success" | "error";
 
 export default function VerifyEmailPage() {
   const router = useRouter();
+  const session = useSession();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
@@ -35,7 +37,11 @@ export default function VerifyEmailPage() {
     verifyStartedRef.current = true;
 
     verifyMut.mutate(token, {
-      onSuccess: () => setVerifyStatus("success"),
+      onSuccess: async () => {
+        setVerifyStatus("success");
+        await session.reload();
+        router.replace("/onboarding");
+      },
       onError: (err: unknown) => {
         setVerifyStatus("error");
         setErrorMsg(
@@ -67,20 +73,8 @@ export default function VerifyEmailPage() {
 
   if (token && verifyStatus === "success") {
     return (
-      <AuthForm
-        title="Email verified"
-        description="Your account is active. You can open your dashboard."
-        footer={
-          <Link href="/dashboard">
-            <Button size="lg" className="w-full">
-              Go to dashboard
-            </Button>
-          </Link>
-        }
-      >
-        <div className="flex size-12 items-center justify-center rounded-full bg-lime-500/15 text-lime-700">
-          <CheckIcon className="size-6" strokeWidth={2.5} />
-        </div>
+      <AuthForm title="Email verified" description="Redirecting to workspace setup…">
+        <LoaderIcon className="size-8 animate-spin text-muted-foreground" />
       </AuthForm>
     );
   }
