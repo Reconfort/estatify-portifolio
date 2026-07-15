@@ -90,16 +90,74 @@ model Tenant {
 
 /// The tenant's public brand/profile. RLS-scoped.
 model Agency {
-  id            String   @id @default(uuid()) @db.Uuid
-  tenantId      String   @unique @db.Uuid
-  tenant        Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id            String               @id @default(uuid()) @db.Uuid
+  tenantId      String               @unique @db.Uuid
+  tenant        Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   name          String
-  primaryDomain String?  @unique // custom domain, nullable
-  brand         Json? // white-label theme config
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  primaryDomain String?              @unique // custom domain, nullable
+  brand         Json? // legacy — superseded by AgencyConfiguration.draftBrand
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  configuration AgencyConfiguration?
+  mediaAssets   MediaAsset[]
 
   @@index([tenantId])
+}
+
+enum MediaCategory {
+  logo
+  favicon
+  hero
+  company
+  gallery
+  document
+}
+
+/// Draft + published website configuration (one row per agency). RLS-scoped.
+model AgencyConfiguration {
+  id       String @id @default(uuid()) @db.Uuid
+  agencyId String @unique @db.Uuid
+  agency   Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  tenantId String @db.Uuid
+
+  draftProfile   Json @default("{}")
+  draftBrand     Json @default("{}")
+  draftWebsite   Json @default("{}")
+  draftSeo       Json @default("{}")
+
+  publishedProfile Json @default("{}")
+  publishedBrand   Json @default("{}")
+  publishedWebsite Json @default("{}")
+  publishedSeo     Json @default("{}")
+
+  templateId  String?
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([tenantId])
+}
+
+/// Tenant-uploaded media stored in object storage. RLS-scoped.
+model MediaAsset {
+  id         String        @id @default(uuid()) @db.Uuid
+  tenantId   String        @db.Uuid
+  agencyId   String        @db.Uuid
+  agency     Agency        @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  category   MediaCategory
+  storageKey String
+  url        String
+  fileName   String
+  mimeType   String
+  fileSize   Int
+  width      Int?
+  height     Int?
+  uploadedBy String        @db.Uuid
+  createdAt  DateTime      @default(now())
+
+  @@index([tenantId])
+  @@index([agencyId])
+  @@index([category])
 }
 
 /// Global identity. No tenantId — the ONLY bridge to a tenant is Membership.

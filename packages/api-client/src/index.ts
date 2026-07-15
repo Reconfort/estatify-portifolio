@@ -50,3 +50,21 @@ export {
   useDeleteRole,
 } from "./platform-roles";
 export { permissionsApi, permissionCatalogKeys, usePermissionsList } from "./platform-permissions";
+export {
+  configurationApi,
+  configurationKeys,
+  useDraftConfiguration,
+  useUpdateAgencyProfile,
+  useUpdateBrandIdentity,
+  useUpdateWebsiteSettings,
+  useUpdateSeoConfiguration,
+  usePublishConfiguration,
+} from "./workspace-configuration";
+export {
+  mediaApi,
+  mediaKeys,
+  uploadToPresignedUrl,
+  useMedia,
+  useCreateMediaUpload,
+  useDeleteMedia,
+} from "./workspace-media";

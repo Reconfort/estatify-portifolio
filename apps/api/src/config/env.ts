@@ -31,6 +31,17 @@ export const env = createEnv({
 
     APP_WORKSPACE_URL: z.string().url().default("http://localhost:3000"),
     APP_PLATFORM_URL: z.string().url().default("http://localhost:3100"),
+
+    STORAGE_ENDPOINT: z.string().url().optional(),
+    STORAGE_BUCKET: z.string().optional(),
+    STORAGE_ACCESS_KEY: z.string().optional(),
+    STORAGE_SECRET_KEY: z.string().optional(),
+    STORAGE_PUBLIC_URL: z.string().url().optional(),
+    STORAGE_REGION: z.string().default("us-east-1"),
+    STORAGE_FORCE_PATH_STYLE: z
+      .union([z.boolean(), z.enum(["true", "false"])])
+      .transform((v) => v === true || v === "true")
+      .default(true),
   }),
   runtimeEnv: process.env,
 });

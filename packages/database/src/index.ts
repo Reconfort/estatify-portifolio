@@ -24,10 +24,13 @@ export {
   StaffDepartment,
   StaffStatus,
   UserStatus,
+  MediaCategory,
 } from "@prisma/client";
 export type {
   Tenant,
   Agency,
+  AgencyConfiguration,
+  MediaAsset,
   User,
   Membership,
   Session,

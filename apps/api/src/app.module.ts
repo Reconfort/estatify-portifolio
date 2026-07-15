@@ -8,6 +8,7 @@ import { SecurityModule } from "./security/security.module";
 import { MailModule } from "./mail/mail.module";
 import { AuthModule } from "./auth/auth.module";
 import { PlatformModule } from "./platform/platform.module";
+import { WorkspaceModule } from "./workspace/workspace.module";
 import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
 import { SessionValidationGuard } from "./auth/guards/session-validation.guard";
 import { TenantGuard } from "./auth/guards/tenant.guard";
@@ -30,6 +31,7 @@ import { RolesGuard } from "./auth/guards/roles.guard";
     MailModule,
     AuthModule,
     PlatformModule,
+    WorkspaceModule,
   ],
   controllers: [HealthController],
   providers: [

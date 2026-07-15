@@ -54,3 +54,24 @@ CREATE POLICY platform_bypass ON "Membership" FOR ALL
 CREATE POLICY platform_bypass ON "Invite" FOR ALL
   USING (current_setting('app.platform', true) = 'on')
   WITH CHECK (current_setting('app.platform', true) = 'on');
+
+-- ---- AgencyConfiguration ---------------------------------------------------
+ALTER TABLE "AgencyConfiguration" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "AgencyConfiguration" FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation ON "AgencyConfiguration"
+  USING ("tenantId" = NULLIF(current_setting('app.current_tenant', true), '')::uuid)
+  WITH CHECK ("tenantId" = NULLIF(current_setting('app.current_tenant', true), '')::uuid);
+
+-- ---- MediaAsset ------------------------------------------------------------
+ALTER TABLE "MediaAsset" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "MediaAsset" FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation ON "MediaAsset"
+  USING ("tenantId" = NULLIF(current_setting('app.current_tenant', true), '')::uuid)
+  WITH CHECK ("tenantId" = NULLIF(current_setting('app.current_tenant', true), '')::uuid);
+
+CREATE POLICY platform_bypass ON "AgencyConfiguration" FOR ALL
+  USING (current_setting('app.platform', true) = 'on')
+  WITH CHECK (current_setting('app.platform', true) = 'on');
+CREATE POLICY platform_bypass ON "MediaAsset" FOR ALL
+  USING (current_setting('app.platform', true) = 'on')
+  WITH CHECK (current_setting('app.platform', true) = 'on');
