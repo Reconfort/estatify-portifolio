@@ -1,4 +1,5 @@
 import type { DraftConfiguration } from "./aggregate";
+import { defaultWebsiteComposition } from "../composition";
 import { defaultAgencyProfile } from "./profile";
 import { defaultBrandIdentity } from "./brand";
 import { defaultWebsiteSettings } from "./website";
@@ -10,10 +11,13 @@ export function emptyDraftConfiguration(updatedAt: string): DraftConfiguration {
     brand: defaultBrandIdentity,
     website: defaultWebsiteSettings,
     seo: defaultSeoConfiguration,
+    composition: defaultWebsiteComposition,
     meta: {
       templateId: null,
       publishedAt: null,
       updatedAt,
+      agencySlug: null,
+      primaryDomain: null,
     },
   };
 }

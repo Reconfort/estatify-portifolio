@@ -7,6 +7,7 @@ type DraftUpdateInput = Partial<{
   draftBrand: unknown;
   draftWebsite: unknown;
   draftSeo: unknown;
+  draftComposition: unknown;
   templateId: string | null;
 }>;
 
@@ -43,6 +44,8 @@ export class ConfigurationRepository {
     if (data.draftBrand !== undefined) payload.draftBrand = asJsonInput(data.draftBrand);
     if (data.draftWebsite !== undefined) payload.draftWebsite = asJsonInput(data.draftWebsite);
     if (data.draftSeo !== undefined) payload.draftSeo = asJsonInput(data.draftSeo);
+    if (data.draftComposition !== undefined)
+      payload.draftComposition = asJsonInput(data.draftComposition);
     if (data.templateId !== undefined) payload.templateId = data.templateId;
 
     return this.prisma.withTenant(tenantId, async (tx) =>
@@ -63,7 +66,20 @@ export class ConfigurationRepository {
           publishedBrand: asJsonInput(row.draftBrand),
           publishedWebsite: asJsonInput(row.draftWebsite),
           publishedSeo: asJsonInput(row.draftSeo),
+          publishedComposition: asJsonInput(row.draftComposition),
           publishedAt: new Date(),
+        },
+      }),
+    );
+  }
+
+  async discardCompositionDraft(tenantId: string, agencyId: string): Promise<AgencyConfiguration> {
+    const row = await this.getOrCreate(tenantId, agencyId);
+    return this.prisma.withTenant(tenantId, async (tx) =>
+      tx.agencyConfiguration.update({
+        where: { agencyId },
+        data: {
+          draftComposition: asJsonInput(row.publishedComposition),
         },
       }),
     );

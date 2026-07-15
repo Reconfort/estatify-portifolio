@@ -8,7 +8,10 @@
     "start": "next start --port 3300"
   },
   "dependencies": {
-    "@estatify/design-system": "workspace:*"
+    "@estatify/design-system": "workspace:*",
+    "@estatify/types": "workspace:*",
+    "@estatify/website-renderer": "workspace:*",
+    "@estatify/website-sections": "workspace:*"
   },
   "nx": {
     "name": "sites",

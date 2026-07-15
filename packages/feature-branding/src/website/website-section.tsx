@@ -5,12 +5,14 @@ import { useZodForm } from "@estatify/hooks";
 import { Field } from "@estatify/ui";
 import { getApiErrorMessage, useUpdateWebsiteSettings } from "@estatify/api-client";
 import { websiteSettingsSchema, type WebsiteSettings } from "@estatify/types";
+import { FormGroup } from "../components/form-group";
 import { FieldGrid, FormError, SectionShell } from "../components/section-shell";
 
 export function WebsiteSection({ website }: { website: WebsiteSettings }) {
   const form = useZodForm(websiteSettingsSchema, { defaultValues: website });
   const update = useUpdateWebsiteSettings();
   const [error, setError] = React.useState<string | null>(null);
+  const [savedMessage, setSavedMessage] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     form.reset(website);
@@ -18,8 +20,10 @@ export function WebsiteSection({ website }: { website: WebsiteSettings }) {
 
   const onSave = form.handleSubmit(async (values) => {
     setError(null);
+    setSavedMessage(null);
     try {
       await update.mutateAsync(values);
+      setSavedMessage("Website settings saved.");
     } catch (e) {
       setError(getApiErrorMessage(e));
     }
@@ -31,10 +35,11 @@ export function WebsiteSection({ website }: { website: WebsiteSettings }) {
       description="General site information and public contact details."
       onSave={onSave}
       saving={update.isPending}
+      isDirty={form.formState.isDirty}
+      savedMessage={savedMessage}
     >
-      <form className="flex flex-col gap-6" noValidate onSubmit={(e) => e.preventDefault()}>
-        <div>
-          <h3 className="mb-3 text-body-sm font-semibold text-foreground">General</h3>
+      <form className="flex flex-col gap-4" noValidate onSubmit={(e) => e.preventDefault()}>
+        <FormGroup title="General">
           <FieldGrid>
             <Field
               control={form.control}
@@ -65,10 +70,9 @@ export function WebsiteSection({ website }: { website: WebsiteSettings }) {
               hint="Three-letter code, e.g. USD"
             />
           </FieldGrid>
-        </div>
+        </FormGroup>
 
-        <div>
-          <h3 className="mb-3 text-body-sm font-semibold text-foreground">Public contact</h3>
+        <FormGroup title="Public contact">
           <FieldGrid>
             <Field
               control={form.control}
@@ -95,11 +99,11 @@ export function WebsiteSection({ website }: { website: WebsiteSettings }) {
               label="Website phone"
             />
           </FieldGrid>
-        </div>
+        </FormGroup>
 
         <p className="text-caption text-muted-foreground">
-          Navigation and footer links use sensible defaults. Advanced layout editing comes in a
-          later milestone.
+          Navigation and footer links use sensible defaults. Arrange homepage sections in the
+          Composer tab.
         </p>
 
         <FormError message={error} />

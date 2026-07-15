@@ -11,6 +11,8 @@ import {
   themeModeSchema,
   type BrandIdentity,
 } from "@estatify/types";
+import { ColorField } from "../components/color-field";
+import { FormGroup } from "../components/form-group";
 import { FieldGrid, FormError, SectionShell } from "../components/section-shell";
 import { MediaUploader } from "../media/media-uploader";
 
@@ -18,10 +20,21 @@ const THEME_OPTIONS = themeModeSchema.options.map((v) => ({ value: v, label: v }
 const BUTTON_OPTIONS = buttonStyleSchema.options.map((v) => ({ value: v, label: v }));
 const SHADOW_OPTIONS = shadowPresetSchema.options.map((v) => ({ value: v, label: v }));
 
+const COLOR_FIELDS = [
+  { name: "colors.primary" as const, label: "Primary" },
+  { name: "colors.secondary" as const, label: "Secondary" },
+  { name: "colors.accent" as const, label: "Accent" },
+  { name: "colors.neutral" as const, label: "Neutral" },
+  { name: "colors.success" as const, label: "Success" },
+  { name: "colors.warning" as const, label: "Warning" },
+  { name: "colors.error" as const, label: "Error" },
+];
+
 export function BrandSection({ brand }: { brand: BrandIdentity }) {
   const form = useZodForm(brandIdentitySchema, { defaultValues: brand });
   const update = useUpdateBrandIdentity();
   const [error, setError] = React.useState<string | null>(null);
+  const [savedMessage, setSavedMessage] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     form.reset(brand);
@@ -29,37 +42,35 @@ export function BrandSection({ brand }: { brand: BrandIdentity }) {
 
   const onSave = form.handleSubmit(async (values) => {
     setError(null);
+    setSavedMessage(null);
     try {
       await update.mutateAsync(values);
+      setSavedMessage("Brand saved.");
     } catch (e) {
       setError(getApiErrorMessage(e));
     }
   });
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <SectionShell
         title="Brand identity"
         description="Colors, typography, and theme tokens for your agency website."
         onSave={onSave}
         saving={update.isPending}
+        isDirty={form.formState.isDirty}
+        savedMessage={savedMessage}
       >
-        <form className="flex flex-col gap-6" noValidate onSubmit={(e) => e.preventDefault()}>
-          <div>
-            <h3 className="mb-3 text-body-sm font-semibold text-foreground">Colors</h3>
+        <form className="flex flex-col gap-4" noValidate onSubmit={(e) => e.preventDefault()}>
+          <FormGroup title="Colors">
             <FieldGrid>
-              <Field control={form.control} name="colors.primary" type="text" label="Primary" />
-              <Field control={form.control} name="colors.secondary" type="text" label="Secondary" />
-              <Field control={form.control} name="colors.accent" type="text" label="Accent" />
-              <Field control={form.control} name="colors.neutral" type="text" label="Neutral" />
-              <Field control={form.control} name="colors.success" type="text" label="Success" />
-              <Field control={form.control} name="colors.warning" type="text" label="Warning" />
-              <Field control={form.control} name="colors.error" type="text" label="Error" />
+              {COLOR_FIELDS.map((c) => (
+                <ColorField key={c.name} control={form.control} name={c.name} label={c.label} />
+              ))}
             </FieldGrid>
-          </div>
+          </FormGroup>
 
-          <div>
-            <h3 className="mb-3 text-body-sm font-semibold text-foreground">Typography</h3>
+          <FormGroup title="Typography">
             <FieldGrid>
               <Field
                 control={form.control}
@@ -87,10 +98,9 @@ export function BrandSection({ brand }: { brand: BrandIdentity }) {
                 label="Heading scale"
               />
             </FieldGrid>
-          </div>
+          </FormGroup>
 
-          <div>
-            <h3 className="mb-3 text-body-sm font-semibold text-foreground">Theme & components</h3>
+          <FormGroup title="Theme & components" defaultOpen={false}>
             <FieldGrid>
               <Field
                 control={form.control}
@@ -114,7 +124,7 @@ export function BrandSection({ brand }: { brand: BrandIdentity }) {
                 options={SHADOW_OPTIONS}
               />
             </FieldGrid>
-          </div>
+          </FormGroup>
 
           <FormError message={error} />
         </form>

@@ -12,3 +12,4 @@ export * from "./session";
 export * from "./rbac";
 export * from "./configuration";
 export * from "./onboarding";
+export * from "./composition";

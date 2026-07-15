@@ -5,17 +5,21 @@ import {
   defaultAgencyProfile,
   defaultBrandIdentity,
   defaultSeoConfiguration,
+  defaultWebsiteComposition,
   defaultWebsiteSettings,
   draftConfigurationSchema,
   publishedConfigurationSchema,
   seoConfigurationSchema,
+  websiteCompositionSchema,
   websiteSettingsSchema,
   type DraftConfiguration,
   type PublishedConfiguration,
   type UpdateAgencyProfileInput,
   type UpdateBrandIdentityInput,
+  type UpdateCompositionInput,
   type UpdateSeoConfigurationInput,
   type UpdateWebsiteSettingsInput,
+  type WebsiteComposition,
 } from "@estatify/types";
 import { PrismaService } from "../../prisma/prisma.service";
 import { CacheService } from "../../security/cache.service";
@@ -35,7 +39,7 @@ export class ConfigurationService {
   async getDraft(tenantId: string): Promise<DraftConfiguration> {
     const agency = await this.requireAgency(tenantId);
     const row = await this.repo.getOrCreate(tenantId, agency.id);
-    return this.toDraft(row, agency.name);
+    return this.toDraft(row, agency);
   }
 
   async updateProfile(
@@ -95,6 +99,33 @@ export class ConfigurationService {
     );
     const seo = seoConfigurationSchema.parse(deepMerge(current, patch));
     const updated = await this.repo.updateDraft(tenantId, agency.id, { draftSeo: seo });
+    return this.toDraft(updated, agency.name);
+  }
+
+  async getComposition(tenantId: string): Promise<WebsiteComposition> {
+    const agency = await this.requireAgency(tenantId);
+    const row = await this.repo.getOrCreate(tenantId, agency.id);
+    return this.parseComposition(row.draftComposition);
+  }
+
+  async updateComposition(
+    tenantId: string,
+    patch: UpdateCompositionInput,
+  ): Promise<DraftConfiguration> {
+    const agency = await this.requireAgency(tenantId);
+    const row = await this.repo.getOrCreate(tenantId, agency.id);
+    const current = this.parseComposition(row.draftComposition);
+    const merged = deepMerge(current, patch);
+    const composition = websiteCompositionSchema.parse(merged);
+    const updated = await this.repo.updateDraft(tenantId, agency.id, {
+      draftComposition: composition,
+    });
+    return this.toDraft(updated, agency.name);
+  }
+
+  async discardComposition(tenantId: string): Promise<DraftConfiguration> {
+    const agency = await this.requireAgency(tenantId);
+    const updated = await this.repo.discardCompositionDraft(tenantId, agency.id);
     return this.toDraft(updated, agency.name);
   }
 
@@ -178,6 +209,7 @@ export class ConfigurationService {
       row.publishedSeo,
       defaultSeoConfiguration,
     );
+    const composition = this.parseComposition(row.publishedComposition);
 
     return publishedConfigurationSchema.parse({
       profile: { ...profile, basic: { ...profile.basic, companyName: agency.name } },
@@ -187,6 +219,7 @@ export class ConfigurationService {
         general: { ...website.general, websiteName: website.general.websiteName || agency.name },
       },
       seo,
+      composition,
       media,
       meta: {
         templateId: row.templateId,
@@ -204,6 +237,7 @@ export class ConfigurationService {
       draftBrand: unknown;
       draftWebsite: unknown;
       draftSeo: unknown;
+      draftComposition: unknown;
       templateId: string | null;
       publishedAt: Date | null;
       updatedAt: Date;
@@ -216,6 +250,7 @@ export class ConfigurationService {
       row.draftWebsite,
       defaultWebsiteSettings,
     );
+    const composition = this.parseComposition(row.draftComposition);
     return draftConfigurationSchema.parse({
       profile: {
         ...profile,
@@ -230,10 +265,23 @@ export class ConfigurationService {
         },
       },
       seo: parseConfigSection(seoConfigurationSchema, row.draftSeo, defaultSeoConfiguration),
+      composition,
       meta: {
         templateId: row.templateId,
         publishedAt: row.publishedAt?.toISOString() ?? null,
         updatedAt: row.updatedAt.toISOString(),
+      },
+    });
+  }
+
+  private parseComposition(raw: unknown): WebsiteComposition {
+    const parsed = parseConfigSection(websiteCompositionSchema, raw, defaultWebsiteComposition);
+    const home = parsed.pages.home ?? defaultWebsiteComposition.pages.home;
+    return websiteCompositionSchema.parse({
+      ...parsed,
+      pages: {
+        ...parsed.pages,
+        home,
       },
     });
   }

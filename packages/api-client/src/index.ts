@@ -59,6 +59,8 @@ export {
   useUpdateWebsiteSettings,
   useUpdateSeoConfiguration,
   usePublishConfiguration,
+  useUpdateComposition,
+  useDiscardComposition,
 } from "./workspace-configuration";
 export {
   mediaApi,

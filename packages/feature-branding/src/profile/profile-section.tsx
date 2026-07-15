@@ -5,12 +5,14 @@ import { useZodForm } from "@estatify/hooks";
 import { Field } from "@estatify/ui";
 import { getApiErrorMessage, useUpdateAgencyProfile } from "@estatify/api-client";
 import { agencyProfileSchema, type AgencyProfile } from "@estatify/types";
+import { FormGroup } from "../components/form-group";
 import { FieldGrid, FormError, SectionShell } from "../components/section-shell";
 
 export function ProfileSection({ profile }: { profile: AgencyProfile }) {
   const form = useZodForm(agencyProfileSchema, { defaultValues: profile });
   const update = useUpdateAgencyProfile();
   const [error, setError] = React.useState<string | null>(null);
+  const [savedMessage, setSavedMessage] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     form.reset(profile);
@@ -18,8 +20,10 @@ export function ProfileSection({ profile }: { profile: AgencyProfile }) {
 
   const onSave = form.handleSubmit(async (values) => {
     setError(null);
+    setSavedMessage(null);
     try {
       await update.mutateAsync(values);
+      setSavedMessage("Profile saved.");
     } catch (e) {
       setError(getApiErrorMessage(e));
     }
@@ -31,10 +35,11 @@ export function ProfileSection({ profile }: { profile: AgencyProfile }) {
       description="Company details shown on your public website and contact pages."
       onSave={onSave}
       saving={update.isPending}
+      isDirty={form.formState.isDirty}
+      savedMessage={savedMessage}
     >
-      <form className="flex flex-col gap-6" noValidate onSubmit={(e) => e.preventDefault()}>
-        <div>
-          <h3 className="mb-3 text-body-sm font-semibold text-foreground">Basic</h3>
+      <form className="flex flex-col gap-4" noValidate onSubmit={(e) => e.preventDefault()}>
+        <FormGroup title="Basic">
           <FieldGrid>
             <Field
               control={form.control}
@@ -64,10 +69,9 @@ export function ProfileSection({ profile }: { profile: AgencyProfile }) {
               label="Registration number"
             />
           </FieldGrid>
-        </div>
+        </FormGroup>
 
-        <div>
-          <h3 className="mb-3 text-body-sm font-semibold text-foreground">Contact</h3>
+        <FormGroup title="Contact">
           <FieldGrid>
             <Field
               control={form.control}
@@ -89,10 +93,9 @@ export function ProfileSection({ profile }: { profile: AgencyProfile }) {
             />
             <Field control={form.control} name="contact.whatsApp" type="tel" label="WhatsApp" />
           </FieldGrid>
-        </div>
+        </FormGroup>
 
-        <div>
-          <h3 className="mb-3 text-body-sm font-semibold text-foreground">Address</h3>
+        <FormGroup title="Address">
           <FieldGrid>
             <Field control={form.control} name="address.country" type="text" label="Country" />
             <Field control={form.control} name="address.city" type="text" label="City" />
@@ -104,17 +107,16 @@ export function ProfileSection({ profile }: { profile: AgencyProfile }) {
               label="Postal code"
             />
           </FieldGrid>
-        </div>
+        </FormGroup>
 
-        <div>
-          <h3 className="mb-3 text-body-sm font-semibold text-foreground">Social</h3>
+        <FormGroup title="Social" defaultOpen={false}>
           <FieldGrid>
             <Field control={form.control} name="social.facebook" type="url" label="Facebook" />
             <Field control={form.control} name="social.instagram" type="url" label="Instagram" />
             <Field control={form.control} name="social.linkedin" type="url" label="LinkedIn" />
             <Field control={form.control} name="social.youtube" type="url" label="YouTube" />
           </FieldGrid>
-        </div>
+        </FormGroup>
 
         <FormError message={error} />
       </form>

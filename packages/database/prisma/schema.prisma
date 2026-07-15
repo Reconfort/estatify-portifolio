@@ -125,11 +125,13 @@ model AgencyConfiguration {
   draftBrand     Json @default("{}")
   draftWebsite   Json @default("{}")
   draftSeo       Json @default("{}")
+  draftComposition Json @default("{}")
 
   publishedProfile Json @default("{}")
   publishedBrand   Json @default("{}")
   publishedWebsite Json @default("{}")
   publishedSeo     Json @default("{}")
+  publishedComposition Json @default("{}")
 
   templateId  String?
   publishedAt DateTime?

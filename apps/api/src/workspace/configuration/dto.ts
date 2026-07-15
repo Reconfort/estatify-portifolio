@@ -4,6 +4,7 @@ import {
   mediaListQuerySchema,
   updateAgencyProfileSchema,
   updateBrandIdentitySchema,
+  updateCompositionSchema,
   updateSeoConfigurationSchema,
   updateWebsiteSettingsSchema,
 } from "@estatify/types";
@@ -12,5 +13,6 @@ export class UpdateAgencyProfileDto extends createZodDto(updateAgencyProfileSche
 export class UpdateBrandIdentityDto extends createZodDto(updateBrandIdentitySchema) {}
 export class UpdateWebsiteSettingsDto extends createZodDto(updateWebsiteSettingsSchema) {}
 export class UpdateSeoConfigurationDto extends createZodDto(updateSeoConfigurationSchema) {}
+export class UpdateCompositionDto extends createZodDto(updateCompositionSchema) {}
 export class CreateMediaUploadDto extends createZodDto(createMediaUploadSchema) {}
 export class MediaListQueryDto extends createZodDto(mediaListQuerySchema) {}

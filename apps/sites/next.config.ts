@@ -10,11 +10,15 @@ const nextConfig: NextConfig = {
   turbopack: { root: path.join(projectDir, "..", "..") },
   transpilePackages: [
     "@estatify/design-system",
+    "@estatify/types",
     "@estatify/ui",
-    "@estatify/providers",
-    "@estatify/hooks",
-    "@estatify/utils", "@estatify/feature-tenant-runtime", "@estatify/feature-property", "@estatify/feature-agent", "@estatify/feature-templates"
+    "@estatify/utils",
+    "@estatify/website-renderer",
+    "@estatify/website-sections",
   ],
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
+  },
 };
 
 export default nextConfig;

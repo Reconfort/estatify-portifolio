@@ -15,6 +15,7 @@ import { ConfigurationService } from "./configuration.service";
 import {
   UpdateAgencyProfileDto,
   UpdateBrandIdentityDto,
+  UpdateCompositionDto,
   UpdateSeoConfigurationDto,
   UpdateWebsiteSettingsDto,
 } from "./dto";
@@ -97,6 +98,30 @@ export class ConfigurationController {
     @Body() body: UpdateSeoConfigurationDto,
   ): Promise<DraftConfiguration> {
     return this.config.updateSeo(this.requireTenant(tenantId), body);
+  }
+
+  @Get("composition")
+  @ApiOperation({ summary: "Get website composition (draft)" })
+  getComposition(@TenantId() tenantId: string | null) {
+    return this.config.getComposition(this.requireTenant(tenantId));
+  }
+
+  @Patch("composition")
+  @Roles("owner", "admin")
+  @ApiOperation({ summary: "Update website composition (draft)" })
+  updateComposition(
+    @TenantId() tenantId: string | null,
+    @Body() body: UpdateCompositionDto,
+  ): Promise<DraftConfiguration> {
+    return this.config.updateComposition(this.requireTenant(tenantId), body);
+  }
+
+  @Post("composition/discard")
+  @HttpCode(200)
+  @Roles("owner", "admin")
+  @ApiOperation({ summary: "Discard draft composition (revert to published)" })
+  discardComposition(@TenantId() tenantId: string | null): Promise<DraftConfiguration> {
+    return this.config.discardComposition(this.requireTenant(tenantId));
   }
 
   @Post("publish")

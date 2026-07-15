@@ -6,8 +6,10 @@ import type {
   PublishedConfiguration,
   UpdateAgencyProfileInput,
   UpdateBrandIdentityInput,
+  UpdateCompositionInput,
   UpdateSeoConfigurationInput,
   UpdateWebsiteSettingsInput,
+  WebsiteComposition,
 } from "@estatify/types";
 import { apiFetch } from "./http";
 
@@ -21,6 +23,16 @@ export const configurationApi = {
     apiFetch<DraftConfiguration>("/workspace/configuration/website", { method: "PATCH", body }),
   updateSeo: (body: UpdateSeoConfigurationInput) =>
     apiFetch<DraftConfiguration>("/workspace/configuration/seo", { method: "PATCH", body }),
+  getComposition: () => apiFetch<WebsiteComposition>("/workspace/configuration/composition"),
+  updateComposition: (body: UpdateCompositionInput) =>
+    apiFetch<DraftConfiguration>("/workspace/configuration/composition", {
+      method: "PATCH",
+      body,
+    }),
+  discardComposition: () =>
+    apiFetch<DraftConfiguration>("/workspace/configuration/composition/discard", {
+      method: "POST",
+    }),
   publish: () =>
     apiFetch<DraftConfiguration>("/workspace/configuration/publish", { method: "POST" }),
   getPublishedByHost: (host: string) =>
@@ -84,6 +96,22 @@ export function usePublishConfiguration() {
   const invalidate = useInvalidateConfiguration();
   return useMutation({
     mutationFn: configurationApi.publish,
+    onSuccess: invalidate,
+  });
+}
+
+export function useUpdateComposition() {
+  const invalidate = useInvalidateConfiguration();
+  return useMutation({
+    mutationFn: configurationApi.updateComposition,
+    onSuccess: invalidate,
+  });
+}
+
+export function useDiscardComposition() {
+  const invalidate = useInvalidateConfiguration();
+  return useMutation({
+    mutationFn: configurationApi.discardComposition,
     onSuccess: invalidate,
   });
 }

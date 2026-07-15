@@ -4,25 +4,41 @@ import * as React from "react";
 import { Globe, Loader2 } from "lucide-react";
 import { Button } from "@estatify/ui";
 import { cn } from "@estatify/utils";
-import { getApiErrorMessage, usePublishConfiguration } from "@estatify/api-client";
+import {
+  getApiErrorMessage,
+  useDiscardComposition,
+  usePublishConfiguration,
+} from "@estatify/api-client";
 import { FormError } from "./section-shell";
 
 export function PublishBar({
   publishedAt,
   updatedAt,
   className,
+  onOpenComposer,
 }: {
   publishedAt: string | null;
   updatedAt: string;
   className?: string;
+  onOpenComposer?: () => void;
 }) {
   const publish = usePublishConfiguration();
+  const discard = useDiscardComposition();
   const [error, setError] = React.useState<string | null>(null);
 
   const onPublish = async () => {
     setError(null);
     try {
       await publish.mutateAsync();
+    } catch (e) {
+      setError(getApiErrorMessage(e));
+    }
+  };
+
+  const onDiscard = async () => {
+    setError(null);
+    try {
+      await discard.mutateAsync();
     } catch (e) {
       setError(getApiErrorMessage(e));
     }
@@ -39,7 +55,7 @@ export function PublishBar({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 rounded-xl border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between",
+        "flex flex-col gap-4 rounded-xl border border-border bg-card p-4 lg:flex-row lg:items-center lg:justify-between",
         className,
       )}
     >
@@ -55,16 +71,31 @@ export function PublishBar({
           <FormError message={error} />
         </div>
       </div>
-      <Button type="button" onClick={onPublish} disabled={publish.isPending} className="shrink-0">
-        {publish.isPending ? (
-          <>
-            <Loader2 className="size-4 animate-spin" aria-hidden />
-            Publishing…
-          </>
-        ) : (
-          "Publish website"
-        )}
-      </Button>
+      <div className="flex flex-wrap items-center gap-2">
+        {onOpenComposer ? (
+          <Button type="button" variant="outline" onClick={onOpenComposer}>
+            Open Composer
+          </Button>
+        ) : null}
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onDiscard}
+          disabled={discard.isPending || publish.isPending}
+        >
+          Discard draft
+        </Button>
+        <Button type="button" onClick={onPublish} disabled={publish.isPending || discard.isPending}>
+          {publish.isPending ? (
+            <>
+              <Loader2 className="size-4 animate-spin" aria-hidden />
+              Publishing…
+            </>
+          ) : (
+            "Publish website"
+          )}
+        </Button>
+      </div>
     </div>
   );
 }

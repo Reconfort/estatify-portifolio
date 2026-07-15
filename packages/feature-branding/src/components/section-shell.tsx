@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Button } from "@estatify/ui";
+import { cn } from "@estatify/utils";
 
 export function FormError({ message }: { message: string | null }) {
   if (!message) return null;
@@ -18,6 +19,8 @@ export function SectionShell({
   children,
   onSave,
   saving,
+  isDirty = true,
+  savedMessage,
   saveLabel = "Save changes",
 }: {
   title: string;
@@ -25,6 +28,8 @@ export function SectionShell({
   children: React.ReactNode;
   onSave: () => void;
   saving?: boolean;
+  isDirty?: boolean;
+  savedMessage?: string | null;
   saveLabel?: string;
 }) {
   return (
@@ -35,8 +40,15 @@ export function SectionShell({
           {description ? (
             <p className="mt-1 text-body-sm text-muted-foreground">{description}</p>
           ) : null}
+          {isDirty ? (
+            <p className="mt-1 text-caption text-warning">Unsaved changes</p>
+          ) : savedMessage ? (
+            <p className="mt-1 text-caption text-accent">{savedMessage}</p>
+          ) : (
+            <p className="mt-1 text-caption text-muted-foreground">All changes saved</p>
+          )}
         </div>
-        <Button type="button" onClick={onSave} disabled={saving} className="shrink-0">
+        <Button type="button" onClick={onSave} disabled={saving || !isDirty} className="shrink-0">
           {saving ? "Saving…" : saveLabel}
         </Button>
       </div>
@@ -45,6 +57,12 @@ export function SectionShell({
   );
 }
 
-export function FieldGrid({ children }: { children: React.ReactNode }) {
-  return <div className="grid gap-4 sm:grid-cols-2">{children}</div>;
+export function FieldGrid({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return <div className={cn("grid gap-4 sm:grid-cols-2", className)}>{children}</div>;
 }

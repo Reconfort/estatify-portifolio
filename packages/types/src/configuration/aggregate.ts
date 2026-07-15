@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { websiteCompositionSchema } from "../composition";
 import { agencyProfileSchema } from "./profile";
 import { brandIdentitySchema } from "./brand";
 import { websiteSettingsSchema } from "./website";
@@ -9,6 +10,8 @@ export const configurationMetaSchema = z.object({
   templateId: z.string().nullable(),
   publishedAt: z.string().datetime().nullable(),
   updatedAt: z.string().datetime(),
+  agencySlug: z.string().nullable().default(null),
+  primaryDomain: z.string().nullable().default(null),
 });
 
 export const draftConfigurationSchema = z.object({
@@ -16,6 +19,7 @@ export const draftConfigurationSchema = z.object({
   brand: brandIdentitySchema,
   website: websiteSettingsSchema,
   seo: seoConfigurationSchema,
+  composition: websiteCompositionSchema,
   meta: configurationMetaSchema,
 });
 
@@ -27,6 +31,7 @@ export const publishedConfigurationSchema = z.object({
   brand: brandIdentitySchema,
   website: websiteSettingsSchema,
   seo: seoConfigurationSchema,
+  composition: websiteCompositionSchema,
   media: z.object({
     logo: mediaAssetSchema.nullable(),
     favicon: mediaAssetSchema.nullable(),

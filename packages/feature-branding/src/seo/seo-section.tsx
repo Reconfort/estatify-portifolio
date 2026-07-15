@@ -9,6 +9,7 @@ import {
   seoConfigurationSchema,
   type SeoConfiguration,
 } from "@estatify/types";
+import { FormGroup } from "../components/form-group";
 import { FieldGrid, FormError, SectionShell } from "../components/section-shell";
 
 const ROBOTS_OPTIONS = robotsDirectiveSchema.options.map((v) => ({ value: v, label: v }));
@@ -17,6 +18,7 @@ export function SeoSection({ seo }: { seo: SeoConfiguration }) {
   const form = useZodForm(seoConfigurationSchema, { defaultValues: seo });
   const update = useUpdateSeoConfiguration();
   const [error, setError] = React.useState<string | null>(null);
+  const [savedMessage, setSavedMessage] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     form.reset(seo);
@@ -24,8 +26,10 @@ export function SeoSection({ seo }: { seo: SeoConfiguration }) {
 
   const onSave = form.handleSubmit(async (values) => {
     setError(null);
+    setSavedMessage(null);
     try {
       await update.mutateAsync(values);
+      setSavedMessage("SEO settings saved.");
     } catch (e) {
       setError(getApiErrorMessage(e));
     }
@@ -37,10 +41,11 @@ export function SeoSection({ seo }: { seo: SeoConfiguration }) {
       description="Search and social metadata for your public website."
       onSave={onSave}
       saving={update.isPending}
+      isDirty={form.formState.isDirty}
+      savedMessage={savedMessage}
     >
-      <form className="flex flex-col gap-6" noValidate onSubmit={(e) => e.preventDefault()}>
-        <div>
-          <h3 className="mb-3 text-body-sm font-semibold text-foreground">Meta tags</h3>
+      <form className="flex flex-col gap-4" noValidate onSubmit={(e) => e.preventDefault()}>
+        <FormGroup title="Meta tags">
           <FieldGrid>
             <Field control={form.control} name="metaTitle" type="text" label="Meta title" />
             <Field
@@ -62,10 +67,9 @@ export function SeoSection({ seo }: { seo: SeoConfiguration }) {
             <Field control={form.control} name="canonicalUrl" type="url" label="Canonical URL" />
             <Field control={form.control} name="faviconUrl" type="url" label="Favicon URL" />
           </FieldGrid>
-        </div>
+        </FormGroup>
 
-        <div>
-          <h3 className="mb-3 text-body-sm font-semibold text-foreground">Open Graph</h3>
+        <FormGroup title="Open Graph" defaultOpen={false}>
           <FieldGrid>
             <Field control={form.control} name="openGraph.title" type="text" label="OG title" />
             <Field
@@ -84,7 +88,7 @@ export function SeoSection({ seo }: { seo: SeoConfiguration }) {
               />
             </div>
           </FieldGrid>
-        </div>
+        </FormGroup>
 
         <FormError message={error} />
       </form>
