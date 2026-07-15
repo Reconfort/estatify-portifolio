@@ -20,6 +20,7 @@ export * from "./marquee";
 export * from "./bento-grid";
 export * from "./tilt-card";
 export * from "./auth-layout";
+export * from "./auth-social";
 export * from "./auth-brand";
 export * from "./auth-testimonial-panel";
 export * from "./auth-testimonials";

@@ -5,6 +5,7 @@ import { cn } from "@estatify/utils";
 import { ArrowRightIcon, CheckIcon, SparkleIcon } from "@estatify/ui/icons";
 import { Badge, Button, Container } from "@estatify/ui";
 import { pricing } from "@/components/landing-data";
+import { checkoutUrl } from "@/lib/checkout";
 import { workspaceSignUpUrl } from "@/lib/workspace-urls";
 import { SectionHeader } from "./section-header";
 
@@ -18,6 +19,12 @@ const reveal = {
     transition: { duration: 0.6, delay: i * 0.1, ease },
   }),
 };
+
+function tierHref(tierName: (typeof pricing)[number]["name"]): string {
+  if (tierName === "Scale") return "#contact";
+  if (tierName === "Growth") return checkoutUrl("growth");
+  return workspaceSignUpUrl();
+}
 
 function PricingGrid() {
   const reduceMotion = useReducedMotion();
@@ -124,7 +131,7 @@ function PricingGrid() {
               </ul>
 
               <Button
-                href={tier.name === "Scale" ? "#contact" : workspaceSignUpUrl()}
+                href={tierHref(tier.name)}
                 variant={isFeatured ? "accent" : "outline"}
                 className={cn(
                   "group mt-auto w-full",

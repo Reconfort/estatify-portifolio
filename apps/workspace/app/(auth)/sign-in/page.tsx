@@ -7,7 +7,7 @@ import { useSession } from "@estatify/auth";
 import { useLogin } from "@estatify/api-client";
 import { useZodForm } from "@estatify/hooks";
 import { loginSchema, type LoginInput } from "@estatify/types";
-import { AuthForm, Button, Field } from "@estatify/ui";
+import { AuthForm, AuthSocialLogin, Button, Field } from "@estatify/ui";
 import { cn } from "@estatify/utils";
 
 const PLATFORM_URL = (process.env.NEXT_PUBLIC_PLATFORM_URL || "http://localhost:3100").replace(
@@ -51,7 +51,7 @@ export default function SignInPage() {
       description="Welcome back! Please enter your details."
       footer={
         <>
-          Don&apos;t have an account?{" "}
+          Don&apos;t have an Estatify account?{" "}
           <Link
             href="/sign-up"
             className="font-semibold text-foreground underline-offset-4 hover:underline"
@@ -122,6 +122,8 @@ export default function SignInPage() {
         <Button type="submit" size="lg" className="w-full" disabled={loginMut.isPending}>
           {loginMut.isPending ? "Signing in…" : "Sign in"}
         </Button>
+
+        <AuthSocialLogin />
       </form>
     </AuthForm>
   );

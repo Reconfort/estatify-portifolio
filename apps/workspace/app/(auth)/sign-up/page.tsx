@@ -6,7 +6,7 @@ import { useSession } from "@estatify/auth";
 import { useRegister } from "@estatify/api-client";
 import { useZodForm } from "@estatify/hooks";
 import { registerSchema, type RegisterInput } from "@estatify/types";
-import { AuthForm, Button, Field } from "@estatify/ui";
+import { AuthForm, AuthSocialLogin, Button, Field } from "@estatify/ui";
 
 export default function SignUpPage() {
   const session = useSession();
@@ -46,12 +46,12 @@ export default function SignUpPage() {
       description="Start free. Set up your agency, invite your team, launch your site."
       footer={
         <>
-          Already have an account?{" "}
+          Already have an Estatify account?{" "}
           <Link
             href="/sign-in"
             className="font-semibold text-foreground underline-offset-4 hover:underline"
           >
-            Sign in
+            Log in
           </Link>
         </>
       }
@@ -112,6 +112,8 @@ export default function SignUpPage() {
         <Button type="submit" size="lg" className="mt-2 w-full" disabled={registerMut.isPending}>
           {registerMut.isPending ? "Setting up…" : "Get started"}
         </Button>
+
+        <AuthSocialLogin />
       </form>
     </AuthForm>
   );
