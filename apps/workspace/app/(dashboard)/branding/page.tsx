@@ -1,6 +1,6 @@
-import { BrandingPage } from "@estatify/feature-branding";
+import { redirect } from "next/navigation";
 
-/** /branding — agency website configuration editor. */
+/** Legacy route — redirects to Website Manager. */
 export default function Page() {
-  return <BrandingPage />;
+  redirect("/website");
 }

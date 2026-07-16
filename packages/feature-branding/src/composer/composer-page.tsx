@@ -9,7 +9,13 @@ import { ComposerStructurePanel } from "./composer-structure-panel";
 import { ComposerToolbar } from "./composer-toolbar";
 import { useComposerState } from "./hooks/use-composer-state";
 
-export function ComposerPage({ draft }: { draft: DraftConfiguration }) {
+export function ComposerPage({
+  draft,
+  onBack,
+}: {
+  draft: DraftConfiguration;
+  onBack?: () => void;
+}) {
   const [pickerOpen, setPickerOpen] = React.useState(false);
   const composer = useComposerState(draft);
 
@@ -25,6 +31,7 @@ export function ComposerPage({ draft }: { draft: DraftConfiguration }) {
         updatedAt={draft.meta.updatedAt}
         publishedAt={draft.meta.publishedAt}
         saving={composer.isSaving}
+        {...(onBack ? { onBack } : {})}
       />
 
       <div className="flex min-h-0 flex-1 overflow-hidden">

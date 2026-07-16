@@ -46,7 +46,7 @@ const NAV_GROUPS = [
   {
     label: "Website",
     items: [
-      { label: "Branding", href: "/branding", icon: Palette },
+      { label: "Website", href: "/website", icon: Palette },
       { label: "Analytics", href: "/analytics", icon: TrendingUp },
     ],
   },
@@ -75,7 +75,7 @@ function NavLink({
       {...(onClick ? { onClick } : {})}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "group relative flex items-center gap-3 rounded-lg px-3 py-2 text-body-sm font-medium outline-none",
+        "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[0.8125rem] font-normal outline-none",
         "transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         active
           ? "bg-sidebar-accent text-sidebar-accent-foreground"
@@ -92,7 +92,7 @@ function NavLink({
       />
       <Icon
         className={cn(
-          "size-4 shrink-0 transition-colors",
+          "size-3.5 shrink-0 transition-colors",
           active ? "text-foreground" : "text-muted-foreground group-hover:text-foreground",
         )}
       />
@@ -125,10 +125,10 @@ function SidebarContent({
           aria-hidden
         />
         <div className="leading-tight">
-          <span className="block text-body-md font-semibold tracking-tight text-foreground">
+          <span className="block text-body-sm font-medium tracking-tight text-foreground">
             Estatify
           </span>
-          <span className="-mt-0.5 block text-[0.65rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          <span className="-mt-0.5 block text-[0.625rem] font-normal uppercase tracking-[0.14em] text-muted-foreground">
             Workspace
           </span>
         </div>
@@ -144,10 +144,10 @@ function SidebarContent({
             {agencyName.substring(0, 2).toUpperCase()}
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-body-sm font-semibold text-foreground">
+            <span className="block truncate text-[0.8125rem] font-medium text-foreground">
               {agencyName}
             </span>
-            <span className="block truncate text-caption text-muted-foreground">{role}</span>
+            <span className="block truncate text-[0.6875rem] text-muted-foreground">{role}</span>
           </span>
           <ChevronsUpDown className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
         </button>
@@ -157,7 +157,7 @@ function SidebarContent({
       <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4" aria-label="Workspace">
         {NAV_GROUPS.map((group) => (
           <div key={group.label}>
-            <p className="mb-1.5 px-3 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground/80">
+            <p className="mb-1.5 px-3 text-[0.625rem] font-medium uppercase tracking-[0.12em] text-muted-foreground/80">
               {group.label}
             </p>
             <div className="space-y-0.5">

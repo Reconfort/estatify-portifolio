@@ -1,52 +1,57 @@
-import type { ReadinessInput } from "./evaluate-input";
-import { getReadinessEvaluators, registerReadinessRule } from "./registry";
-import {
-  evaluateAnalyticsRule,
-  evaluateBrandRule,
-  evaluateComposerRule,
-  evaluateCustomDomainRule,
-  evaluateProfileRule,
-  evaluatePublishRule,
-  evaluateSeoRule,
-  evaluateSettingsRule,
-  evaluateSubdomainRule,
-} from "./rules";
-import type { ReadinessReport } from "./types";
+import { evaluateAnalytics } from "./rules/analytics";
+import { evaluateBrand } from "./rules/brand";
+import { evaluateHomepage } from "./rules/composer";
+import { evaluateDomain } from "./rules/domain";
+import { evaluateProfile } from "./rules/profile";
+import { evaluatePublish } from "./rules/publish";
+import { evaluateSeo } from "./rules/seo";
+import { evaluateSettings } from "./rules/settings";
+import type { ReadinessContext, ReadinessEvaluator, ReadinessResult } from "./types";
 
-let registered = false;
+/** All readiness evaluators — add new modules here. */
+export const readinessEvaluators: ReadinessEvaluator[] = [
+  evaluateProfile,
+  evaluateBrand,
+  evaluateSettings,
+  evaluateHomepage,
+  evaluateSeo,
+  evaluateDomain,
+  evaluateAnalytics,
+  evaluatePublish,
+];
 
-function ensureRulesRegistered(): void {
-  if (registered) return;
-  registerReadinessRule(evaluateProfileRule);
-  registerReadinessRule(evaluateBrandRule);
-  registerReadinessRule(evaluateSettingsRule);
-  registerReadinessRule(evaluateSeoRule);
-  registerReadinessRule(evaluateComposerRule);
-  registerReadinessRule(evaluateSubdomainRule);
-  registerReadinessRule(evaluateCustomDomainRule);
-  registerReadinessRule(evaluatePublishRule);
-  registerReadinessRule(evaluateAnalyticsRule);
-  registered = true;
+function statusMultiplier(status: ReadinessResult["rules"][number]["status"]): number {
+  switch (status) {
+    case "complete":
+      return 1;
+    case "warning":
+      return 0.5;
+    case "blocked":
+      return 0;
+    default: {
+      const _exhaustive: never = status;
+      return _exhaustive;
+    }
+  }
 }
 
-export function evaluateReadiness(input: ReadinessInput): ReadinessReport {
-  ensureRulesRegistered();
-  const rules = getReadinessEvaluators().map((fn) => fn(input));
+export function evaluateWebsiteReadiness(ctx: ReadinessContext): ReadinessResult {
+  const rules = readinessEvaluators.map((fn) => fn(ctx));
+  const totalWeight = rules.reduce((sum, r) => sum + r.weight, 0);
+  const earned = rules.reduce((sum, r) => sum + r.weight * statusMultiplier(r.status), 0);
+  const score = totalWeight > 0 ? Math.round((earned / totalWeight) * 100) : 0;
 
-  const scorable = rules.filter((r) => r.status !== "not_applicable");
-  const totalWeight = scorable.reduce((sum, r) => sum + r.weight, 0);
-  const earnedWeight = scorable
-    .filter((r) => r.status === "complete")
-    .reduce((sum, r) => sum + r.weight, 0);
-  const score = totalWeight > 0 ? Math.round((earnedWeight / totalWeight) * 100) : 0;
+  const blockers = rules.filter((r) => r.status === "blocked");
+  const warnings = rules.filter((r) => r.status === "warning");
+  const completeCount = rules.filter((r) => r.status === "complete").length;
 
   return {
     score,
     rules,
-    blockers: rules.filter((r) => r.status === "blocked"),
-    warnings: rules.filter((r) => r.status === "warning"),
-    complete: rules.filter((r) => r.status === "complete"),
+    completeCount,
+    warningCount: warnings.length,
+    blockedCount: blockers.length,
+    blockers,
+    warnings,
   };
 }
-
-export type { ReadinessInput } from "./evaluate-input";

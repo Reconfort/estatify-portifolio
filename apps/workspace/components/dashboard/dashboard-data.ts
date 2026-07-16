@@ -261,17 +261,6 @@ export const recentMessages = [
   },
 ] as const;
 
-/* ------------------------------ Website status ----------------------------- */
-
-export const websiteStatus = {
-  domain: "acacia-realty.estatify.rw",
-  published: true,
-  ssl: true,
-  seoScore: 92,
-  visitors7d: "3,412",
-  lastDeploy: "Yesterday, 18:42",
-} as const;
-
 /* ------------------------------- Quick actions ----------------------------- */
 
 export const quickActions = [
@@ -296,7 +285,7 @@ export const quickActions = [
   {
     label: "Publish Website",
     description: "Push changes live",
-    href: "/branding",
+    href: "/website",
     icon: Globe,
   },
   {

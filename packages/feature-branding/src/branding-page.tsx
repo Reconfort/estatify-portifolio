@@ -4,6 +4,7 @@ import * as React from "react";
 import { Loader2 } from "lucide-react";
 import { cn } from "@estatify/utils";
 import { getApiErrorMessage, useDraftConfiguration } from "@estatify/api-client";
+import type { WebsiteTab } from "@estatify/website-readiness";
 import {
   defaultAgencyProfile,
   defaultBrandIdentity,
@@ -12,15 +13,20 @@ import {
   defaultWebsiteSettings,
 } from "@estatify/types";
 import { PublishBar } from "./components/publish-bar";
-import { SetupChecklist } from "./components/setup-checklist";
 import { FormError } from "./components/section-shell";
 import { BrandSection } from "./brand/brand-section";
 import { ComposerPage } from "./composer/composer-page";
+import { OverviewPage } from "./overview/overview-page";
 import { ProfileSection } from "./profile/profile-section";
 import { SeoSection } from "./seo/seo-section";
 import { WebsiteSection } from "./website/website-section";
 
-const TABS = [
+const CONFIG_TABS = [
+  {
+    key: "overview",
+    label: "Overview",
+    description: "Is your website ready for customers?",
+  },
   {
     key: "profile",
     label: "Profile",
@@ -32,33 +38,33 @@ const TABS = [
     description: "Colors, fonts, and theme tokens for every page.",
   },
   {
-    key: "website",
-    label: "Website",
-    description: "Global site name, contact, and navigation defaults.",
+    key: "settings",
+    label: "Settings",
+    description: "Site name, contact details, and navigation defaults.",
   },
   {
     key: "seo",
     label: "SEO",
     description: "Search and social metadata.",
   },
-  {
-    key: "composer",
-    label: "Composer",
-    description: "Arrange homepage sections with live preview.",
-  },
 ] as const;
 
-type TabKey = (typeof TABS)[number]["key"];
+type ConfigTabKey = (typeof CONFIG_TABS)[number]["key"];
+export type WebsiteManagerTab = ConfigTabKey | "composer";
 
-/** Workspace branding editor — profile, brand tokens, website, SEO, composer, publish. */
-export function BrandingPage() {
-  const [tab, setTab] = React.useState<TabKey>("profile");
+/** Website Manager — overview, configuration, and visual builder. */
+export function WebsitePage() {
+  const [tab, setTab] = React.useState<WebsiteManagerTab>("overview");
   const { data, isLoading, isError, error, refetch } = useDraftConfiguration();
+
+  const navigate = React.useCallback((target: WebsiteTab) => {
+    setTab(target);
+  }, []);
 
   if (isLoading) {
     return (
       <div className="flex flex-col gap-6">
-        <BrandingHeader />
+        <WebsiteHeader />
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="size-6 animate-spin" aria-hidden />
         </div>
@@ -69,7 +75,7 @@ export function BrandingPage() {
   if (isError || !data) {
     return (
       <div className="flex flex-col gap-6">
-        <BrandingHeader />
+        <WebsiteHeader />
         <div className="rounded-xl border border-border bg-card p-6">
           <FormError message={getApiErrorMessage(error)} />
           <button
@@ -89,73 +95,88 @@ export function BrandingPage() {
   const website = data.website ?? defaultWebsiteSettings;
   const seo = data.seo ?? defaultSeoConfiguration;
   const composition = data.composition ?? defaultWebsiteComposition;
-  const activeTab = TABS.find((t) => t.key === tab);
+  const activeTab = CONFIG_TABS.find((t) => t.key === tab);
   const isComposer = tab === "composer";
+  const isOverview = tab === "overview";
 
   return (
-    <div className="flex flex-col gap-6">
-      <BrandingHeader />
-
-      <div className="sticky top-0 z-20 -mx-1 space-y-4 bg-background/95 px-1 py-2 backdrop-blur-sm">
-        <PublishBar
-          publishedAt={data.meta.publishedAt}
-          updatedAt={data.meta.updatedAt}
-          onOpenComposer={() => setTab("composer")}
-        />
-
-        <div className="flex flex-wrap gap-2 border-b border-border pb-1">
-          {TABS.map((t) => (
-            <button
-              key={t.key}
-              type="button"
-              onClick={() => setTab(t.key)}
-              className={cn(
-                "rounded-md px-3 py-2 text-body-sm font-medium transition-colors",
-                tab === t.key
-                  ? "bg-secondary text-foreground"
-                  : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
-              )}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {activeTab && !isComposer ? (
-          <p className="text-body-sm text-muted-foreground">{activeTab.description}</p>
-        ) : null}
-      </div>
-
+    <div className={cn("flex flex-col", isComposer ? "gap-0" : "gap-6")}>
       {isComposer ? (
-        <ComposerPage draft={{ ...data, composition }} />
+        <ComposerPage draft={{ ...data, composition }} onBack={() => setTab("overview")} />
       ) : (
-        <div className="mx-auto w-full max-w-3xl space-y-4">
-          <SetupChecklist
-            profile={profile}
-            brand={brand}
-            website={website}
-            seo={seo}
-            activeTab={tab}
-            onNavigateTab={setTab}
-            onOpenComposer={() => setTab("composer")}
-          />
+        <>
+          <WebsiteHeader />
 
-          {tab === "profile" ? <ProfileSection profile={profile} /> : null}
-          {tab === "brand" ? <BrandSection brand={brand} /> : null}
-          {tab === "website" ? <WebsiteSection website={website} /> : null}
-          {tab === "seo" ? <SeoSection seo={seo} /> : null}
-        </div>
+          <div className="sticky top-0 z-20 -mx-1 space-y-3 bg-background/95 px-1 py-2 backdrop-blur-sm">
+            {!isOverview ? (
+              <PublishBar
+                publishedAt={data.meta.publishedAt}
+                updatedAt={data.meta.updatedAt}
+                onCustomize={() => setTab("composer")}
+              />
+            ) : null}
+
+            <nav className="flex flex-col gap-3">
+              <div className="flex flex-wrap items-center gap-2 border-b border-border pb-1">
+                {CONFIG_TABS.map((t) => (
+                  <button
+                    key={t.key}
+                    type="button"
+                    onClick={() => setTab(t.key)}
+                    className={cn(
+                      "rounded-md px-3 py-2 text-[0.8125rem] font-medium transition-colors",
+                      tab === t.key
+                        ? "bg-secondary text-foreground"
+                        : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
+                    )}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+
+                <span className="mx-1 hidden h-4 w-px bg-border sm:block" aria-hidden />
+
+                <button
+                  type="button"
+                  onClick={() => setTab("composer")}
+                  className="rounded-md px-3 py-2 text-[0.8125rem] font-medium text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground"
+                >
+                  Composer
+                </button>
+              </div>
+            </nav>
+
+            {activeTab ? (
+              <p className="text-body-sm text-muted-foreground">{activeTab.description}</p>
+            ) : null}
+          </div>
+
+          {isOverview ? (
+            <OverviewPage draft={{ ...data, composition }} onNavigate={navigate} />
+          ) : (
+            <div className="mx-auto w-full max-w-3xl space-y-4">
+              {tab === "profile" ? <ProfileSection profile={profile} /> : null}
+              {tab === "brand" ? <BrandSection brand={brand} /> : null}
+              {tab === "settings" ? <WebsiteSection website={website} /> : null}
+              {tab === "seo" ? <SeoSection seo={seo} /> : null}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
 }
 
-function BrandingHeader() {
+/** @deprecated Use WebsitePage instead. */
+export const BrandingPage = WebsitePage;
+
+function WebsiteHeader() {
   return (
     <div>
-      <h1 className="text-h2 font-semibold text-foreground">Branding</h1>
+      <h1 className="text-h2 font-semibold text-foreground">Website</h1>
       <p className="mt-1 text-body-sm text-muted-foreground">
-        Configure your agency website, then compose pages visually in the Composer tab.
+        Your website control center — see readiness, customize pages, and publish when you are
+        ready.
       </p>
     </div>
   );

@@ -1,24 +1,41 @@
-/** Tabs the Website Manager shell can navigate to from readiness actions. */
-export type WebsiteTabKey = "overview" | "profile" | "brand" | "settings" | "seo" | "composer";
+import type { DraftConfiguration } from "@estatify/types";
 
-export type ReadinessStatus = "complete" | "warning" | "blocked" | "not_applicable";
+export type ReadinessStatus = "complete" | "warning" | "blocked";
+
+export type ReadinessModule =
+  "profile" | "brand" | "settings" | "seo" | "composer" | "domain" | "analytics" | "publish";
+
+/** Tab keys used by the Website Manager UI for one-click navigation. */
+export type WebsiteTab = "overview" | "profile" | "brand" | "settings" | "seo" | "composer";
 
 export interface ReadinessRule {
   id: string;
-  module: string;
+  module: ReadinessModule;
   label: string;
   status: ReadinessStatus;
   message: string;
+  /** Weight toward the readiness score (0–1 contribution when complete). */
   weight: number;
-  action?: { label: string; tab: WebsiteTabKey };
+  actionTab?: WebsiteTab;
+  fixLabel?: string;
 }
 
-export interface ReadinessReport {
+export interface ReadinessContext {
+  draft: DraftConfiguration;
+  agencySlug?: string;
+  primaryDomain?: string | null;
+  hasLogo?: boolean;
+  hasFavicon?: boolean;
+}
+
+export interface ReadinessResult {
   score: number;
   rules: ReadinessRule[];
+  completeCount: number;
+  warningCount: number;
+  blockedCount: number;
   blockers: ReadinessRule[];
   warnings: ReadinessRule[];
-  complete: ReadinessRule[];
 }
 
-export type ReadinessEvaluator = (input: import("./evaluate").ReadinessInput) => ReadinessRule;
+export type ReadinessEvaluator = (ctx: ReadinessContext) => ReadinessRule;

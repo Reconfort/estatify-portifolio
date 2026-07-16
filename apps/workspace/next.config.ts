@@ -23,6 +23,7 @@ const nextConfig: NextConfig = {
     "@estatify/feature-billing",
     "@estatify/feature-branding",
     "@estatify/feature-lead",
+    "@estatify/website-readiness",
     "@estatify/website-renderer",
     "@estatify/website-sections",
   ],

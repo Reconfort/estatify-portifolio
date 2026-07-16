@@ -100,10 +100,10 @@ export function ProfileDetails({ user }: { user: AuthUser | null }) {
         description="Your role and agency in the active workspace."
         action={
           <Link
-            href="/branding"
+            href="/website"
             className="inline-flex items-center gap-0.5 text-body-sm font-medium text-primary transition-colors hover:text-primary/80"
           >
-            Branding
+            Website
             <ChevronRight className="size-4" aria-hidden />
           </Link>
         }

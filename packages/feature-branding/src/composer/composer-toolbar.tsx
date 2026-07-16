@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@estatify/ui";
 import {
   getApiErrorMessage,
@@ -14,11 +14,13 @@ export function ComposerToolbar({
   updatedAt,
   publishedAt,
   saving,
+  onBack,
 }: {
   pageLabel: string;
   updatedAt: string;
   publishedAt: string | null;
   saving?: boolean;
+  onBack?: () => void;
 }) {
   const publish = usePublishConfiguration();
   const discard = useDiscardComposition();
@@ -49,13 +51,27 @@ export function ComposerToolbar({
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-card px-4 py-3">
-      <div>
-        <p className="text-body-sm font-semibold text-foreground">{pageLabel}</p>
-        <p className="text-caption text-muted-foreground">
-          Draft updated {fmt(updatedAt)} · Published {fmt(publishedAt)}
-          {saving ? " · Saving…" : ""}
-        </p>
-        {error ? <p className="text-caption text-destructive">{error}</p> : null}
+      <div className="flex min-w-0 items-start gap-2">
+        {onBack ? (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="shrink-0 px-2"
+            onClick={onBack}
+          >
+            <ArrowLeft className="size-4" aria-hidden />
+            <span className="sr-only sm:not-sr-only">Overview</span>
+          </Button>
+        ) : null}
+        <div className="min-w-0">
+          <p className="text-body-sm font-semibold text-foreground">{pageLabel}</p>
+          <p className="text-caption text-muted-foreground">
+            Draft updated {fmt(updatedAt)} · Published {fmt(publishedAt)}
+            {saving ? " · Saving…" : ""}
+          </p>
+          {error ? <p className="text-caption text-destructive">{error}</p> : null}
+        </div>
       </div>
       <div className="flex items-center gap-2">
         <Button

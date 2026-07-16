@@ -15,12 +15,12 @@ export function PublishBar({
   publishedAt,
   updatedAt,
   className,
-  onOpenComposer,
+  onCustomize,
 }: {
   publishedAt: string | null;
   updatedAt: string;
   className?: string;
-  onOpenComposer?: () => void;
+  onCustomize?: () => void;
 }) {
   const publish = usePublishConfiguration();
   const discard = useDiscardComposition();
@@ -72,9 +72,9 @@ export function PublishBar({
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        {onOpenComposer ? (
-          <Button type="button" variant="outline" onClick={onOpenComposer}>
-            Open Composer
+        {onCustomize ? (
+          <Button type="button" variant="outline" onClick={onCustomize}>
+            Customize website
           </Button>
         ) : null}
         <Button
