@@ -341,6 +341,9 @@ importers:
       "@estatify/utils":
         specifier: workspace:*
         version: link:../utils
+      "@estatify/website-readiness":
+        specifier: workspace:*
+        version: link:../website-readiness
       "@estatify/website-renderer":
         specifier: workspace:*
         version: link:../website-renderer
@@ -464,6 +467,12 @@ importers:
       tailwind-merge:
         specifier: ^3.0.0
         version: 3.6.0
+
+  packages/website-readiness:
+    dependencies:
+      "@estatify/types":
+        specifier: workspace:*
+        version: link:../types
 
   packages/website-renderer:
     dependencies:

@@ -55,7 +55,7 @@ export class ConfigurationService {
     }
     const profile = agencyProfileSchema.parse(merged);
     const updated = await this.repo.updateDraft(tenantId, agency.id, { draftProfile: profile });
-    return this.toDraft(updated, agency.name);
+    return this.toDraft(updated, agency);
   }
 
   async updateBrand(
@@ -67,7 +67,7 @@ export class ConfigurationService {
     const current = parseConfigSection(brandIdentitySchema, row.draftBrand, defaultBrandIdentity);
     const brand = brandIdentitySchema.parse(deepMerge(current, patch));
     const updated = await this.repo.updateDraft(tenantId, agency.id, { draftBrand: brand });
-    return this.toDraft(updated, agency.name);
+    return this.toDraft(updated, agency);
   }
 
   async updateWebsite(
@@ -83,7 +83,7 @@ export class ConfigurationService {
     );
     const website = websiteSettingsSchema.parse(deepMerge(current, patch));
     const updated = await this.repo.updateDraft(tenantId, agency.id, { draftWebsite: website });
-    return this.toDraft(updated, agency.name);
+    return this.toDraft(updated, agency);
   }
 
   async updateSeo(
@@ -99,7 +99,7 @@ export class ConfigurationService {
     );
     const seo = seoConfigurationSchema.parse(deepMerge(current, patch));
     const updated = await this.repo.updateDraft(tenantId, agency.id, { draftSeo: seo });
-    return this.toDraft(updated, agency.name);
+    return this.toDraft(updated, agency);
   }
 
   async getComposition(tenantId: string): Promise<WebsiteComposition> {
@@ -120,13 +120,13 @@ export class ConfigurationService {
     const updated = await this.repo.updateDraft(tenantId, agency.id, {
       draftComposition: composition,
     });
-    return this.toDraft(updated, agency.name);
+    return this.toDraft(updated, agency);
   }
 
   async discardComposition(tenantId: string): Promise<DraftConfiguration> {
     const agency = await this.requireAgency(tenantId);
     const updated = await this.repo.discardCompositionDraft(tenantId, agency.id);
-    return this.toDraft(updated, agency.name);
+    return this.toDraft(updated, agency);
   }
 
   async publish(tenantId: string): Promise<DraftConfiguration> {
@@ -134,7 +134,7 @@ export class ConfigurationService {
     const row = await this.repo.publish(tenantId, agency.id);
     const cacheHost = agency.primaryDomain ?? `${agency.tenant.slug}.localhost`;
     await this.cache.del(this.publicCacheKey(cacheHost));
-    return this.toDraft(row, agency.name);
+    return this.toDraft(row, agency);
   }
 
   async getPublishedByHost(host: string): Promise<PublishedConfiguration> {
@@ -242,7 +242,11 @@ export class ConfigurationService {
       publishedAt: Date | null;
       updatedAt: Date;
     },
-    agencyName: string,
+    agency: {
+      name: string;
+      primaryDomain: string | null;
+      tenant: { slug: string };
+    },
   ): DraftConfiguration {
     const profile = parseConfigSection(agencyProfileSchema, row.draftProfile, defaultAgencyProfile);
     const website = parseConfigSection(
@@ -254,14 +258,14 @@ export class ConfigurationService {
     return draftConfigurationSchema.parse({
       profile: {
         ...profile,
-        basic: { ...profile.basic, companyName: agencyName || profile.basic.companyName },
+        basic: { ...profile.basic, companyName: agency.name || profile.basic.companyName },
       },
       brand: parseConfigSection(brandIdentitySchema, row.draftBrand, defaultBrandIdentity),
       website: {
         ...website,
         general: {
           ...website.general,
-          websiteName: website.general.websiteName || agencyName,
+          websiteName: website.general.websiteName || agency.name,
         },
       },
       seo: parseConfigSection(seoConfigurationSchema, row.draftSeo, defaultSeoConfiguration),
@@ -270,6 +274,8 @@ export class ConfigurationService {
         templateId: row.templateId,
         publishedAt: row.publishedAt?.toISOString() ?? null,
         updatedAt: row.updatedAt.toISOString(),
+        agencySlug: agency.tenant.slug,
+        primaryDomain: agency.primaryDomain,
       },
     });
   }

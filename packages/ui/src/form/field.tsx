@@ -55,6 +55,7 @@ export function Field<TValues extends FieldValues>(props: FieldProps<TValues>) {
       render={({ field, fieldState }) => {
         const invalid = Boolean(fieldState.error);
         const describedBy = invalid ? errorId : hint ? hintId : undefined;
+        const textValue = field.value == null ? "" : String(field.value);
         const shared = {
           id,
           placeholder,
@@ -69,13 +70,19 @@ export function Field<TValues extends FieldValues>(props: FieldProps<TValues>) {
             <Label htmlFor={id}>{label}</Label>
 
             {props.type === "textarea" ? (
-              <Textarea {...shared} {...field} rows={props.rows ?? 4} />
+              <Textarea {...shared} {...field} value={textValue} rows={props.rows ?? 4} />
             ) : props.type === "select" ? (
-              <Select {...shared} {...field} options={props.options} placeholder={placeholder} />
+              <Select
+                {...shared}
+                {...field}
+                value={textValue}
+                options={props.options}
+                placeholder={placeholder}
+              />
             ) : props.type === "password" ? (
-              <PasswordInput {...shared} {...field} />
+              <PasswordInput {...shared} {...field} value={textValue} />
             ) : (
-              <Input {...shared} {...field} type={props.type} />
+              <Input {...shared} {...field} value={textValue} type={props.type} />
             )}
 
             {invalid ? (

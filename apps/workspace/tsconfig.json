@@ -28,6 +28,7 @@
       "@estatify/feature-lead": ["../../packages/feature-lead/src/index.ts"],
       "@estatify/feature-agent": ["../../packages/feature-agent/src/index.ts"],
       "@estatify/feature-branding": ["../../packages/feature-branding/src/index.ts"],
+      "@estatify/website-readiness": ["../../packages/website-readiness/src/index.ts"],
       "@estatify/feature-analytics": ["../../packages/feature-analytics/src/index.ts"],
       "@estatify/feature-billing": ["../../packages/feature-billing/src/index.ts"],
       "@estatify/feature-tenant-runtime": ["../../packages/feature-tenant-runtime/src/index.ts"],
